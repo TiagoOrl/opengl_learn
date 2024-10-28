@@ -1,3 +1,7 @@
+#ifndef SHADER_ERRORS_H
+#define SHADER_ERRORS_H
+
+
 #include <glad/glad.h>
 #include <iostream>
 
@@ -16,3 +20,6 @@ int shaderCheck(unsigned int shader) {
 
     return success;
 }
+
+
+#endif

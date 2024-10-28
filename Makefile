@@ -1,14 +1,18 @@
 CC=g++
 LIBS= -lglfw -lGLU -lGL -lXrandr -lX11 -lrt -ldl
 FLAGS= -pthread
-INCLUDE_TAG=include
+INCLUDE_TAG= -I include
+OBJECTS = ./build/glad.o ./build/Shader.o
 
-render: glad.o
-	${CC} main.cpp glad.o $(FLAGS) -o render -I $(INCLUDE_TAG) $(LIBS)
+render: ${OBJECTS}
+	${CC} main.cpp ${OBJECTS} $(FLAGS) -o render $(INCLUDE_TAG) $(LIBS)
 
-glad.o: glad.c	
-	${CC} glad.c -c -o glad.o -I $(INCLUDE_TAG)
+./build/Shader.o: ./src/Shader.cpp
+	${CC} ./src/Shader.cpp -c -o ./build/Shader.o ${INCLUDE_TAG}
+
+./build/glad.o: glad.c	
+	${CC} glad.c -c -o ./build/glad.o $(INCLUDE_TAG)
 
 
 cl: 
-	rm *.o
+	rm render *.o build/*.o
