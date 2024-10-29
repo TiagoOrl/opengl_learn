@@ -17,6 +17,8 @@ class Shader {
         Shader(const char* vertexFile, const char* fragmentFile);
 
         void activate();
+        void updateColorUniform(const char * name, GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+
         void wipe();
 
 

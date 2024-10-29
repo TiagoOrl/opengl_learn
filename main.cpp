@@ -1,7 +1,7 @@
-
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <math.h>
+
 #include "src/Shader.hpp"
 
 #include <iostream>
@@ -106,11 +106,19 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        float timeValue = glfwGetTime();
+        float val1 = sin(timeValue) / 1.0f + 0.5f;
+        float val2 = cos(timeValue) / 1.0f + 0.5f;
+
         shader1.activate();
+        shader1.updateColorUniform("sharedColor", val1, val2, 1.0f, 1.0f);
+
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         shader2.activate();
+        shader2.updateColorUniform("sharedColor", 1.0f, val2, val1, 1.0f);
+
         glBindVertexArray(VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

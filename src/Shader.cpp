@@ -57,6 +57,11 @@ void Shader::activate() {
     glUseProgram(ID);
 }
 
+void Shader::updateColorUniform(const char * name, GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
+    int vertexColorLocation = glGetUniformLocation(ID, name);
+    glUniform4f(vertexColorLocation, r, g, b, a);
+}   
+
 
 void Shader::wipe() {
     glDeleteProgram(ID);
