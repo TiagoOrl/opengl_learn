@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "src/Shader.hpp"
+#include "src/VAO.hpp"
 
 #include <iostream>
 
@@ -68,25 +69,8 @@ int main()
         0.48f,  0.75f, 0.0f  
     }; 
 
-    unsigned int VAOs[2], VBOs[2];
-
-    glGenVertexArrays(2, VAOs);
-    glGenBuffers(2, VBOs);
-
-    // first triangle
-    glBindVertexArray(VAOs[0]);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle1), triangle1, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-
-    // second triangle
-    glBindVertexArray(VAOs[1]);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle2), triangle2, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    VAO vao1(triangle1, sizeof(triangle1), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
+    VAO vao2(triangle2, sizeof(triangle2), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -113,14 +97,12 @@ int main()
         shader1.activate();
         shader1.updateColorUniform("sharedColor", val1, val2, 1.0f, 1.0f);
 
-        glBindVertexArray(VAOs[0]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        vao1.bind();
 
         shader2.activate();
         shader2.updateColorUniform("sharedColor", 1.0f, val2, val1, 1.0f);
 
-        glBindVertexArray(VAOs[1]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        vao2.bind();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -128,8 +110,8 @@ int main()
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(2, VAOs);
-    glDeleteBuffers(2, VBOs);
+    vao1.unbind();
+    vao2.unbind();
     shader1.wipe();
     shader2.wipe();
 
