@@ -58,19 +58,19 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float triangle1[] = {
-        -0.5f, -0.5f, 0.0f, // left  
-         0.5f, -0.5f, 0.0f, // right 
-         0.0f,  0.5f, 0.0f  // top   
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // left  
+         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // right 
+         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f // top   
     }; 
 
     float triangle2[] = {
-        0.20f, 0.0f, 0.0f, 
-        0.50f, 0.0f, 0.0f, 
-        0.48f,  0.75f, 0.0f  
+        0.20f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, // left  
+        0.90f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, // right 
+        0.48f,  0.98f, 0.0f, 1.0f, 0.0f, 0.0f // top     
     }; 
 
-    VAO vao1(triangle1, sizeof(triangle1), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
-    VAO vao2(triangle2, sizeof(triangle2), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
+    VAO vao1(triangle1, sizeof(triangle1), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 6, 1, 3);
+    VAO vao2(triangle2, sizeof(triangle2), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 6, 1, 3);
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -90,18 +90,17 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        float timeValue = glfwGetTime();
-        float val1 = sin(timeValue) / 1.0f + 0.5f;
-        float val2 = cos(timeValue) / 1.0f + 0.5f;
+        // float timeValue = glfwGetTime();
+        // float val1 = sin(timeValue) / 1.0f + 0.5f;
+        // float val2 = cos(timeValue) / 1.0f + 0.5f;
 
         shader1.activate();
-        shader1.updateColorUniform("sharedColor", val1, val2, 1.0f, 1.0f);
-
+        // shader1.updateColorUniform("sharedColor", val1, val2, 1.0f, 1.0f);
         vao1.bind();
 
-        shader2.activate();
-        shader2.updateColorUniform("sharedColor", 1.0f, val2, val1, 1.0f);
+        
 
+        shader2.activate();
         vao2.bind();
 
         glfwSwapBuffers(window);

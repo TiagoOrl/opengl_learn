@@ -3,7 +3,18 @@
 
 
 
-VAO::VAO(float vertices[], unsigned int sizeOf, GLuint vertCount, int drawType, GLuint location, GLuint vertexAttrSize, int type, GLsizeiptr stride) {
+VAO::VAO(
+    float vertices[], 
+    unsigned int sizeOf, 
+    GLuint vertCount, 
+    int drawType, 
+    GLuint location, 
+    GLuint vertexAttrSize, 
+    int type, 
+    GLsizeiptr stride,
+    GLuint colorLocation,
+    GLuint colorOffset
+    ) {
     verticesCount = vertCount;
     glGenVertexArrays(1, &VAOId);
     glGenBuffers(1, &VBOId);
@@ -13,6 +24,9 @@ VAO::VAO(float vertices[], unsigned int sizeOf, GLuint vertCount, int drawType, 
     glBufferData(GL_ARRAY_BUFFER, sizeOf, vertices, drawType);
     glVertexAttribPointer(location, vertexAttrSize, type, GL_FALSE, stride * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, vertexAttrSize, type, GL_FALSE, stride * sizeof(float), (void*)(colorOffset * sizeof(float)));
+    glEnableVertexAttribArray(colorLocation);
 
 }
 
