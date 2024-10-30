@@ -69,8 +69,8 @@ int main()
         0.48f,  0.75f, 0.0f  
     }; 
 
-    VAO vao1(triangle1, 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
-    VAO vao2(triangle2, 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
+    VAO vao1(triangle1, sizeof(triangle1), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
+    VAO vao2(triangle2, sizeof(triangle2), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
