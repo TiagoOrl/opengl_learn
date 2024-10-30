@@ -22,10 +22,10 @@ VAO::VAO(
     glBindVertexArray(VAOId);
     glBindBuffer(GL_ARRAY_BUFFER, VBOId);
     glBufferData(GL_ARRAY_BUFFER, sizeOf, vertices, drawType);
-    glVertexAttribPointer(location, vertexAttrSize, type, GL_FALSE, stride * sizeof(float), (void*)0);
+    glVertexAttribPointer(location, vertexAttrSize, type, GL_FALSE, stride, (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, vertexAttrSize, type, GL_FALSE, stride * sizeof(float), (void*)(colorOffset * sizeof(float)));
+    glVertexAttribPointer(1, vertexAttrSize, type, GL_FALSE, stride, (void*)(colorOffset * sizeof(float)));
     glEnableVertexAttribArray(colorLocation);
 
 }
