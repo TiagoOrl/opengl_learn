@@ -50,13 +50,6 @@ int main()
 
 
     
-    Shader shader1("shaders/default.vert", "shaders/default.frag");
-    Shader shader2("shaders/default.vert", "shaders/default2.frag");
-    
-    
-
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
     float triangle1[] = {
         -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // left  
          0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // right 
@@ -69,8 +62,16 @@ int main()
         0.48f,  0.98f, 0.0f, 1.0f, 0.0f, 0.0f // top     
     }; 
 
-    VAO vao1(triangle1, sizeof(triangle1), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 6 * sizeof(float), 1, 3);
-    VAO vao2(triangle2, sizeof(triangle2), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 6 * sizeof(float), 1, 3);
+    float square[] = {
+    // positions          // colors           // texture coords
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+};
+
+    Shader shader1("shaders/default.vert", "shaders/default.frag");
+    VAO vao1(square, 3, GL_STATIC_DRAW, 8 * sizeof(float), 3, 6);
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -98,20 +99,16 @@ int main()
         shader1.setFloat(std::string("shValue"), val1);
         vao1.bind();
 
-        
 
-        shader2.activate();
-        shader2.setFloat(std::string("shValue"), val2);
-        vao2.bind();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     vao1.unbind();
-    vao2.unbind();
+
     shader1.wipe();
-    shader2.wipe();
+
 
     glfwTerminate();
     return 0;

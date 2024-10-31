@@ -11,16 +11,13 @@ class VAO {
 
         VAO(
             float vertices[], 
-            unsigned int sizeOf, 
             GLuint vertCount, 
             int drawType, 
-            GLuint location, 
-            GLuint vertexAttrSize, 
-            int type, 
             GLsizeiptr stride,
-            GLuint colorLocation,
-            GLuint colorOffset
+            GLuint colorOffset,
+            GLuint textureOffset
         );
+
         void bind();
         void unbind();
 
