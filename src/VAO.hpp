@@ -9,7 +9,15 @@ class VAO {
         GLuint VBOId;
         GLuint verticesCount;
 
-        VAO(float vertices[], unsigned int sizeOf, GLuint vertCount, int drawType, GLuint location, GLuint vertexAttrSize, int type, GLsizeiptr stride);
+        VAO(
+            float vertices[], 
+            GLuint vertCount, 
+            int drawType, 
+            GLsizeiptr stride,
+            GLuint colorOffset,
+            GLuint textureOffset
+        );
+
         void bind();
         void unbind();
 

@@ -50,27 +50,28 @@ int main()
 
 
     
-    Shader shader1("shaders/default.vert", "shaders/default.frag");
-    Shader shader2("shaders/default.vert", "shaders/default2.frag");
-    
-    
-
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
     float triangle1[] = {
-        -0.5f, -0.5f, 0.0f, // left  
-         0.5f, -0.5f, 0.0f, // right 
-         0.0f,  0.5f, 0.0f  // top   
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // left  
+         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // right 
+         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f // top   
     }; 
 
     float triangle2[] = {
-        0.20f, 0.0f, 0.0f, 
-        0.50f, 0.0f, 0.0f, 
-        0.48f,  0.75f, 0.0f  
+        0.20f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, // left  
+        0.90f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, // right 
+        0.48f,  0.98f, 0.0f, 1.0f, 0.0f, 0.0f // top     
     }; 
 
-    VAO vao1(triangle1, sizeof(triangle1), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
-    VAO vao2(triangle2, sizeof(triangle2), 3, GL_STATIC_DRAW, 0, 3, GL_FLOAT, 3);
+    float square[] = {
+    // positions          // colors           // texture coords
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+};
+
+    Shader shader1("shaders/default.vert", "shaders/default.frag");
+    VAO vao1(square, 3, GL_STATIC_DRAW, 8 * sizeof(float), 3, 6);
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -91,46 +92,36 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         float timeValue = glfwGetTime();
-        float val1 = sin(timeValue) / 1.0f + 0.5f;
-        float val2 = cos(timeValue) / 1.0f + 0.5f;
+        float val1 = sin(timeValue * 2) / 1.0f + 0.5f;
+        float val2 = cos(timeValue * 2) / 1.0f + 0.5f;
 
         shader1.activate();
-        shader1.updateColorUniform("sharedColor", val1, val2, 1.0f, 1.0f);
-
+        shader1.setFloat(std::string("shValue"), val1);
         vao1.bind();
 
-        shader2.activate();
-        shader2.updateColorUniform("sharedColor", 1.0f, val2, val1, 1.0f);
 
-        vao2.bind();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // optional: de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
     vao1.unbind();
-    vao2.unbind();
-    shader1.wipe();
-    shader2.wipe();
 
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
+    shader1.wipe();
+
+
     glfwTerminate();
     return 0;
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
+
 void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
