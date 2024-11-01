@@ -81,6 +81,7 @@ int main()
     Shader shader1("shaders/default.vert", "shaders/default.frag");
     VAO vao1(square, sizeof(square), 3, GL_STATIC_DRAW, 8 * sizeof(float), 3, 6);
     EBO ebo1(indices, sizeof(indices));
+    
 
     Texture texture1(std::string("./images/container.jpg"));
 
