@@ -61,6 +61,9 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "__nullptr": "cpp",
-        "cerrno": "cpp"
+        "cerrno": "cpp",
+        "codecvt": "cpp",
+        "fstream": "cpp",
+        "locale": "cpp"
     }
 }

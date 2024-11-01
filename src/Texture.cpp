@@ -3,7 +3,7 @@
 
 
 
-Texture::Texture(std::string &imgPath) {
+Texture::Texture(const std::string &imgPath) {
     int width, height, nrChannels;
     unsigned char *data = stbi_load(imgPath.c_str(), &width, &height, &nrChannels, 0);
     if (data)

@@ -4,8 +4,11 @@
 
 #include "src/Shader.hpp"
 #include "src/VAO.hpp"
+#include "src/EBO.hpp"
+#include "src/Texture.hpp"
 
 #include <iostream>
+#include <string>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -63,15 +66,24 @@ int main()
     }; 
 
     float square[] = {
-    // positions          // colors           // texture coords
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
-};
+        // positions          // colors           // texture coords
+        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+    };
+
+    unsigned int indices[] = {  
+        0, 1, 3, // first triangle
+        1, 2, 3  // second triangle
+    };
 
     Shader shader1("shaders/default.vert", "shaders/default.frag");
-    VAO vao1(square, 3, GL_STATIC_DRAW, 8 * sizeof(float), 3, 6);
+    VAO vao1(square, sizeof(square), 3, GL_STATIC_DRAW, 8 * sizeof(float), 3, 6);
+    EBO ebo1(indices, sizeof(indices));
+    
+
+    Texture texture1(std::string("./images/container.jpg"));
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -97,7 +109,7 @@ int main()
 
         shader1.activate();
         shader1.setFloat(std::string("shValue"), val1);
-        vao1.bind();
+        vao1.bind(texture1.ID);
 
 
 
@@ -106,7 +118,7 @@ int main()
     }
 
     vao1.unbind();
-
+    ebo1.unbind();
     shader1.wipe();
 
 
