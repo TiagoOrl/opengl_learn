@@ -2,9 +2,9 @@
 
 
 
-
 VAO::VAO(
     float vertices[], 
+    GLuint arraySize,
     GLuint vertCount, 
     int drawType, 
     GLsizeiptr stride,
@@ -17,7 +17,7 @@ VAO::VAO(
 
     glBindVertexArray(VAOId);
     glBindBuffer(GL_ARRAY_BUFFER, VBOId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, drawType);
+    glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, drawType);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -31,9 +31,10 @@ VAO::VAO(
 }
 
 
-void VAO::bind() {
+void VAO::bind(GLuint textId) {
+    glBindTexture(GL_TEXTURE_2D, textId);
     glBindVertexArray(VAOId);
-    glDrawArrays(GL_TRIANGLES, 0, verticesCount);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void VAO::unbind() {

@@ -11,6 +11,7 @@ class VAO {
 
         VAO(
             float vertices[], 
+            GLuint arraySize,
             GLuint vertCount, 
             int drawType, 
             GLsizeiptr stride,
@@ -18,7 +19,7 @@ class VAO {
             GLuint textureOffset
         );
 
-        void bind();
+        void bind(GLuint textId);
         void unbind();
 
 };

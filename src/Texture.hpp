@@ -10,7 +10,7 @@
 class Texture {
     public:
         GLuint ID;
-        Texture(std::string &imgPath);
+        Texture(const std::string &imgPath);
 };
 
 
