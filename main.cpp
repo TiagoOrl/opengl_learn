@@ -65,12 +65,14 @@ int main()
         0.48f,  0.98f, 0.0f, 1.0f, 0.0f, 0.0f // top     
     }; 
 
+    float texScale = 2.0f;
+
     float square[] = {
-        // positions          // colors           // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+        // positions          // colors           // texture coords (note that we changed them to 2.0f!)
+         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   texScale, texScale, // top right
+         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   texScale, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f,     0.0f, // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f,     texScale  // top left 
     };
 
     unsigned int indices[] = {  
