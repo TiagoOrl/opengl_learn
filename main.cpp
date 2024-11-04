@@ -83,23 +83,20 @@ int main()
     EBO ebo1(indices, sizeof(indices));
     
 
-    Texture texture1(std::string("./images/container.jpg"));
+    Texture texture1(std::string("./images/container.jpg"), GL_RGB, GL_TEXTURE0);
+    Texture texture2(std::string("./images/awesomeface.png"), GL_RGBA, GL_TEXTURE1);
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+    shader1.activate();
+    shader1.setInt("texture2", 1);
 
-
-    // render loop
-    // -----------
+    
     while (!glfwWindowShouldClose(window))
     {
-        // input
-        // -----
         processInput(window);
 
-        // render
-        // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -109,9 +106,13 @@ int main()
 
         shader1.activate();
         shader1.setFloat(std::string("shValue"), val1);
-        vao1.bind(texture1.ID);
+        vao1.bind();
 
+        texture1.activate();
+        texture1.bind();
 
+        texture2.activate();
+        texture2.bind();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
