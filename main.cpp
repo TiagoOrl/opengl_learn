@@ -16,6 +16,7 @@ void processInput(GLFWwindow *window);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+float texVisibility = 0.2f;
 
 
 int main()
@@ -50,7 +51,6 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
 
     
     float triangle1[] = {
@@ -108,6 +108,7 @@ int main()
 
         shader1.activate();
         shader1.setFloat(std::string("shValue"), val1);
+        shader1.setFloat(std::string("texVisibility"), texVisibility);
         vao1.bind();
 
         texture1.activate();
@@ -134,6 +135,17 @@ void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+        if (texVisibility < 1.0f) 
+            texVisibility += 0.001f;
+    }
+
+
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        if (texVisibility > 0.0f) 
+            texVisibility -= 0.001f;
+    }
 }
 
 
