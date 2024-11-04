@@ -16,6 +16,7 @@ void processInput(GLFWwindow *window);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+float texVisibility = 0.2f;
 
 
 int main()
@@ -51,7 +52,6 @@ int main()
         return -1;
     }
 
-
     
     float triangle1[] = {
         -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // left  
@@ -65,12 +65,14 @@ int main()
         0.48f,  0.98f, 0.0f, 1.0f, 0.0f, 0.0f // top     
     }; 
 
+    float texScale = 2.0f;
+
     float square[] = {
-        // positions          // colors           // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+        // positions          // colors           // texture coords (note that we changed them to 2.0f!)
+         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   texScale, texScale, // top right
+         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   texScale, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f,     0.0f, // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f,     texScale  // top left 
     };
 
     unsigned int indices[] = {  
@@ -83,23 +85,20 @@ int main()
     EBO ebo1(indices, sizeof(indices));
     
 
-    Texture texture1(std::string("./images/container.jpg"));
+    Texture texture1(std::string("./images/container.jpg"), GL_RGB, GL_TEXTURE0);
+    Texture texture2(std::string("./images/awesomeface.png"), GL_RGBA, GL_TEXTURE1);
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+    shader1.activate();
+    shader1.setInt("texture2", 1);
 
-
-    // render loop
-    // -----------
+    
     while (!glfwWindowShouldClose(window))
     {
-        // input
-        // -----
         processInput(window);
 
-        // render
-        // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -109,9 +108,14 @@ int main()
 
         shader1.activate();
         shader1.setFloat(std::string("shValue"), val1);
-        vao1.bind(texture1.ID);
+        shader1.setFloat(std::string("texVisibility"), texVisibility);
+        vao1.bind();
 
+        texture1.activate();
+        texture1.bind();
 
+        texture2.activate();
+        texture2.bind();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -131,6 +135,17 @@ void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+        if (texVisibility < 1.0f) 
+            texVisibility += 0.001f;
+    }
+
+
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        if (texVisibility > 0.0f) 
+            texVisibility -= 0.001f;
+    }
 }
 
 

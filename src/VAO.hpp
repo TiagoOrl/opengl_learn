@@ -20,7 +20,7 @@ class VAO {
             GLuint textureOffset
         );
 
-        void bind(GLuint textId);
+        void bind();
         void unbind();
 
 };

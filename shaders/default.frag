@@ -4,13 +4,15 @@ out vec4 FragColor;
 
 uniform vec4 sharedColor;
 uniform float shValue;
+uniform float texVisibility;
 
 in vec3 ourColor;
 in vec2 textCoord;
 
-uniform sampler2D ourTexture;
+uniform sampler2D texture1;
+uniform sampler2D texture2;
 
 void main()
 {
-    FragColor = texture(ourTexture, textCoord) * vec4(ourColor, 1.0f);
+    FragColor = mix(texture(texture1, textCoord), texture(texture2, textCoord), texVisibility);
 };

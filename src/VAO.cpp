@@ -31,8 +31,7 @@ VAO::VAO(
 }
 
 
-void VAO::bind(GLuint textId) {
-    glBindTexture(GL_TEXTURE_2D, textId);
+void VAO::bind() {
     glBindVertexArray(VAOId);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
