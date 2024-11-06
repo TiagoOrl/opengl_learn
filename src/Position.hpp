@@ -17,7 +17,7 @@ class Position {
     private:
         GLfloat posX;
         GLfloat posY;
-        GLfloat rotationZ;
+        GLfloat currentRotZ;
         void translate();
 };
 

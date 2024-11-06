@@ -8,9 +8,9 @@ Position::Position(GLfloat posX, GLfloat posY) {
 
     this->posX = posX;
     this->posY = posY;
-    this->rotationZ = 0.0f;
+    this->currentRotZ = 0.0f;
 
-    this->rotate(rotationZ);
+    this->rotate(currentRotZ);
 }
 
 
@@ -27,7 +27,7 @@ void Position::moveHorizontal(GLfloat posX) {
 
 
 void Position::rotate(GLfloat amount) {
-    this->rotationZ += amount;
+    this->currentRotZ += amount;
     trans = glm::rotate(trans, amount, glm::vec3(0.0f, 0.0f, 1.0f));
     
 }
@@ -37,5 +37,5 @@ void Position::translate() {
     trans = glm::mat4(1.0f);
     trans = glm::translate(trans, glm::vec3(this->posX, this->posY, 1.0f));
 
-    trans = glm::rotate(trans, this->rotationZ, glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::rotate(trans, this->currentRotZ, glm::vec3(0.0f, 0.0f, 1.0f));
 }
