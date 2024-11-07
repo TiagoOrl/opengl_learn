@@ -1,11 +1,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <math.h>
 
 #include "src/Shader.hpp"
 #include "src/VAO.hpp"
 #include "src/EBO.hpp"
 #include "src/Texture.hpp"
+#include "src/Position.hpp"
 
 #include <iostream>
 #include <string>
@@ -17,6 +21,7 @@ void processInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float texVisibility = 0.2f;
+Position position(0.2f, 0.2f);
 
 
 int main()
@@ -32,8 +37,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    // glfw window creation
-    // --------------------
+
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
@@ -109,6 +113,13 @@ int main()
         shader1.activate();
         shader1.setFloat(std::string("shValue"), val1);
         shader1.setFloat(std::string("texVisibility"), texVisibility);
+
+        // glm::mat4 trans = glm::mat4(1.0f);
+        // trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
+        // trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        
+        shader1.setTransform(position.trans, std::string("transform"));
+
         vao1.bind();
 
         texture1.activate();
@@ -141,10 +152,33 @@ void processInput(GLFWwindow *window)
             texVisibility += 0.001f;
     }
 
-
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
         if (texVisibility > 0.0f) 
             texVisibility -= 0.001f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        position.rotate(0.003f);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        position.rotate(-0.003f);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        position.moveVertical(0.002f);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        position.moveVertical(-0.002f);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        position.moveHorizontal(0.002f);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        position.moveHorizontal(-0.002f);
     }
 }
 

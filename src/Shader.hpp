@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iostream>
 #include <cerrno>
+#include <glm/gtc/type_ptr.hpp>
 
 
 std::string getFileContents(const char* filename);
@@ -22,6 +23,8 @@ class Shader {
         void setBool(const std::string &name, bool value) const;  
         void setInt(const std::string &name, int value) const;   
         void setFloat(const std::string &name, float value) const;
+
+        void setTransform(const glm::mat4 trans, const std::string &name);
 
         void wipe();
 
