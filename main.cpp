@@ -73,7 +73,8 @@ int main()
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    shader1.activate();
+    shader1.use();
+    shader1.setInt("texture1", 0);
     shader1.setInt("texture2", 1);
 
     
@@ -84,7 +85,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader1.activate();
+        shader1.use();
         
         transform.apply();
         shader1.set3DProjection(
@@ -96,14 +97,11 @@ int main()
             std::string("projection")
         );
 
+        cubeVAO.bind();
 
-        texture1.activate();
         texture1.bind();
-
-        texture2.activate();
         texture2.bind();
 
-        cubeVAO.bind();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

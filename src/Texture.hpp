@@ -12,7 +12,6 @@ class Texture {
         GLuint ID;
         Texture(const std::string &imgPath, GLint type, GLint position);
         void bind();
-        void activate();
 
     private:
         GLuint position;

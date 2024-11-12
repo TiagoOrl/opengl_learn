@@ -17,7 +17,7 @@ class Shader {
         GLuint ID;
         Shader(const char* vertexFile, const char* fragmentFile);
 
-        void activate();
+        void use();
         void updateColorUniform(const char * name, GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 
         void setBool(const std::string &name, bool value) const;  
