@@ -9,7 +9,13 @@
 class Position {
     public:
         glm::mat4 trans;
+        glm::mat4 model;
+        glm::mat4 view;
+        glm::mat4 projection;
+
+        
         Position(GLfloat posX, GLfloat posY);
+        void rotate3d();
         void moveHorizontal(GLfloat posX);
         void moveVertical(GLfloat posY);
         void rotate(GLfloat angle);

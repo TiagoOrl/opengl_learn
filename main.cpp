@@ -114,11 +114,16 @@ int main()
         shader1.setFloat(std::string("shValue"), val1);
         shader1.setFloat(std::string("texVisibility"), texVisibility);
 
-        // glm::mat4 trans = glm::mat4(1.0f);
-        // trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
-        // trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
         
         shader1.setTransform(position.trans, std::string("transform"));
+        position.rotate3d();
+        shader1.setProjection(
+            position.model, 
+            position.view, 
+            position.projection,
+            std::string("model"), 
+            std::string("view")
+        );
 
         vao1.bind();
 
