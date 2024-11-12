@@ -43,12 +43,14 @@ VAO::VAO(
     glBindBuffer(GL_ARRAY_BUFFER, VBOId);
     glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, drawType);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
-    glEnableVertexAttribArray(0);
+    setVertexAttribute(0, 3, GL_FLOAT, stride, 0);
+    setVertexAttribute(1, 2, GL_FLOAT, stride, textureOffset);
+}
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)(textureOffset * sizeof(float)));
-    glEnableVertexAttribArray(1);
 
+void VAO::setVertexAttribute(GLuint index, GLuint size, GLint type, GLsizeiptr stride, GLint offset) {
+    glVertexAttribPointer(index, size, type, GL_FALSE, stride, (void*)(offset * sizeof(type)));
+    glEnableVertexAttribArray(index);
 }
 
 
