@@ -9,7 +9,7 @@
 #include "src/VAO.hpp"
 #include "src/EBO.hpp"
 #include "src/Texture.hpp"
-#include "src/Position.hpp"
+#include "src/Transform.hpp"
 
 #include "src/_vertices.hpp"
 
@@ -91,7 +91,7 @@ int main()
         shader1.use();
         
         transform.apply();
-        
+
         shader1.set3DProjection(
             transform.model, 
             transform.view, 
