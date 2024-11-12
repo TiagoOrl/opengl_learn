@@ -11,6 +11,8 @@
 #include "src/Texture.hpp"
 #include "src/Position.hpp"
 
+#include "src/_vertices.hpp"
+
 #include <iostream>
 #include <string>
 
@@ -21,7 +23,7 @@ void processInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float texVisibility = 0.2f;
-Position position(0.2f, 0.2f);
+Transform transform(0.2f, 0.2f);
 
 
 int main()
@@ -38,7 +40,7 @@ int main()
 #endif
 
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Black 2", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -56,37 +58,13 @@ int main()
         return -1;
     }
 
+    glEnable(GL_DEPTH_TEST);
+
+    Shader shader1("shaders/default3d.vert", "shaders/default.frag");
+
+    VAO cubeVAO(cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
     
-    float triangle1[] = {
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // left  
-         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // right 
-         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f // top   
-    }; 
-
-    float triangle2[] = {
-        0.20f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, // left  
-        0.90f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, // right 
-        0.48f,  0.98f, 0.0f, 1.0f, 0.0f, 0.0f // top     
-    }; 
-
-    float texScale = 2.0f;
-
-    float square[] = {
-        // positions          // colors           // texture coords (note that we changed them to 2.0f!)
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   texScale, texScale, // top right
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   texScale, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f,     0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f,     texScale  // top left 
-    };
-
-    unsigned int indices[] = {  
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
-
-    Shader shader1("shaders/default.vert", "shaders/default.frag");
-    VAO vao1(square, sizeof(square), 3, GL_STATIC_DRAW, 8 * sizeof(float), 3, 6);
-    EBO ebo1(indices, sizeof(indices));
+    // EBO ebo1(indices, sizeof(indices));
     
 
     Texture texture1(std::string("./images/container.jpg"), GL_RGB, GL_TEXTURE0);
@@ -104,28 +82,20 @@ int main()
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        float timeValue = glfwGetTime();
-        float val1 = sin(timeValue * 2) / 1.0f + 0.5f;
-        float val2 = cos(timeValue * 2) / 1.0f + 0.5f;
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader1.activate();
-        shader1.setFloat(std::string("shValue"), val1);
-        shader1.setFloat(std::string("texVisibility"), texVisibility);
-
         
-        shader1.setTransform(position.trans, std::string("transform"));
-        position.rotate3d();
-        shader1.setProjection(
-            position.model, 
-            position.view, 
-            position.projection,
+        transform.apply();
+        shader1.set3DProjection(
+            transform.model, 
+            transform.view, 
+            transform.projection,
             std::string("model"), 
-            std::string("view")
+            std::string("view"),
+            std::string("projection")
         );
 
-        vao1.bind();
 
         texture1.activate();
         texture1.bind();
@@ -133,12 +103,14 @@ int main()
         texture2.activate();
         texture2.bind();
 
+        cubeVAO.bind();
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    vao1.unbind();
-    ebo1.unbind();
+    cubeVAO.unbind();
+    // ebo1.unbind();
     shader1.wipe();
 
 
@@ -163,27 +135,27 @@ void processInput(GLFWwindow *window)
     }
 
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        position.rotate(0.003f);
+        transform.rotate(0.003f);
     }
 
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        position.rotate(-0.003f);
+        transform.rotate(-0.003f);
     }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        position.moveVertical(0.002f);
+        transform.moveVertical(0.002f);
     }
 
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        position.moveVertical(-0.002f);
+        transform.moveVertical(-0.002f);
     }
 
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        position.moveHorizontal(0.002f);
+        transform.moveHorizontal(0.002f);
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        position.moveHorizontal(-0.002f);
+        transform.moveHorizontal(-0.002f);
     }
 }
 

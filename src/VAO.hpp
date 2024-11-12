@@ -8,19 +8,26 @@ class VAO {
     public:
         GLuint VAOId;
         GLuint VBOId;
-        GLuint verticesCount;
 
         VAO(
             float vertices[], 
             GLuint arraySize,
-            GLuint vertCount, 
             int drawType, 
             GLsizeiptr stride,
             GLuint colorOffset,
             GLuint textureOffset
         );
 
+        VAO(
+            float vertices[], 
+            GLuint arraySize,
+            int drawType, 
+            GLsizeiptr stride,
+            GLuint textureOffset
+        );
+        
         void bind();
+        void bindElements();
         void unbind();
 
 };
