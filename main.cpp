@@ -85,9 +85,13 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        texture1.bind();
+        texture2.bind();
+
         shader1.use();
         
         transform.apply();
+        
         shader1.set3DProjection(
             transform.model, 
             transform.view, 
@@ -97,10 +101,9 @@ int main()
             std::string("projection")
         );
 
-        cubeVAO.bind();
+        shader1.setFloat(std::string("texVisibility"), texVisibility);
 
-        texture1.bind();
-        texture2.bind();
+        cubeVAO.bind();
 
 
         glfwSwapBuffers(window);
