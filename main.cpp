@@ -23,7 +23,7 @@ void processInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 float texVisibility = 0.2f;
-Transform transform(0.2f, 0.2f);
+Transform transform(0.0f, 0.0f, -4.8f);
 
 
 int main()
@@ -136,11 +136,11 @@ void processInput(GLFWwindow *window)
     }
 
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        transform.rotate(0.003f);
+        transform.changeAngle(0.03f);
     }
 
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        transform.rotate(-0.003f);
+        transform.changeAngle(-0.03f);
     }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
@@ -157,6 +157,14 @@ void processInput(GLFWwindow *window)
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         transform.moveHorizontal(-0.002f);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+        transform.moveZ(-0.002f);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+        transform.moveZ(0.002f);
     }
 }
 
