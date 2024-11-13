@@ -33,10 +33,6 @@ Texture::Texture(const std::string &imgPath, GLint type, GLint position) {
 
 
 void Texture::bind() {
-    glBindTexture(GL_TEXTURE_2D, ID);
-}
-
-
-void Texture::activate() {
     glActiveTexture(this->position);
+    glBindTexture(GL_TEXTURE_2D, ID);
 }
