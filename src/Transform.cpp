@@ -32,12 +32,18 @@ void Transform::changeAngle(GLfloat angle) {
 }
 
 
-void Transform::apply() {
-    model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+void Transform::applyView() {
     view = glm::mat4(1.0f);
     projection = glm::mat4(1.0f);
 
-    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.77f, 0.3f));
     view  = glm::translate(view, glm::vec3(posX, posY, posZ));
     projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+
+}
+
+void Transform::applyTransform(glm::vec3 &coord, unsigned int i) {
+    model = glm::mat4(1.0f);
+
+    model = glm::translate(model, coord);
+    model = glm::rotate(model, glm::radians(angle) * (i + 1), glm::vec3(1.0f, 0.3f, 0.5f));
 }

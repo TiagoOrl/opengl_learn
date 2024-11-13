@@ -60,8 +60,22 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    Shader shader1("shaders/default3d.vert", "shaders/default.frag");
 
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f), 
+        glm::vec3( 2.0f,  5.0f, -15.0f), 
+        glm::vec3(-1.5f, -2.2f, -2.5f),  
+        glm::vec3(-3.8f, -2.0f, -12.3f),  
+        glm::vec3( 2.4f, -0.4f, -3.5f),  
+        glm::vec3(-1.7f,  3.0f, -7.5f),  
+        glm::vec3( 1.3f, -2.0f, -2.5f),  
+        glm::vec3( 1.5f,  2.0f, -2.5f), 
+        glm::vec3( 1.5f,  0.2f, -1.5f), 
+        glm::vec3(-1.3f,  1.0f, -1.5f)  
+    };
+
+
+    Shader shader1("shaders/default3d.vert", "shaders/default.frag");
     VAO cubeVAO(cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
     
     // EBO ebo1(indices, sizeof(indices));
@@ -89,21 +103,25 @@ int main()
         texture2.bind();
 
         shader1.use();
-        
-        transform.apply();
 
-        shader1.set3DProjection(
-            transform.model, 
-            transform.view, 
-            transform.projection,
-            std::string("model"), 
-            std::string("view"),
-            std::string("projection")
-        );
+        transform.applyView();
+
+        for (int i = 0; i < 10; i++) {
+            transform.applyTransform(cubePositions[i], i);
+
+            shader1.set3DProjection(
+                transform.model, 
+                transform.view, 
+                transform.projection,
+                std::string("model"), 
+                std::string("view"),
+                std::string("projection")
+            );
+
+            cubeVAO.bind();
+        }
 
         shader1.setFloat(std::string("texVisibility"), texVisibility);
-
-        cubeVAO.bind();
 
 
         glfwSwapBuffers(window);

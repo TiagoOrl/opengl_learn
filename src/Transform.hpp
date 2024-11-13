@@ -13,9 +13,12 @@ class Transform {
         glm::mat4 view;
         glm::mat4 projection;
 
-        
         Transform(GLfloat posX, GLfloat posY, GLfloat posZ);
-        void apply();
+
+
+        void applyView();
+
+        void applyTransform(glm::vec3 &coord, unsigned int i);
         void moveHorizontal(GLfloat posX);
         void moveVertical(GLfloat posY);
         void moveZ(GLfloat posZ);
