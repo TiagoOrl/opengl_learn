@@ -9,23 +9,26 @@
 
 class Transform {
     public:
-        glm::mat4 trans;
         glm::mat4 model;
         glm::mat4 view;
         glm::mat4 projection;
 
-        
-        Transform(GLfloat posX, GLfloat posY);
-        void apply();
+        Transform(GLfloat posX, GLfloat posY, GLfloat posZ);
+
+
+        void applyView();
+
+        void applyTransform(glm::vec3 &coord, unsigned int i);
         void moveHorizontal(GLfloat posX);
         void moveVertical(GLfloat posY);
-        void rotate(GLfloat angle);
+        void moveZ(GLfloat posZ);
+        void changeAngle(GLfloat angle);
 
     private:
         GLfloat posX;
         GLfloat posY;
-        GLfloat currentRotZ;
-        void translate();
+        GLfloat posZ;
+        GLfloat angle;
 };
 
 
