@@ -74,17 +74,21 @@ void Shader::setTransform(const glm::mat4 trans, const std::string &name) {
 }
 
 
-void Shader::set3DProjection(
-    const glm::mat4 &model, 
-    const glm::mat4 &view, 
-    const glm::mat4 &projection,
-    const std::string &modelName,
-    const std::string &viewName,
-    const std::string &projectionName
+void Shader::setModel(
+    const glm::mat4 &model,
+    const std::string &modelName
 ) const {
     setMat4Pointer(modelName, model);
-    setMat4(viewName, view);
-    setMat4(projectionName, projection);
+}
+
+
+void Shader::setView(const glm::mat4 view, const std::string &name) const {
+    setMat4(name, view);
+}
+
+
+void Shader::setProjection(const glm::mat4 projection, const std::string &name) const {
+    setMat4(name, projection);
 }
 
 

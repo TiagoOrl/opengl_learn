@@ -10,6 +10,7 @@
 #include "src/EBO.hpp"
 #include "src/Texture.hpp"
 #include "src/Transform.hpp"
+#include "src/Camera.hpp"
 
 #include "src/_vertices.hpp"
 
@@ -77,6 +78,7 @@ int main()
 
     Shader shader1("shaders/default3d.vert", "shaders/default.frag");
     VAO cubeVAO(cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
+    Camera camera;
     
     // EBO ebo1(indices, sizeof(indices));
     
@@ -91,6 +93,10 @@ int main()
     shader1.setInt("texture1", 0);
     shader1.setInt("texture2", 1);
 
+
+    camera.createProjection();
+    shader1.setProjection(camera.projection, std::string("projection"));
+
     
     while (!glfwWindowShouldClose(window))
     {
@@ -104,18 +110,15 @@ int main()
 
         shader1.use();
 
-        transform.applyView();
+        camera.createView();
+        shader1.setView(camera.view, std::string("view"));
 
         for (int i = 0; i < 10; i++) {
             transform.applyTransform(cubePositions[i], i);
 
-            shader1.set3DProjection(
+            shader1.setModel(
                 transform.model, 
-                transform.view, 
-                transform.projection,
-                std::string("model"), 
-                std::string("view"),
-                std::string("projection")
+                std::string("model")
             );
 
             cubeVAO.bind();
