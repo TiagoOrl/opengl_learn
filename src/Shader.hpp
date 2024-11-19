@@ -27,14 +27,12 @@ class Shader {
         void setMat4Pointer(const std::string &name, const glm::mat4 &mat) const;
 
         void setTransform(const glm::mat4 trans, const std::string &name);
-        void set3DProjection(
+        void setModel(
             const glm::mat4 &model, 
-            const glm::mat4 &view,
-            const glm::mat4 &projection,
-            const std::string &modelName,
-            const std::string &viewName,
-            const std::string &projectionName
+            const std::string &modelName
         ) const;
+        void setView(const glm::mat4 view, const std::string &name) const;
+        void setProjection(const glm::mat4 projection, const std::string &name) const;
 
         void wipe();
 
