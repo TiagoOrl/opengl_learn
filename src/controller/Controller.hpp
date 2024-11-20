@@ -2,7 +2,7 @@
 #define H_CONTROLLER
 
 #include <GLFW/glfw3.h>
-#include "../Camera.hpp"
+#include "../camera/Camera.hpp"
 
 
 

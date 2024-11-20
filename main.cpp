@@ -5,12 +5,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <math.h>
 
-#include "src/Shader.hpp"
-#include "src/VAO.hpp"
-#include "src/EBO.hpp"
-#include "src/Texture.hpp"
-#include "src/Transform.hpp"
-#include "src/Camera.hpp"
+#include "src/shader/Shader.hpp"
+#include "src/vao/VAO.hpp"
+#include "src/ebo/EBO.hpp"
+#include "src/texture/Texture.hpp"
+#include "src/transform/Transform.hpp"
+#include "src/camera/Camera.hpp"
+
+#include "src/time/Time.hpp"
 
 #include "src/controller/Controller.hpp"
 
@@ -101,6 +103,7 @@ int main()
     
     while (!glfwWindowShouldClose(window))
     {
+        time_utils::calcDeltaTime();
         controller::generalInput(window);
         controller::changeVisibility(window, texVisibility);
         controller::moveCamera(window, camera);

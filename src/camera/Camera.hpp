@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "../time/Time.hpp"
 
 
 class Camera {
@@ -16,9 +17,10 @@ class Camera {
         glm::vec3 cameraFront;
         glm::vec3 cameraUp;
 
-        float cameraSpeed = 0.014f;
+        float cameraSpeed = 2.34f;
 
         Camera();
+
         void createProjection();
         void createView();
 

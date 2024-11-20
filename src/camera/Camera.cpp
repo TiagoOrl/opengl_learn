@@ -1,6 +1,7 @@
 #include "Camera.hpp"
 
 
+
 Camera::Camera() {
     cameraPos = glm::vec3(0.0f, 0.0f,  3.0f);
     cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -9,10 +10,6 @@ Camera::Camera() {
 
 
 void Camera::createView() {
-    const float radius = 10.0f;
-    float camX = sin(glfwGetTime()) * radius;
-    float camZ = cos(glfwGetTime()) * radius;
-    
     view = glm::lookAt(
             cameraPos, 
             cameraPos + cameraFront, 
@@ -28,20 +25,20 @@ void Camera::createProjection() {
 
 
 void Camera::moveForward() {
-    cameraPos += cameraSpeed * cameraFront;
+    cameraPos += cameraSpeed * cameraFront * time_utils::deltaTime;
 }
 
 
 void Camera::moveBackward() {
-    cameraPos -= cameraSpeed * cameraFront;
+    cameraPos -= cameraSpeed * cameraFront * time_utils::deltaTime;
 }
 
 
 void Camera::moveRight() {
-    cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * time_utils::deltaTime;
 }
 
 
 void Camera::moveLeft() {
-    cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * time_utils::deltaTime;
 }

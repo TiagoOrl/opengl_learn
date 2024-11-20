@@ -7,23 +7,23 @@ OBJECTS = ./build/stb.o ./build/glad.o ./build/Shader.o ./build/VAO.o ./build/EB
 render: ${OBJECTS}
 	${CC} main.cpp ${OBJECTS} $(FLAGS) -o render $(INCLUDE_TAG) $(LIBS) -g
 
-./build/Shader.o: ./src/Shader.cpp
-	${CC} ./src/Shader.cpp -c -o ./build/Shader.o ${INCLUDE_TAG} -g
+./build/Shader.o: ./src/shader/Shader.cpp
+	${CC} ./src/shader/Shader.cpp -c -o ./build/Shader.o ${INCLUDE_TAG} -g
 
-./build/VAO.o: ./src/VAO.cpp
-	${CC} ./src/VAO.cpp -c -o ./build/VAO.o ${INCLUDE_TAG} -g
+./build/VAO.o: ./src/vao/VAO.cpp
+	${CC} ./src/vao/VAO.cpp -c -o ./build/VAO.o ${INCLUDE_TAG} -g
 
-./build/EBO.o: ./src/EBO.cpp
-	${CC} ./src/EBO.cpp -c -o ./build/EBO.o ${INCLUDE_TAG} -g
+./build/EBO.o: ./src/ebo/EBO.cpp
+	${CC} ./src/ebo/EBO.cpp -c -o ./build/EBO.o ${INCLUDE_TAG} -g
 
-./build/Texture.o: ./src/Texture.cpp
-	${CC} ./src/Texture.cpp -c -o ./build/Texture.o ${INCLUDE_TAG} -g
+./build/Texture.o: ./src/texture/Texture.cpp
+	${CC} ./src/texture/Texture.cpp -c -o ./build/Texture.o ${INCLUDE_TAG} -g
 
-./build/Transform.o: ./src/Transform.cpp
-	${CC} ./src/Transform.cpp -c -o ./build/Transform.o ${INCLUDE_TAG} -g
+./build/Transform.o: ./src/transform/Transform.cpp
+	${CC} ./src/transform/Transform.cpp -c -o ./build/Transform.o ${INCLUDE_TAG} -g
 
-./build/Camera.o: ./src/Camera.cpp
-	${CC} ./src/Camera.cpp -c -o ./build/Camera.o ${INCLUDE_TAG} -g
+./build/Camera.o: ./src/camera/Camera.cpp
+	${CC} ./src/camera/Camera.cpp -c -o ./build/Camera.o ${INCLUDE_TAG} -g
 
 ./build/glad.o: glad.c	
 	${CC} glad.c -c -o ./build/glad.o $(INCLUDE_TAG) -g
