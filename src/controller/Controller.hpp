@@ -9,18 +9,26 @@
 
 class Controller {
     public:
-        void generalInput(GLFWwindow *window);
-        void setCameraMouseInputCallback(GLFWwindow *window, const Camera &_camera);
-        void moveCamera(GLFWwindow *window, Camera &camera);
-        void mouseRotate(GLFWwindow* window, Camera &camera);
-        void changeVisibility(GLFWwindow *window, float &texVisibility);
-
-
+        void listenInputs(GLFWwindow *window, Camera &camera, float &visibility);
+        
     private:
         float lastX = SCREEN_WIDTH / 2;
         float lastY = SCREEN_HEIGHT / 2;
         bool firstMouse = true;    
+
+        void generalInput(GLFWwindow *window);
+        void moveCamera(GLFWwindow *window, Camera &camera);
+        void mouseRotate(GLFWwindow* window, Camera &camera);
+        void changeVisibility(GLFWwindow *window, float &texVisibility);
 };
+
+
+void Controller::listenInputs(GLFWwindow *window, Camera &camera, float &visibility) {
+    generalInput(window);
+    mouseRotate(window, camera);
+    moveCamera(window, camera);
+    changeVisibility(window, visibility);
+}
 
 
 void Controller::generalInput(GLFWwindow *window) {
