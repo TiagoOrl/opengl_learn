@@ -17,6 +17,7 @@
 #include "src/controller/Controller.hpp"
 
 #include "src/_vertices.hpp"
+#include "src/config.hpp"
 
 #include <iostream>
 #include <string>
@@ -24,8 +25,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+
 float texVisibility = 0.2f;
 Transform transform(0.0f, 0.0f, -4.8f);
 
@@ -44,7 +44,7 @@ int main()
 #endif
 
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Black 2", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Black 2", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -64,6 +64,8 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 
     glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f), 
@@ -78,7 +80,7 @@ int main()
         glm::vec3(-1.3f,  1.0f, -1.5f)  
     };
 
-
+    Controller controller;
     Shader shader1("shaders/default3d.vert", "shaders/default.frag");
     VAO cubeVAO(cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
     Camera camera;
@@ -104,9 +106,11 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         time_utils::calcDeltaTime();
-        controller::generalInput(window);
-        controller::changeVisibility(window, texVisibility);
-        controller::moveCamera(window, camera);
+        
+        controller.generalInput(window);
+        controller.changeVisibility(window, texVisibility);
+        controller.moveCamera(window, camera);
+        controller.mouseRotate(window, camera);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
