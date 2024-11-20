@@ -12,13 +12,14 @@
 #include "src/Transform.hpp"
 #include "src/Camera.hpp"
 
+#include "src/controller/Controller.hpp"
+
 #include "src/_vertices.hpp"
 
 #include <iostream>
 #include <string>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -100,7 +101,9 @@ int main()
     
     while (!glfwWindowShouldClose(window))
     {
-        processInput(window);
+        controller::generalInput(window);
+        controller::changeVisibility(window, texVisibility);
+        controller::moveCamera(window, camera);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -138,55 +141,6 @@ int main()
 
     glfwTerminate();
     return 0;
-}
-
-
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-        if (texVisibility < 1.0f) 
-            texVisibility += 0.001f;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-        if (texVisibility > 0.0f) 
-            texVisibility -= 0.001f;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        transform.changeAngle(0.03f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        transform.changeAngle(-0.03f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        transform.moveVertical(0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        transform.moveVertical(-0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        transform.moveHorizontal(0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        transform.moveHorizontal(-0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-        transform.moveZ(-0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-        transform.moveZ(0.002f);
-    }
 }
 
 
