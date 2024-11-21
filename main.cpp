@@ -5,24 +5,27 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <math.h>
 
-#include "src/Shader.hpp"
-#include "src/VAO.hpp"
-#include "src/EBO.hpp"
-#include "src/Texture.hpp"
-#include "src/Transform.hpp"
-#include "src/Camera.hpp"
+#include "src/shader/Shader.hpp"
+#include "src/vao/VAO.hpp"
+#include "src/ebo/EBO.hpp"
+#include "src/texture/Texture.hpp"
+#include "src/transform/Transform.hpp"
+#include "src/camera/Camera.hpp"
+
+#include "src/time/Time.hpp"
+
+#include "src/controller/Controller.hpp"
 
 #include "src/_vertices.hpp"
+#include "src/config.hpp"
 
 #include <iostream>
 #include <string>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+
 float texVisibility = 0.2f;
 Transform transform(0.0f, 0.0f, -4.8f);
 
@@ -41,7 +44,7 @@ int main()
 #endif
 
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Black 2", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Black 2", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -61,6 +64,8 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 
     glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f), 
@@ -75,7 +80,7 @@ int main()
         glm::vec3(-1.3f,  1.0f, -1.5f)  
     };
 
-
+    Controller controller;
     Shader shader1("shaders/default3d.vert", "shaders/default.frag");
     VAO cubeVAO(cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
     Camera camera;
@@ -100,7 +105,12 @@ int main()
     
     while (!glfwWindowShouldClose(window))
     {
-        processInput(window);
+        time_utils::calcDeltaTime();
+        
+        controller.generalInput(window);
+        controller.changeVisibility(window, texVisibility);
+        controller.moveCamera(window, camera);
+        controller.mouseRotate(window, camera);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -138,55 +148,6 @@ int main()
 
     glfwTerminate();
     return 0;
-}
-
-
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-        if (texVisibility < 1.0f) 
-            texVisibility += 0.001f;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-        if (texVisibility > 0.0f) 
-            texVisibility -= 0.001f;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        transform.changeAngle(0.03f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        transform.changeAngle(-0.03f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        transform.moveVertical(0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        transform.moveVertical(-0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        transform.moveHorizontal(0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        transform.moveHorizontal(-0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-        transform.moveZ(-0.002f);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-        transform.moveZ(0.002f);
-    }
 }
 
 
