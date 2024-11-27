@@ -7,6 +7,7 @@
 
 #include "src/shader/Shader.hpp"
 #include "src/vao/VAO.hpp"
+#include "src/vbo/VBO.hpp"
 #include "src/ebo/EBO.hpp"
 #include "src/texture/Texture.hpp"
 #include "src/transform/Transform.hpp"
@@ -82,7 +83,8 @@ int main()
 
     Controller controller;
     Shader shader1("shaders/default3d.vert", "shaders/default.frag");
-    VAO cubeVAO(cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
+    VBO vbo(GL_ARRAY_BUFFER);
+    VAO cubeVAO(vbo, cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
     Camera camera;
     
     // EBO ebo1(indices, sizeof(indices));
@@ -139,6 +141,7 @@ int main()
         glfwPollEvents();
     }
 
+    vbo.unbind();
     cubeVAO.unbind();
     // ebo1.unbind();
     shader1.wipe();

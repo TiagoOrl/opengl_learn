@@ -3,13 +3,14 @@
 
 #include <glad/glad.h>
 #include "../ebo/EBO.hpp"
+#include "../vbo/VBO.hpp"
 
 class VAO {
     public:
-        GLuint VAOId;
-        GLuint VBOId;
+        GLuint Id;
 
         VAO(
+            VBO vbo,
             float vertices[], 
             GLuint arraySize,
             int drawType, 
@@ -18,12 +19,20 @@ class VAO {
             GLuint textureOffset
         );
 
+        // for 3D objects
         VAO(
+            VBO vbo,
             float vertices[], 
             GLuint arraySize,
             int drawType, 
             GLsizeiptr stride,
             GLuint textureOffset
+        );
+
+        // for lighting source
+        VAO(
+            int drawType, 
+            GLsizeiptr stride
         );
         
         void bind();
