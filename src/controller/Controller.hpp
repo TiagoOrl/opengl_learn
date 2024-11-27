@@ -9,24 +9,16 @@
 
 class Controller {
     public:
-        void listenInputs(GLFWwindow *window, Camera &camera, float &visibility);
+        void listenInputs(GLFWwindow *window, float &visibility);
         
     private:
-        float lastX = SCREEN_WIDTH / 2;
-        float lastY = SCREEN_HEIGHT / 2;
-        bool firstMouse = true;    
-
         void generalInput(GLFWwindow *window);
-        void moveCamera(GLFWwindow *window, Camera &camera);
-        void mouseRotate(GLFWwindow* window, Camera &camera);
         void changeVisibility(GLFWwindow *window, float &texVisibility);
 };
 
 
-void Controller::listenInputs(GLFWwindow *window, Camera &camera, float &visibility) {
+void Controller::listenInputs(GLFWwindow *window, float &visibility) {
     generalInput(window);
-    mouseRotate(window, camera);
-    moveCamera(window, camera);
     changeVisibility(window, visibility);
 }
 
@@ -36,50 +28,6 @@ void Controller::generalInput(GLFWwindow *window) {
         glfwSetWindowShouldClose(window, true);
     }
 
-
-void Controller::mouseRotate(GLFWwindow* window, Camera &camera) {
-    double xpos;
-    double ypos;
-
-    glfwGetCursorPos(window, &xpos, &ypos);
-
-    if (firstMouse) {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    
-    double xoffset = xpos - lastX;
-    double yoffset = lastY - ypos;
-
-    lastX = xpos;
-    lastY = ypos;
-
-    const float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    camera.rotate(xoffset, yoffset);
-}
-
-
-void Controller::moveCamera(GLFWwindow *window, Camera &camera) {
-
-    const float cameraSpeed = 0.05f; // adjust accordingly
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.moveForward();
-
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.moveBackward();
-
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.moveLeft();
-
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.moveRight();
-}
 
 
 void Controller::changeVisibility(GLFWwindow *window, float &texVisibility) {

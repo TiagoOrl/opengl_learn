@@ -44,7 +44,7 @@ int main()
 #endif
 
 
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Black 2", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(config::SCREEN_WIDTH, config::SCREEN_HEIGHT, "Black 2", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -107,7 +107,8 @@ int main()
     {
         time_utils::calcDeltaTime();
         
-        controller.listenInputs(window, camera, texVisibility);
+        controller.listenInputs(window, texVisibility);
+        camera.listenInputs(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

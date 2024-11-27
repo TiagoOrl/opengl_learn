@@ -68,6 +68,7 @@
         "__node_handle": "cpp",
         "__config": "cpp",
         "__locale": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "__bit_reference": "cpp"
     }
 }
