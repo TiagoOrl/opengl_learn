@@ -58,3 +58,60 @@ void Camera::rotate(double xoffset, double yoffset) {
 
     cameraFront = glm::normalize(direction);
 }
+
+
+void Camera::listenInputs(GLFWwindow *window) {
+    moveCamera(window);
+    rotateCamera(window);
+}
+
+
+void Camera::moveCamera(GLFWwindow *window) {
+
+
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        cameraSpeed = config::MOVE_FAST;
+    else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
+        cameraSpeed = config::MOVE_SLOW;
+
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        moveForward();
+
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        moveBackward();
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        moveLeft();
+
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        moveRight();
+}
+
+
+void Camera::rotateCamera(GLFWwindow *window) {
+    double xpos;
+    double ypos;
+
+    glfwGetCursorPos(window, &xpos, &ypos);
+
+    if (firstMouse) {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    
+    double xoffset = xpos - lastX;
+    double yoffset = lastY - ypos;
+
+    lastX = xpos;
+    lastY = ypos;
+
+    const float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    rotate(xoffset, yoffset);
+}
