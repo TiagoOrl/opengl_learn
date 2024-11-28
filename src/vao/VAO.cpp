@@ -43,9 +43,11 @@ VAO::VAO(
 
 
 // for light source
-VAO::VAO(int drawType, GLsizeiptr stride) {
+VAO::VAO(VBO vbo, int drawType, GLsizeiptr stride) {
     glGenVertexArrays(1, &Id);
     glBindVertexArray(Id);
+
+    vbo.bind();
 
     setVertexAttribute(0, 3, GL_FLOAT, stride, 0);
 }

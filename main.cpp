@@ -28,7 +28,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 // settings
 
 float texVisibility = 0.2f;
-Transform transform(0.0f, 0.0f, -4.8f);
+Transform cubeTransform(0.0f, 0.0f, -1.0f);
+Transform lightsourceTransform(1.2f, 1.0f, 2.0f);
 
 
 int main()
@@ -82,9 +83,13 @@ int main()
     };
 
     Controller controller;
-    Shader shader1("shaders/default3d.vert", "shaders/default.frag");
+    // Shader shader1("shaders/default3d.vert", "shaders/default.frag");
+    Shader lightingShader("shaders/cube.vert", "shaders/cube.frag");
+    Shader lightCubeShader("shaders/light_source.vert", "shaders/light_source.frag");
+
     VBO vbo(GL_ARRAY_BUFFER);
     VAO cubeVAO(vbo, cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
+    VAO lightVAO(vbo, cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
     Camera camera;
     
     // EBO ebo1(indices, sizeof(indices));
@@ -96,13 +101,13 @@ int main()
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    shader1.use();
-    shader1.setInt("texture1", 0);
-    shader1.setInt("texture2", 1);
+    
+    // shader1.setInt("texture1", 0);
+    // shader1.setInt("texture2", 1);
 
 
     camera.createProjection();
-    shader1.setProjection(camera.projection, std::string("projection"));
+
 
     
     while (!glfwWindowShouldClose(window))
@@ -118,24 +123,36 @@ int main()
         texture1.bind();
         texture2.bind();
 
-        shader1.use();
+        lightingShader.use();
+        lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+        lightingShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
 
         camera.createView();
-        shader1.setView(camera.view, std::string("view"));
+        lightingShader.setProjection(camera.projection, std::string("projection"));
+        lightingShader.setView(camera.view, std::string("view"));
 
-        for (int i = 0; i < 10; i++) {
-            transform.applyTransform(cubePositions[i], i);
+        cubeTransform.applyTransform(glm::vec3(1.0f), 0);
+        cubeTransform.scale(glm::vec3(1.22f));
 
-            shader1.setModel(
-                transform.model, 
-                std::string("model")
-            );
+        lightingShader.setModel(cubeTransform.model, std::string("model"));
 
-            cubeVAO.bind();
-        }
+        cubeVAO.bind();
 
-        shader1.setFloat(std::string("texVisibility"), texVisibility);
 
+        //draw lamp object
+        lightCubeShader.use();
+
+        lightCubeShader.setProjection(camera.projection, std::string("projection"));
+        lightCubeShader.setView(camera.view, std::string("view"));
+
+        lightsourceTransform.applyTransform(glm::vec3(1.2f, 1.0f, 2.0f), 0);
+        lightsourceTransform.scale(glm::vec3(0.33f));
+
+        lightCubeShader.setModel(lightsourceTransform.model, std::string("model"));
+
+
+        lightVAO.bind();
+        
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -143,8 +160,10 @@ int main()
 
     vbo.unbind();
     cubeVAO.unbind();
+    lightVAO.unbind();
     // ebo1.unbind();
-    shader1.wipe();
+    lightingShader.wipe();
+    lightCubeShader.wipe();
 
 
     glfwTerminate();

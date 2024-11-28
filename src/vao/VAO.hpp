@@ -29,8 +29,9 @@ class VAO {
             GLuint textureOffset
         );
 
-        // for lighting source
+        // for light source
         VAO(
+            VBO vbo,
             int drawType, 
             GLsizeiptr stride
         );
