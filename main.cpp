@@ -83,7 +83,7 @@ int main()
     };
 
     Controller controller;
-    // Shader shader1("shaders/default3d.vert", "shaders/default.frag");
+
     Shader lightingShader("shaders/cube.vert", "shaders/cube.frag");
     Shader lightCubeShader("shaders/light_source.vert", "shaders/light_source.frag");
 
@@ -92,7 +92,6 @@ int main()
     VAO lightVAO(vbo, cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
     Camera camera;
     
-    // EBO ebo1(indices, sizeof(indices));
     
 
     Texture texture1(std::string("./images/container.jpg"), GL_RGB, GL_TEXTURE0);
@@ -100,10 +99,6 @@ int main()
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    
-    // shader1.setInt("texture1", 0);
-    // shader1.setInt("texture2", 1);
 
 
     camera.createProjection();
