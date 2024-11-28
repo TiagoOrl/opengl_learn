@@ -3,7 +3,8 @@
 #include <iostream>
 
 
-Camera::Camera() {
+Camera::Camera(const glm::vec3 initialPos) {
+    cameraPos = initialPos;
 }
 
 
@@ -50,6 +51,9 @@ void Camera::rotate(double xoffset, double yoffset) {
         pitch =  89.0f;
     if(pitch < -89.0f)
         pitch = -89.0f;
+
+    std::cout << "yaw: " << yaw << '\n';
+    std::cout << "pitch: " << pitch << '\n';
 
     glm::vec3 direction;
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));

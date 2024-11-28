@@ -28,8 +28,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 // settings
 
 float texVisibility = 0.2f;
-Transform cubeTransform(0.0f, 0.0f, -1.0f);
-Transform lightsourceTransform(1.2f, 1.0f, 2.0f);
 
 
 int main()
@@ -87,10 +85,13 @@ int main()
     Shader lightingShader("shaders/cube.vert", "shaders/cube.frag");
     Shader lightCubeShader("shaders/light_source.vert", "shaders/light_source.frag");
 
+    Transform cube(-0.3f, 1.0f, -2.0f);
+    Transform lightsource(0.2f, 0.33f, 2.0f);
+
     VBO vbo(GL_ARRAY_BUFFER);
-    VAO cubeVAO(vbo, cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
-    VAO lightVAO(vbo, cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
-    Camera camera;
+    VAO cubeVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW, 5 * sizeof(float), 3);
+    VAO lightVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW, 5 * sizeof(float), 3);
+    Camera camera(glm::vec3(0.0f, 1.24f, -5.0f));
     
     
 
@@ -126,10 +127,9 @@ int main()
         lightingShader.setProjection(camera.projection, std::string("projection"));
         lightingShader.setView(camera.view, std::string("view"));
 
-        cubeTransform.applyTransform(glm::vec3(1.0f), 0);
-        cubeTransform.scale(glm::vec3(1.22f));
+        cube.applyTransform(glm::vec3(2.0f, 0.0f, 3.0f));
 
-        lightingShader.setModel(cubeTransform.model, std::string("model"));
+        lightingShader.setModel(cube.model, std::string("model"));
 
         cubeVAO.bind();
 
@@ -140,10 +140,10 @@ int main()
         lightCubeShader.setProjection(camera.projection, std::string("projection"));
         lightCubeShader.setView(camera.view, std::string("view"));
 
-        lightsourceTransform.applyTransform(glm::vec3(1.2f, 1.0f, 2.0f), 0);
-        lightsourceTransform.scale(glm::vec3(0.33f));
+        lightsource.applyTransform(glm::vec3(-0.5f, 1.8f, -2.0f));
+        lightsource.scale(glm::vec3(0.33f));
 
-        lightCubeShader.setModel(lightsourceTransform.model, std::string("model"));
+        lightCubeShader.setModel(lightsource.model, std::string("model"));
 
 
         lightVAO.bind();

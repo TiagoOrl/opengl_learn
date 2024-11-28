@@ -13,7 +13,7 @@ class Transform {
 
         Transform(GLfloat posX, GLfloat posY, GLfloat posZ);
 
-        void applyTransform(const glm::vec3 &coord, unsigned int i);
+        void applyTransform(const glm::vec3 &coord);
         void scale(const glm::vec3 &scaling);
         void moveHorizontal(GLfloat posX);
         void moveVertical(GLfloat posY);
