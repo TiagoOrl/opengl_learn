@@ -31,14 +31,14 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile) {
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSrc, NULL);
     glCompileShader(vertexShader);
-    shaderCheck(vertexShader);
+    shaderCheck(vertexShader, vertexFile);
 
 
     // fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSrc, NULL);
     glCompileShader(fragmentShader);
-    shaderCheck(fragmentShader);
+    shaderCheck(fragmentShader, fragmentFile);
 
 
     // shader program init...
@@ -46,7 +46,7 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile) {
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);
     glLinkProgram(ID);
-    shaderCheck(ID);
+    shaderCheck(ID, "shaderProgram");
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);

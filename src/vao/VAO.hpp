@@ -9,38 +9,23 @@ class VAO {
     public:
         GLuint Id;
 
-        VAO(
-            VBO vbo,
-            float vertices[], 
-            GLuint arraySize,
-            int drawType, 
-            GLsizeiptr stride,
-            GLuint colorOffset,
-            GLuint textureOffset
-        );
-
         // for 3D objects
         VAO(
             VBO vbo,
             float vertices[], 
             GLuint arraySize,
-            int drawType, 
-            GLsizeiptr stride,
-            GLuint textureOffset
+            int drawType
         );
 
         // for light source
         VAO(
             VBO vbo,
-            int drawType, 
-            GLsizeiptr stride
+            int drawType
         );
         
         void bind();
         void bindElements();
         void unbind();
-
-    private:
         void setVertexAttribute(GLuint index, GLuint size, GLint type, GLsizeiptr stride, GLint offset);
 
 };
