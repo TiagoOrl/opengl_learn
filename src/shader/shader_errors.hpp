@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-int shaderCheck(unsigned int shader) {
+int shaderCheck(unsigned int shader, const char *filename) {
     int success;
     char infoLog[512];
 
@@ -15,7 +15,7 @@ int shaderCheck(unsigned int shader) {
     if (!success)
     {
         glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR::SHADER: " << filename << '\n' << infoLog << std::endl;
     }
 
     return success;

@@ -31,10 +31,14 @@ void Transform::changeAngle(GLfloat angle) {
     this->angle += angle;
 }
 
+void Transform::scale(const glm::vec3 &scaling) {
+    model = glm::scale(model, scaling);
+}
 
-void Transform::applyTransform(glm::vec3 &coord, unsigned int i) {
+
+void Transform::applyTransform(const glm::vec3 &coord) {
     model = glm::mat4(1.0f);
 
     model = glm::translate(model, coord);
-    model = glm::rotate(model, glm::radians(angle) * (i + 1), glm::vec3(1.0f, 0.3f, 0.5f));
+    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 }

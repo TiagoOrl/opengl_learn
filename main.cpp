@@ -28,7 +28,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 // settings
 
 float texVisibility = 0.2f;
-Transform transform(0.0f, 0.0f, -4.8f);
 
 
 int main()
@@ -67,27 +66,25 @@ int main()
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-
-    glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f), 
-        glm::vec3( 2.0f,  5.0f, -15.0f), 
-        glm::vec3(-1.5f, -2.2f, -2.5f),  
-        glm::vec3(-3.8f, -2.0f, -12.3f),  
-        glm::vec3( 2.4f, -0.4f, -3.5f),  
-        glm::vec3(-1.7f,  3.0f, -7.5f),  
-        glm::vec3( 1.3f, -2.0f, -2.5f),  
-        glm::vec3( 1.5f,  2.0f, -2.5f), 
-        glm::vec3( 1.5f,  0.2f, -1.5f), 
-        glm::vec3(-1.3f,  1.0f, -1.5f)  
-    };
-
     Controller controller;
-    Shader shader1("shaders/default3d.vert", "shaders/default.frag");
+
+    Shader lightingShader("shaders/cube.vert", "shaders/cube.frag");
+    Shader lightCubeShader("shaders/light_source.vert", "shaders/light_source.frag");
+
+    Transform cube(-0.3f, 1.0f, -1.0f);
+    Transform lightsource(0.2f, 0.73f, 1.0f);
+
     VBO vbo(GL_ARRAY_BUFFER);
-    VAO cubeVAO(vbo, cube, sizeof(cube), GL_STATIC_DRAW, 5 * sizeof(float), 3);
-    Camera camera;
-    
-    // EBO ebo1(indices, sizeof(indices));
+    VAO cubeVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+    cubeVAO.setVertexAttribute(0, 3, GL_FLOAT, 6 * sizeof(float), 0);
+    cubeVAO.setVertexAttribute(1, 3, GL_FLOAT, 6 * sizeof(float), 3);
+
+    VAO lightVAO(vbo, GL_STATIC_DRAW);
+    lightVAO.setVertexAttribute(0, 3, GL_FLOAT, 6 * sizeof(float), 0);
+
+    Camera camera(glm::vec3(0.0f, 1.24f, -5.0f));
+    auto lightPos = glm::vec3(-0.5f, 1.8f, -2.0f);
+
     
 
     Texture texture1(std::string("./images/container.jpg"), GL_RGB, GL_TEXTURE0);
@@ -96,13 +93,9 @@ int main()
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    shader1.use();
-    shader1.setInt("texture1", 0);
-    shader1.setInt("texture2", 1);
-
 
     camera.createProjection();
-    shader1.setProjection(camera.projection, std::string("projection"));
+
 
     
     while (!glfwWindowShouldClose(window))
@@ -112,30 +105,42 @@ int main()
         controller.listenInputs(window, texVisibility);
         camera.listenInputs(window);
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.01f, 0.08f, 0.09f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         texture1.bind();
         texture2.bind();
 
-        shader1.use();
+        lightingShader.use();
+        lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+        lightingShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
+        lightingShader.setVec3("lightPos", lightPos);
 
         camera.createView();
-        shader1.setView(camera.view, std::string("view"));
+        lightingShader.setProjection(camera.projection, std::string("projection"));
+        lightingShader.setView(camera.view, std::string("view"));
 
-        for (int i = 0; i < 10; i++) {
-            transform.applyTransform(cubePositions[i], i);
+        cube.applyTransform(glm::vec3(1.0f, 0.55f, 2.0f));
 
-            shader1.setModel(
-                transform.model, 
-                std::string("model")
-            );
+        lightingShader.setModel(cube.model, std::string("model"));
 
-            cubeVAO.bind();
-        }
+        cubeVAO.bind();
 
-        shader1.setFloat(std::string("texVisibility"), texVisibility);
 
+        //draw lamp object
+        lightCubeShader.use();
+
+        lightCubeShader.setProjection(camera.projection, std::string("projection"));
+        lightCubeShader.setView(camera.view, std::string("view"));
+
+        lightsource.applyTransform(lightPos);
+        lightsource.scale(glm::vec3(0.33f));
+
+        lightCubeShader.setModel(lightsource.model, std::string("model"));
+
+
+        lightVAO.bind();
+        
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -143,8 +148,10 @@ int main()
 
     vbo.unbind();
     cubeVAO.unbind();
+    lightVAO.unbind();
     // ebo1.unbind();
-    shader1.wipe();
+    lightingShader.wipe();
+    lightCubeShader.wipe();
 
 
     glfwTerminate();
