@@ -68,10 +68,10 @@ int main()
 
     Controller controller;
 
-    Shader lightingShader("shaders/cube.vert", "shaders/cube.frag");
-    Shader lightCubeShader("shaders/light_source.vert", "shaders/light_source.frag");
+    Shader cubeShader("shaders/cube.vert", "shaders/cube.frag");
+    Shader lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
 
-    Transform cube(-0.3f, 1.0f, -1.0f);
+    Transform cube(1.0f, 4.55f, 2.0f);
     Transform lightsource(0.2f, 0.73f, 1.0f);
 
     VBO vbo(GL_ARRAY_BUFFER);
@@ -111,32 +111,32 @@ int main()
         texture1.bind();
         texture2.bind();
 
-        lightingShader.use();
-        lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-        lightingShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
-        lightingShader.setVec3("lightPos", lightPos);
+        cubeShader.use();
+        cubeShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+        cubeShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
+        cubeShader.setVec3("lightPos", lightPos);
 
         camera.createView();
-        lightingShader.setProjection(camera.projection, std::string("projection"));
-        lightingShader.setView(camera.view, std::string("view"));
+        cubeShader.setProjection(camera.projection, std::string("projection"));
+        cubeShader.setView(camera.view, std::string("view"));
 
-        cube.applyTransform(glm::vec3(1.0f, 0.55f, 2.0f));
+        cube.listenInputs(window);
 
-        lightingShader.setModel(cube.model, std::string("model"));
+        cubeShader.setModel(cube.model, std::string("model"));
 
         cubeVAO.bind();
 
 
         //draw lamp object
-        lightCubeShader.use();
+        lightSourceShader.use();
 
-        lightCubeShader.setProjection(camera.projection, std::string("projection"));
-        lightCubeShader.setView(camera.view, std::string("view"));
+        lightSourceShader.setProjection(camera.projection, std::string("projection"));
+        lightSourceShader.setView(camera.view, std::string("view"));
 
         lightsource.applyTransform(lightPos);
         lightsource.scale(glm::vec3(0.33f));
 
-        lightCubeShader.setModel(lightsource.model, std::string("model"));
+        lightSourceShader.setModel(lightsource.model, std::string("model"));
 
 
         lightVAO.bind();
@@ -150,8 +150,8 @@ int main()
     cubeVAO.unbind();
     lightVAO.unbind();
     // ebo1.unbind();
-    lightingShader.wipe();
-    lightCubeShader.wipe();
+    cubeShader.wipe();
+    lightSourceShader.wipe();
 
 
     glfwTerminate();

@@ -9,6 +9,33 @@ Transform::Transform(GLfloat posX, GLfloat posY, GLfloat posZ) {
     this->posZ = posZ;
     this->angle = 0.0f;
 
+    applyTransform(glm::vec3(posX, posY, posZ));
+
+}
+
+void Transform::listenInputs(GLFWwindow *window) {
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) 
+        this->posX += speed * time_utils::deltaTime;
+
+    else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) 
+        this->posX -= speed * time_utils::deltaTime;
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) 
+        this->posZ += speed * time_utils::deltaTime;
+
+    else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) 
+        this->posZ -= speed * time_utils::deltaTime;
+
+    if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
+        this->posY -= speed * time_utils::deltaTime;
+
+    else if(glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
+        this->posY += speed * time_utils::deltaTime;
+
+    
+
+
+    applyTransform(glm::vec3(posX, posY, posZ));
 }
 
 
