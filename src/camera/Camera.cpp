@@ -4,14 +4,14 @@
 
 
 Camera::Camera(const glm::vec3 initialPos) {
-    cameraPos = initialPos;
+    position = initialPos;
 }
 
 
 void Camera::createView() {
     view = glm::lookAt(
-            cameraPos, 
-            cameraPos + cameraFront, 
+            position, 
+            position + cameraFront, 
             cameraUp
         );
 }
@@ -24,22 +24,22 @@ void Camera::createProjection() {
 
 
 void Camera::moveForward() {
-    cameraPos += cameraSpeed * cameraFront * time_utils::deltaTime;
+    position += cameraSpeed * cameraFront * time_utils::deltaTime;
 }
 
 
 void Camera::moveBackward() {
-    cameraPos -= cameraSpeed * cameraFront * time_utils::deltaTime;
+    position -= cameraSpeed * cameraFront * time_utils::deltaTime;
 }
 
 
 void Camera::moveRight() {
-    cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * time_utils::deltaTime;
+    position += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * time_utils::deltaTime;
 }
 
 
 void Camera::moveLeft() {
-    cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * time_utils::deltaTime;
+    position -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * time_utils::deltaTime;
 }
 
 
@@ -69,9 +69,6 @@ void Camera::listenInputs(GLFWwindow *window) {
 
 
 void Camera::moveCamera(GLFWwindow *window) {
-
-
-
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         cameraSpeed = config::MOVE_FAST;
     else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
