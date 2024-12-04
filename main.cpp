@@ -71,8 +71,8 @@ int main()
     Shader cubeShader("shaders/cube.vert", "shaders/cube.frag");
     Shader lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
 
-    Transform cube(1.0f, 4.55f, 2.0f);
-    Transform lightsource(0.2f, 0.73f, 1.0f);
+    Transform cube(1.0f, 3.55f, 1.2f);
+    Transform lightsource(-0.5f, 1.8f, -2.0f);
 
     VBO vbo(GL_ARRAY_BUFFER);
     VAO cubeVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
@@ -83,7 +83,6 @@ int main()
     lightVAO.setVertexAttribute(0, 3, GL_FLOAT, 6 * sizeof(float), 0);
 
     Camera camera(glm::vec3(0.0f, 1.24f, -5.0f));
-    auto lightPos = glm::vec3(-0.5f, 1.8f, -2.0f);
 
     
 
@@ -114,7 +113,8 @@ int main()
         cubeShader.use();
         cubeShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
         cubeShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
-        cubeShader.setVec3("lightPos", lightPos);
+        cubeShader.setVec3("lightPos", lightsource.position);
+        cubeShader.setVec3("viewPos", camera.position);
 
         camera.createView();
         cubeShader.setProjection(camera.projection, std::string("projection"));
@@ -133,8 +133,10 @@ int main()
         lightSourceShader.setProjection(camera.projection, std::string("projection"));
         lightSourceShader.setView(camera.view, std::string("view"));
 
-        lightsource.applyTransform(lightPos);
+        lightsource.applyTransform(lightsource.position);
         lightsource.scale(glm::vec3(0.33f));
+
+        lightsource.applyTransform();
 
         lightSourceShader.setModel(lightsource.model, std::string("model"));
 
