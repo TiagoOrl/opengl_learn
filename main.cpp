@@ -113,16 +113,9 @@ int main()
         cubeShader.use();
         cubeShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 
-        glm::vec3 lightColor;
-        lightColor.x = sin(glfwGetTime() * 2.0f);
-        lightColor.y = sin(glfwGetTime() * 0.7f);
-        lightColor.z = sin(glfwGetTime() * 1.3f);
-        
-        glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); 
-        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); 
 
-        cubeShader.setVec3("light.ambient",  ambientColor);
-        cubeShader.setVec3("light.diffuse",  diffuseColor); // darken diffuse light a bit
+        cubeShader.setVec3("light.ambient",  0.2f, 0.2f, 0.2f);
+        cubeShader.setVec3("light.diffuse",  0.5f, 0.5f, 0.5f); 
         cubeShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f); 
         
         cubeShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
@@ -158,7 +151,7 @@ int main()
         lightSourceShader.setModel(lightsource.model, std::string("model"));
 
 
-        lightSourceShader.setVec3("diffuse", glm::vec3(lightColor.x, lightColor.y, lightColor.z));
+        lightSourceShader.setVec3("diffuse", glm::vec3(1.0f));
 
 
         lightVAO.bind();
