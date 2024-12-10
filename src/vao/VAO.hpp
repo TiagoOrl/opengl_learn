@@ -26,7 +26,7 @@ class VAO {
         void bind();
         void bindElements();
         void unbind();
-        void setVertexAttribute(GLuint index, GLuint size, GLint type, GLsizeiptr stride, GLint offset);
+        void setVertexAttribute(GLuint location, GLuint size, GLint type, GLsizeiptr stride, GLint offset);
 
 };
     
