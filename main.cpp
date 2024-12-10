@@ -91,6 +91,7 @@ int main()
     camera.rotate(0.0f, -17.0f);
 
     Texture texture1(std::string("./images/container2.png"), GL_TEXTURE0);
+    Texture texture1SpecularMap(std::string("./images/container2_specular.png"), GL_TEXTURE1);
 
 
     
@@ -101,6 +102,7 @@ int main()
 
     cubeShader.use();
     cubeShader.setInt("material.diffuse", 0);
+    cubeShader.setInt("material.specular", 1);
 
     
     while (!glfwWindowShouldClose(window))
@@ -142,6 +144,8 @@ int main()
 
         texture1.activate();
         texture1.bind();
+        texture1SpecularMap.activate();
+        texture1SpecularMap.bind();
 
         cubeVAO.bind();
 
