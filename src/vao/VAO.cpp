@@ -26,9 +26,9 @@ VAO::VAO(VBO vbo, int drawType) {
 }
 
 
-void VAO::setVertexAttribute(GLuint position, GLuint size, GLint type, GLsizeiptr stride, GLint offset) {
-    glVertexAttribPointer(position, size, type, GL_FALSE, stride, (void*)(offset * sizeof(float)));
-    glEnableVertexAttribArray(position);
+void VAO::setVertexAttribute(GLuint location, GLuint size, GLint type, GLsizeiptr stride, GLint offset) {
+    glVertexAttribPointer(location, size, type, GL_FALSE, stride, (void*)(offset * sizeof(float)));
+    glEnableVertexAttribArray(location);
 }
 
 
