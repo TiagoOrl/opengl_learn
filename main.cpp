@@ -74,7 +74,7 @@ int main()
     Transform cube(1.0f, 3.55f, 1.2f);
     Transform lightsource(-0.5f, 1.8f, -2.0f);
 
-    cube.scale(glm::vec3(2.8f));
+    cube.changeScale(2.8f);
 
     VBO vbo(GL_ARRAY_BUFFER);
     VAO cubeVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
@@ -138,7 +138,9 @@ int main()
         cubeShader.setProjection(camera.projection, std::string("projection"));
         cubeShader.setView(camera.view, std::string("view"));
 
-        // cube.listenInputs(window);
+        cube.incrementAngle(4.0f);
+        cube.update();
+        cube.listenInputs(window);
 
         cubeShader.setModel(cube.model, std::string("model"));
 
@@ -156,10 +158,8 @@ int main()
         lightSourceShader.setProjection(camera.projection, std::string("projection"));
         lightSourceShader.setView(camera.view, std::string("view"));
 
-        lightsource.applyTransform(lightsource.position);
-        lightsource.scale(glm::vec3(0.13f));
+        lightsource.update();
 
-        lightsource.listenInputs(window);
 
         lightSourceShader.setModel(lightsource.model, std::string("model"));
         lightSourceShader.setVec3("diffuse", glm::vec3(1.0f));
