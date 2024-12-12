@@ -5,12 +5,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <math.h>
 
-#include "src/shader/Shader.hpp"
-#include "src/vao/VAO.hpp"
-#include "src/vbo/VBO.hpp"
-#include "src/ebo/EBO.hpp"
-#include "src/texture/Texture.hpp"
-#include "src/transform/Transform.hpp"
+#include "src/object/shader/Shader.hpp"
+#include "src/object/vao/VAO.hpp"
+#include "src/object/vbo/VBO.hpp"
+#include "src/object/ebo/EBO.hpp"
+#include "src/object/texture/Texture.hpp"
+#include "src/object/transform/Transform.hpp"
 #include "src/camera/Camera.hpp"
 
 #include "src/time/Time.hpp"
