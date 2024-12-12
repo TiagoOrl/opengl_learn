@@ -13,19 +13,25 @@ class Transform {
     public:
         glm::mat4 model;
         glm::vec3 position;
+        
 
         Transform(GLfloat posX, GLfloat posY, GLfloat posZ);
 
-        void applyTransform();
+        void update();
         void applyTransform(const glm::vec3 &coord);
-        void scale(const glm::vec3 &scaling);
         void listenInputs(GLFWwindow *window);
-
-    private:
-        GLfloat speed = 3.2f;
-        GLfloat angle;
+        void incrementAngle(GLfloat angle);
+        void incrementScale(GLfloat scale);
 
         void changeAngle(GLfloat angle);
+        void changeScale(GLfloat scale);
+
+    private:
+        float scale = 1.0f;
+        float scaleAmount = 0.4f;
+
+        GLfloat speed = 3.2f;
+        GLfloat angle = 0.0f;
 };
 
 
