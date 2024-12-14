@@ -11,7 +11,7 @@ class VAO {
 
         // for 3D objects
         VAO(
-            VBO vbo,
+            VBO *vbo,
             float vertices[], 
             GLuint arraySize,
             int drawType
@@ -19,7 +19,7 @@ class VAO {
 
         // for light source
         VAO(
-            VBO vbo,
+            VBO *vbo,
             int drawType
         );
         

@@ -14,7 +14,7 @@ class Transform {
         glm::mat4 model;
         glm::vec3 position;
         
-
+        Transform();
         Transform(GLfloat posX, GLfloat posY, GLfloat posZ);
 
         void update();

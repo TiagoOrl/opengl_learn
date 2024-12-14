@@ -2,7 +2,7 @@ CC=g++
 LIBS= -lglfw -lGLU -lGL -lXrandr -lX11 -lrt -ldl
 FLAGS= -pthread
 INCLUDE_TAG= -I include
-OBJECTS = ./build/stb.o ./build/glad.o ./build/Shader.o ./build/VBO.o ./build/VAO.o ./build/EBO.o ./build/Texture.o ./build/Transform.o ./build/Camera.o
+OBJECTS = ./build/stb.o ./build/glad.o ./build/Shader.o ./build/VBO.o ./build/VAO.o ./build/EBO.o ./build/Texture.o ./build/Transform.o ./build/Camera.o ./build/Object.o
 
 render: ${OBJECTS}
 	${CC} main.cpp ${OBJECTS} $(FLAGS) -o render $(INCLUDE_TAG) $(LIBS) -g
@@ -24,6 +24,9 @@ render: ${OBJECTS}
 
 ./build/Transform.o: ./src/object/transform/Transform.cpp
 	${CC} ./src/object/transform/Transform.cpp -c -o ./build/Transform.o ${INCLUDE_TAG} -g
+
+./build/Object.o: ./src/object/Object.cpp
+	${CC} ./src/object/Object.cpp -c -o ./build/Object.o ${INCLUDE_TAG} -g
 
 ./build/Camera.o: ./src/camera/Camera.cpp
 	${CC} ./src/camera/Camera.cpp -c -o ./build/Camera.o ${INCLUDE_TAG} -g

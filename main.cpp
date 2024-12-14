@@ -5,12 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <math.h>
 
-#include "src/object/shader/Shader.hpp"
-#include "src/object/vao/VAO.hpp"
-#include "src/object/vbo/VBO.hpp"
-#include "src/object/ebo/EBO.hpp"
-#include "src/object/texture/Texture.hpp"
-#include "src/object/transform/Transform.hpp"
+#include "src/object/Object.hpp"
+#include "src/object/Light.hpp"
 #include "src/camera/Camera.hpp"
 
 #include "src/time/Time.hpp"
@@ -68,30 +64,53 @@ int main()
 
     Controller controller;
 
-    Shader cubeShader("shaders/cube.vert", "shaders/cube.frag");
-    Shader lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
+    VBO *vbo = new VBO(GL_ARRAY_BUFFER);
 
-    Transform cube(1.0f, 3.55f, 1.2f);
-    Transform lightsource(-0.5f, 1.8f, -2.0f);
+    auto cube = new Object(window, 1.0f, 3.55f, 1.2f);
+    auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
+    
 
-    cube.changeScale(2.8f);
+    cube->setShaders("./shaders/cube.vert", "./shaders/cube.frag");
+    cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
+    cube->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+    
+    cube->transform->changeScale(2.8f);
 
-    VBO vbo(GL_ARRAY_BUFFER);
-    VAO cubeVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-    cubeVAO.setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
-    cubeVAO.setVertexAttribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3);
-    cubeVAO.setVertexAttribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6);
+    lightsource->setShaders("shaders/light_source.vert", "shaders/light_source.frag");
+    lightsource->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
 
-    VAO lightVAO(vbo, GL_STATIC_DRAW);
-    lightVAO.setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
-    lightVAO.setVertexAttribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3);
-    lightVAO.setVertexAttribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6);
+
+    cube->setLight({
+        glm::vec3(0.2f, 0.2f, 0.2f),
+        glm::vec3(0.5f, 0.5f, 0.5f),
+        glm::vec3(1.0f, 1.0f, 1.0f)
+    });
+    
+
+    // Shader cubeShader("shaders/cube.vert", "shaders/cube.frag");
+    // Shader lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
+
+    // Transform cube(1.0f, 3.55f, 1.2f);
+    // Transform lightsource(-0.5f, 1.8f, -2.0f);
+
+    // cube.changeScale(2.8f);
+
+    
+    // VAO cubeVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+    // cubeVAO.setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
+    // cubeVAO.setVertexAttribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3);
+    // cubeVAO.setVertexAttribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6);
+
+    // VAO lightVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+    // lightVAO.setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
+    // lightVAO.setVertexAttribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3);
+    // lightVAO.setVertexAttribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6);
 
     Camera camera(glm::vec3(0.0f, 5.24f, -7.0f));
     camera.rotate(0.0f, -17.0f);
 
-    Texture texture1(std::string("./images/container2.png"), GL_TEXTURE0);
-    Texture texture1SpecularMap(std::string("./images/container2_specular.png"), GL_TEXTURE1);
+    // Texture texture1(std::string("./images/container2.png"), GL_TEXTURE0);
+    // Texture texture1SpecularMap(std::string("./images/container2_specular.png"), GL_TEXTURE1);
 
 
     
@@ -100,9 +119,12 @@ int main()
 
     camera.createProjection();
 
-    cubeShader.use();
-    cubeShader.setInt("material.diffuse", 0);
-    cubeShader.setInt("material.specular", 1);
+    // cube->shader->use();
+    // cube->shader->setInt("material.diffuse", 0);
+    // cube->shader->setInt("material.specular", 1);
+
+    
+    cube->setShaderUniforms();
 
     
     while (!glfwWindowShouldClose(window))
@@ -115,70 +137,25 @@ int main()
         glClearColor(0.03f, 0.08f, 0.09f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        camera.lookAt();
 
-        cubeShader.use();
-
-    
-        cubeShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-
-        
-        cubeShader.setVec3("light.ambient",  0.2f, 0.2f, 0.2f);
-        cubeShader.setVec3("light.diffuse",  0.5f, 0.5f, 0.5f); 
-        cubeShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f); 
-        
-        cubeShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-        cubeShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-        cubeShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        cubeShader.setFloat("material.shininess", 32.0f);
-
-        cubeShader.setVec3("lightPos", lightsource.position);
-        cubeShader.setVec3("viewPos", camera.position);
-
-        camera.createView();
-        cubeShader.setProjection(camera.projection, std::string("projection"));
-        cubeShader.setView(camera.view, std::string("view"));
-
-        cube.incrementAngle(4.0f);
-        cube.update();
-        cube.listenInputs(window);
-
-        cubeShader.setModel(cube.model, std::string("model"));
-
-        texture1.activate();
-        texture1.bind();
-        texture1SpecularMap.activate();
-        texture1SpecularMap.bind();
-
-        cubeVAO.bind();
-
+        //draw box cube
+        cube->draw(camera, lightsource);
 
         //draw lamp object
-        lightSourceShader.use();
-
-        lightSourceShader.setProjection(camera.projection, std::string("projection"));
-        lightSourceShader.setView(camera.view, std::string("view"));
-
-        lightsource.update();
-
-
-        lightSourceShader.setModel(lightsource.model, std::string("model"));
-        lightSourceShader.setVec3("diffuse", glm::vec3(1.0f));
-
-    
-
-        lightVAO.bind();
+        lightsource->draw(camera);
         
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    vbo.unbind();
-    cubeVAO.unbind();
-    lightVAO.unbind();
-    // ebo1.unbind();
-    cubeShader.wipe();
-    lightSourceShader.wipe();
+    vbo->unbind();
+    cube->unbind();
+    lightsource->unbind();
+
+
+    delete vbo;
 
 
     glfwTerminate();

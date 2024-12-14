@@ -8,7 +8,7 @@ Camera::Camera(const glm::vec3 initialPos) {
 }
 
 
-void Camera::createView() {
+void Camera::lookAt() {
     view = glm::lookAt(
             position, 
             position + cameraFront, 

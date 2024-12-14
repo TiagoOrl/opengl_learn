@@ -2,14 +2,48 @@
 #define H_CLASS_OBJECT
 
 
-#include "./transform/Transform.hpp"
-#include "./texture/Texture.hpp"
+#include "transform/Transform.hpp"
+#include "texture/Texture.hpp"
+#include "shader/Shader.hpp"
+#include "vao/VAO.hpp"
+#include "vbo/VBO.hpp"
+#include "../camera/Camera.hpp"
+#include "light_material.hpp"
+
+#include <string>
+#include <vector>
+#include <GLFW/glfw3.h>
+
 
 class Object {
-    Transform transform;
-    Texture texture;
+    public:
+        Transform *transform = NULL;
+        Shader *shader = NULL;
+        LightMaterial light;
+
+        Object(GLFWwindow *window, float x, float y, float z);
+        void setVerticesData(VBO *vbo, float vertices[], GLuint arraySize, int drawType);
+        void setTexture(const std::string &imgPath, const std::string &specularPath, GLint position);
+        void setShaders(const char* vertexFile, const char* fragmentFile);
+        void setShaderUniforms();
+        void draw(Camera camera, Object *lightsource);
+
+        void setLight(LightMaterial light);
+
+        void unbind();
+
+    protected:
+        GLFWwindow *window;
+        void bindTexture();
+        VAO *vao = NULL;
+        VBO *vbo = NULL;
+        Texture *texture = NULL;
+        Texture *specTexture = NULL;
+        
+    
 
 
+        
 };
 
 #endif

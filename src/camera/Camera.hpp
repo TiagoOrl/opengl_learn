@@ -18,7 +18,7 @@ class Camera {
         Camera(const glm::vec3 initialPos);
 
         void createProjection();
-        void createView();
+        void lookAt();
 
         void moveForward();
         void moveBackward();
