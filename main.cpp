@@ -71,7 +71,7 @@ int main()
     
 
     cube->setShaders("./shaders/cube.vert", "./shaders/cube.frag");
-    cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
+    // cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
     cube->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
     
     cube->transform->changeScale(2.8f);
@@ -87,30 +87,9 @@ int main()
     });
     
 
-    // Shader cubeShader("shaders/cube.vert", "shaders/cube.frag");
-    // Shader lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
-
-    // Transform cube(1.0f, 3.55f, 1.2f);
-    // Transform lightsource(-0.5f, 1.8f, -2.0f);
-
-    // cube.changeScale(2.8f);
-
-    
-    // VAO cubeVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-    // cubeVAO.setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
-    // cubeVAO.setVertexAttribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3);
-    // cubeVAO.setVertexAttribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6);
-
-    // VAO lightVAO(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-    // lightVAO.setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
-    // lightVAO.setVertexAttribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3);
-    // lightVAO.setVertexAttribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6);
 
     Camera camera(glm::vec3(0.0f, 5.24f, -7.0f));
     camera.rotate(0.0f, -17.0f);
-
-    // Texture texture1(std::string("./images/container2.png"), GL_TEXTURE0);
-    // Texture texture1SpecularMap(std::string("./images/container2_specular.png"), GL_TEXTURE1);
 
 
     
@@ -118,12 +97,6 @@ int main()
 
 
     camera.createProjection();
-
-    // cube->shader->use();
-    // cube->shader->setInt("material.diffuse", 0);
-    // cube->shader->setInt("material.specular", 1);
-
-    
     cube->setShaderUniforms();
 
     

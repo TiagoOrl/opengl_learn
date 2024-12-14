@@ -13,13 +13,15 @@
 #include <string>
 #include <vector>
 #include <GLFW/glfw3.h>
+#include <stdexcept>
+#include <optional>
 
 
 class Object {
     public:
         Transform *transform = NULL;
         Shader *shader = NULL;
-        LightMaterial light;
+        std::optional<LightMaterial>  light;
 
         Object(GLFWwindow *window, float x, float y, float z);
         void setVerticesData(VBO *vbo, float vertices[], GLuint arraySize, int drawType);

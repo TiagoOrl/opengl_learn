@@ -28,6 +28,9 @@ void Object::setShaders(const char* vertexFile, const char* fragmentFile) {
 }
 
 void Object::bindTexture() {
+    if (texture == NULL || specTexture == NULL)
+        throw std::runtime_error("texture error(32): texture is not created = NULL");
+
     texture->activate();
     texture->bind();
     specTexture->activate();
@@ -36,6 +39,9 @@ void Object::bindTexture() {
 
 
 void Object::setShaderUniforms() {
+    if (shader == NULL)
+        throw std::runtime_error("shader error(43): shader is not created = NULL");
+
     shader->use();
     shader->setInt("material.diffuse", 0);
     shader->setInt("material.specular", 1);
@@ -49,10 +55,13 @@ void Object::setLight(LightMaterial light) {
 
 void Object::draw(Camera camera, Object *lightsource) {
     shader->use();
+
+    if (!light.has_value()) 
+        throw std::runtime_error("object error(60): light has no value");
     
-    shader->setVec3("light.ambient",  light.ambient);
-    shader->setVec3("light.diffuse",  light.diffuse); 
-    shader->setVec3("light.specular", light.specular); 
+    shader->setVec3("light.ambient",  light->ambient);
+    shader->setVec3("light.diffuse",  light->diffuse); 
+    shader->setVec3("light.specular", light->specular); 
     
     shader->setFloat("material.shininess", 64.0f);
 
