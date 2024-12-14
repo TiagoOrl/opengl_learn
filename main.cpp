@@ -71,7 +71,7 @@ int main()
     
 
     cube->setShaders("./shaders/cube.vert", "./shaders/cube.frag");
-    // cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
+    cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
     cube->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
     
     cube->transform->changeScale(2.8f);
