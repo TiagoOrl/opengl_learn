@@ -1,8 +1,6 @@
 #include "Texture.hpp"
 
 
-
-
 Texture::Texture(const std::string &imgPath, GLint position) {
     int width, height, nrChannels;
 

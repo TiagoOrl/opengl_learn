@@ -4,7 +4,7 @@
 
 // for 3D 
 VAO::VAO(
-    VBO vbo,
+    VBO *vbo,
     float vertices[], 
     GLuint arraySize,
     int drawType
@@ -12,17 +12,17 @@ VAO::VAO(
     glGenVertexArrays(1, &Id);
     glBindVertexArray(Id);
 
-    vbo.bind();
-    vbo.bufferData(arraySize, vertices, drawType);
+    vbo->bind();
+    vbo->bufferData(arraySize, vertices, drawType);
 }
 
 
 // for light source
-VAO::VAO(VBO vbo, int drawType) {
+VAO::VAO(VBO *vbo, int drawType) {
     glGenVertexArrays(1, &Id);
     glBindVertexArray(Id);
 
-    vbo.bind();
+    vbo->bind();
 }
 
 

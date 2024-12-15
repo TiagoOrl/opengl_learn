@@ -1,7 +1,11 @@
 #include "Transform.hpp"
 
 
-
+Transform::Transform() {
+    angle = 0.0f;
+    position = glm::vec3(0.0f, 0.0f, 0.0f);
+    update();
+}
 
 Transform::Transform(GLfloat posX, GLfloat posY, GLfloat posZ) {
     this->angle = 0.0f;
