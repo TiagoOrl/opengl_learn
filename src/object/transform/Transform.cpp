@@ -75,5 +75,5 @@ void Transform::update() {
 
     model = glm::translate(model, position);
     model = glm::scale(model, glm::vec3(scale));
-    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.6f, 0.0f));
 }
