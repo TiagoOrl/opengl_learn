@@ -1,6 +1,11 @@
 #include "Object.hpp"
 
 
+Object::Object(GLFWwindow *window, const glm::vec3 &coord) {
+    this->window = window;
+    transform = new Transform(coord.x, coord.y, coord.z);
+}
+
 
 Object::Object(GLFWwindow *window, float x, float y, float z) {
     this->window = window;
