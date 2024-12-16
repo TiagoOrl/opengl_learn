@@ -18,8 +18,8 @@ class Light : public Object {
 
 Light::Light(GLFWwindow *window, float x, float y, float z) 
     :Object(window, x, y, z) {
-
-}
+        
+    }
 
 
 void Light::setDirection(glm::vec3 dir) {
