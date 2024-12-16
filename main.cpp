@@ -70,10 +70,10 @@ int main()
     glm::vec3 coords[] = {
         glm::vec3(1.0f, 3.55f, 1.2f),
         glm::vec3(2.0f, 0.0f, 3.2f),
-        glm::vec3(3.0f, 3.55f, -1.2f),
-        glm::vec3(-1.0f, 2.0f, 4.2f),
-        glm::vec3(-2.0f, -1.55f, 1.2f),
-        glm::vec3(0.0f, -7.55f, 4.2f),
+        glm::vec3(4.0f, 3.55f, -1.2f),
+        glm::vec3(-1.0f, 2.0f, -4.2f),
+        glm::vec3(-6.0f, -1.55f, 1.2f),
+        glm::vec3(12.4f, -7.55f, -7.2f),
         glm::vec3(-1.0f, 0.55f, 0.2f)
     };
 
