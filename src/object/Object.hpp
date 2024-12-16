@@ -32,7 +32,7 @@ class Object {
 
         void setLight(LightMaterial light);
 
-        ~Object();
+        virtual ~Object();
 
     protected:
         GLFWwindow *window;

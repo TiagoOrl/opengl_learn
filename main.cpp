@@ -80,6 +80,7 @@ int main()
     std::vector<Object *> objects{};
 
     auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
+    lightsource->setDirection(glm::vec3(-0.2f, -1.0f, -0.3f));
 
     for (int i = 0;i < 7; i++) {
         auto cube = new Object(window, coords[i]);
@@ -92,6 +93,7 @@ int main()
 
         cube->setLight({
             lightsource->getPosition(),
+            lightsource->getDirection(),
             glm::vec3(0.2f, 0.2f, 0.2f),
             glm::vec3(0.5f, 0.5f, 0.5f),
             glm::vec3(1.0f, 1.0f, 1.0f)

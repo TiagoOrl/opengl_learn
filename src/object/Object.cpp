@@ -74,6 +74,7 @@ void Object::draw(Camera camera, Object *lightsource) {
     shader->setVec3("light.ambient",  light->ambient);
     shader->setVec3("light.diffuse",  light->diffuse); 
     shader->setVec3("light.specular", light->specular); 
+    shader->setVec3("light.direction", light->direction);
     
     shader->setFloat("material.shininess", 64.0f);
 
