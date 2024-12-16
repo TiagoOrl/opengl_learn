@@ -79,6 +79,7 @@ int main()
 
     std::vector<Object *> objects{};
 
+    auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
 
     for (int i = 0;i < 7; i++) {
         auto cube = new Object(window, coords[i]);
@@ -87,9 +88,10 @@ int main()
         cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
         cube->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
         
-        cube->transform->changeScale(2.8f);
+        cube->transform->changeScale(1.8f);
 
         cube->setLight({
+            lightsource->getPosition(),
             glm::vec3(0.2f, 0.2f, 0.2f),
             glm::vec3(0.5f, 0.5f, 0.5f),
             glm::vec3(1.0f, 1.0f, 1.0f)
@@ -100,7 +102,7 @@ int main()
         objects.push_back(cube);
     }
 
-    auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
+    
     
     lightsource->setShaders("shaders/light_source.vert", "shaders/light_source.frag");
     lightsource->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
@@ -144,14 +146,13 @@ int main()
     }
 
     vbo->unbind();
-    for (auto cube : objects)
-        cube->unbind();
-    
-    lightsource->unbind();
 
 
     delete vbo;
+    for (auto i : objects) 
+        delete i;
 
+    delete lightsource;
 
     glfwTerminate();
     return 0;

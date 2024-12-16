@@ -20,9 +20,6 @@
 class Object {
     public:
         Transform *transform = NULL;
-        Shader *shader = NULL;
-        std::optional<LightMaterial>  light;
-
         Object(GLFWwindow *window, float x, float y, float z);
         Object(GLFWwindow *window, const glm::vec3 &coord);
         void setVerticesData(VBO *vbo, float vertices[], GLuint arraySize, int drawType);
@@ -31,9 +28,11 @@ class Object {
         void setShaderUniforms();
         void draw(Camera camera, Object *lightsource);
 
+        glm::vec3 getPosition() const;
+
         void setLight(LightMaterial light);
 
-        void unbind();
+        ~Object();
 
     protected:
         GLFWwindow *window;
@@ -42,11 +41,9 @@ class Object {
         VBO *vbo = NULL;
         Texture *texture = NULL;
         Texture *specTexture = NULL;
-        
-    
 
-
-        
+        Shader *shader = NULL;
+        std::optional<LightMaterial>  light;
 };
 
 #endif

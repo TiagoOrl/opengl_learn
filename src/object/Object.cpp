@@ -58,19 +58,25 @@ void Object::setLight(LightMaterial light) {
 }
 
 
+glm::vec3 Object::getPosition() const {
+    return transform->position;
+}
+
+
 void Object::draw(Camera camera, Object *lightsource) {
     shader->use();
 
     if (!light.has_value()) 
         throw std::runtime_error("object error(60): light has no value");
     
+    
+    shader->setVec3("light.position", lightsource->transform->position);
     shader->setVec3("light.ambient",  light->ambient);
     shader->setVec3("light.diffuse",  light->diffuse); 
     shader->setVec3("light.specular", light->specular); 
     
     shader->setFloat("material.shininess", 64.0f);
 
-    shader->setVec3("lightPos", lightsource->transform->position);
     shader->setVec3("viewPos", camera.position);
 
 
@@ -89,7 +95,10 @@ void Object::draw(Camera camera, Object *lightsource) {
 }
 
 
-void Object::unbind() {
+Object::~Object() {
+
+    std::cout << "Object destroyed... \n";
+    
     vao->unbind();
     shader->wipe();
 
