@@ -7,12 +7,13 @@ Transform::Transform() {
     update();
 }
 
+
 Transform::Transform(GLfloat posX, GLfloat posY, GLfloat posZ) {
     this->angle = 0.0f;
     position = glm::vec3(posX, posY, posZ);
     update();
-
 }
+
 
 void Transform::listenInputs(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) 

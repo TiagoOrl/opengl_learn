@@ -7,12 +7,27 @@ class Light : public Object {
     public:
         Light(GLFWwindow *window, float x, float y, float z);
         void draw(Camera camera);
+        void setDirection(glm::vec3 dir);
+
+        glm::vec3 getDirection() const;
+
+    private:
+        glm::vec3 direction;
 };
 
 
 Light::Light(GLFWwindow *window, float x, float y, float z) 
     :Object(window, x, y, z) {
+        
+    }
 
+
+void Light::setDirection(glm::vec3 dir) {
+    direction = dir;
+}
+
+glm::vec3 Light::getDirection() const {
+    return direction;
 }
 
 
