@@ -28,8 +28,8 @@ void Object::setTexture(const std::string &imgPath, const std::string &specularP
 }
 
 
-void Object::setShaders(const char* vertexFile, const char* fragmentFile) {
-    shader = new Shader(vertexFile, fragmentFile);
+void Object::setShader(Shader * _shader) {
+    shader = _shader;
 }
 
 void Object::bindTexture() {
@@ -88,7 +88,7 @@ void Object::draw(Camera camera, Object *lightsource) {
     shader->setProjection(camera.projection, std::string("projection"));
     shader->setView(camera.view, std::string("view"));
 
-    transform->incrementAngle(6.0f);
+    // transform->incrementAngle(6.0f);
     transform->update();
     transform->listenInputs(window);
 
@@ -105,10 +105,8 @@ Object::~Object() {
     std::cout << "Object destroyed... \n";
     
     vao->unbind();
-    shader->wipe();
 
     delete vao;
-    delete shader;
     delete texture;
     delete specTexture;
     delete transform;

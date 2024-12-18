@@ -11,8 +11,8 @@ Camera::Camera(const glm::vec3 initialPos) {
 void Camera::lookAt() {
     view = glm::lookAt(
             position, 
-            position + cameraFront, 
-            cameraUp
+            position + front, 
+            up
         );
 }
 
@@ -24,22 +24,22 @@ void Camera::createProjection() {
 
 
 void Camera::moveForward() {
-    position += cameraSpeed * cameraFront * time_utils::deltaTime;
+    position += cameraSpeed * front * time_utils::deltaTime;
 }
 
 
 void Camera::moveBackward() {
-    position -= cameraSpeed * cameraFront * time_utils::deltaTime;
+    position -= cameraSpeed * front * time_utils::deltaTime;
 }
 
 
 void Camera::moveRight() {
-    position += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * time_utils::deltaTime;
+    position += glm::normalize(glm::cross(front, up)) * cameraSpeed * time_utils::deltaTime;
 }
 
 
 void Camera::moveLeft() {
-    position -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * time_utils::deltaTime;
+    position -= glm::normalize(glm::cross(front, up)) * cameraSpeed * time_utils::deltaTime;
 }
 
 
@@ -58,7 +58,7 @@ void Camera::rotate(double xoffset, double yoffset) {
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
-    cameraFront = glm::normalize(direction);
+    front = glm::normalize(direction);
 }
 
 

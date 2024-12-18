@@ -14,6 +14,7 @@ class Camera {
         glm::mat4 view;
         glm::mat4 projection;
         glm::vec3 position;
+        glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
         
         Camera(const glm::vec3 initialPos);
 
@@ -31,8 +32,7 @@ class Camera {
 
 
     private:
-        glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-        glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f,  0.0f);
+        glm::vec3 up = glm::vec3(0.0f, 1.0f,  0.0f);
 
         float cameraSpeed = config::MOVE_SLOW;
         float yaw = 90.0f;
