@@ -45,11 +45,39 @@ uniform Material material;
 void main()
 {    
 
-    //spotlight
+    
     vec3 cameraDir = normalize(spotlight.position - FragPos);
     float theta = dot(cameraDir, normalize(-spotlight.direction));
 
+
+    //spotlight
     if (theta > spotlight.cutoff) {
+        // ambient
+        vec3 ambient = light.ambient * texture(material.diffuse, TexCoords).rgb;
+        
+        // diffuse 
+        vec3 norm = normalize(Normal);
+        float diff = max(dot(norm, cameraDir), 0.0);
+        vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb;  
+        
+        // specular
+        vec3 viewDir = normalize(viewPos - FragPos);
+        vec3 reflectDir = reflect(-cameraDir, norm);  
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+        vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
+        
+        // attenuation
+        float distance    = length(spotlight.position - FragPos);
+        float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+
+        // ambient  *= attenuation; // remove attenuation from ambient, as otherwise at large distances the light would be darker inside than outside the spotlight due the ambient term in the else branch
+        diffuse   *= attenuation;
+        specular *= attenuation;   
+            
+        vec3 result = ambient + diffuse + specular;
+        FragColor = vec4(result, 1.0);
+
+    } else {
         //attenuation
         float distance = length(light.position - FragPos);
         float attenuation = 1.0f / (light.constant + light.linear * distance + 
@@ -70,16 +98,13 @@ void main()
         float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
         vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
 
-        // ambient *= attenuation;
+        ambient *= attenuation;
         specular *= attenuation;
         diffuse *= attenuation;
             
         vec3 result = ambient + specular + diffuse;
         FragColor = vec4(result, 1.0);
-    } else {
-        FragColor = vec4(light.ambient * texture(material.diffuse, TexCoords).rgb, 1.0);
     }
 
-    
 }
 
