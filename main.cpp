@@ -83,7 +83,9 @@ int main()
     auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
     auto boxShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
     auto lightShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
-    Spotlight * spotlight = new Spotlight(12.5f);
+
+    Spotlight * spotlight = new Spotlight(12.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(7.0f, 7.0f, 7.0f));
+
     lightsource->setDirection(glm::vec3(-0.2f, -1.0f, -0.3f));
 
     for (int i = 0;i < 7; i++) {

@@ -30,6 +30,9 @@ struct Spotlight {
     vec3 position;
     vec3 direction;
     float cutoff;
+
+    vec3 diffuse;
+    vec3 specular;
 };
 
 uniform Spotlight spotlight;
@@ -77,13 +80,13 @@ void main()
         // diffuse 
         vec3 norm = normalize(Normal);
         float diff = max(dot(norm, cameraDir), 0.0);
-        vec3 spotDiffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb;  
+        vec3 spotDiffuse = spotlight.diffuse * diff * texture(material.diffuse, TexCoords).rgb;  
         
         // specular
         vec3 viewDir = normalize(viewPos - FragPos);
         vec3 reflectDir = reflect(-cameraDir, norm);  
         float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-        vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
+        vec3 specular = spotlight.specular * spec * texture(material.specular, TexCoords).rgb;  
         
         // attenuation
         float spotDistance    = length(spotlight.position - FragPos);

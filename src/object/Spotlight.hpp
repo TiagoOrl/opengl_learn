@@ -10,7 +10,8 @@
 class Spotlight {
 
     public:
-        Spotlight(float cutoff) {
+        Spotlight(float cutoff, glm::vec3 diffuse, glm::vec3 specular)
+            : diffuse(diffuse), specular(specular) {
             this->cutoff = glm::cos(glm::radians(cutoff));
         }
 
@@ -25,11 +26,16 @@ class Spotlight {
             shader->setVec3("spotlight.position",  camera.position);
             shader->setVec3("spotlight.direction", camera.front);
             shader->setFloat("spotlight.cutoff",   cutoff);
+
+            shader->setVec3("spotlight.diffuse", diffuse);
+            shader->setVec3("spotlight.specular", specular);
         }
 
         
     private:
         float cutoff;
+        glm::vec3 diffuse;
+        glm::vec3 specular;
 };
 
 #endif
