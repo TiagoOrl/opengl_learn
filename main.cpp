@@ -7,6 +7,7 @@
 
 #include "src/object/Object.hpp"
 #include "src/object/Light.hpp"
+#include "src/object/Spotlight.hpp"
 #include "src/camera/Camera.hpp"
 
 #include "src/time/Time.hpp"
@@ -80,12 +81,17 @@ int main()
     std::vector<Object *> objects{};
 
     auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
+    auto boxShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
+    auto lightShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
+
+    Spotlight * spotlight = new Spotlight(12.5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(5.0f, 4.3f, 0.55f));
+
     lightsource->setDirection(glm::vec3(-0.2f, -1.0f, -0.3f));
 
     for (int i = 0;i < 7; i++) {
         auto cube = new Object(window, coords[i]);
 
-        cube->setShaders("./shaders/cube.vert", "./shaders/cube.frag");
+        cube->setShader(boxShader);
         cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
         cube->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
         
@@ -109,7 +115,7 @@ int main()
 
     
     
-    lightsource->setShaders("shaders/light_source.vert", "shaders/light_source.frag");
+    lightsource->setShader(lightShader);
     lightsource->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
 
 
@@ -136,6 +142,8 @@ int main()
 
         camera.lookAt();
 
+        spotlight->draw(camera, boxShader);
+
         //draw box cube
         for (auto cube : objects) {
             cube->draw(camera, lightsource);
@@ -151,6 +159,8 @@ int main()
     }
 
     vbo->unbind();
+    boxShader->wipe();
+    lightShader->wipe();
 
 
     delete vbo;
@@ -158,6 +168,8 @@ int main()
         delete i;
 
     delete lightsource;
+    delete boxShader;
+    delete lightShader;
 
     glfwTerminate();
     return 0;

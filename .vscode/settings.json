@@ -69,6 +69,8 @@
         "__config": "cpp",
         "__locale": "cpp",
         "filesystem": "cpp",
-        "__bit_reference": "cpp"
+        "__bit_reference": "cpp",
+        "__split_buffer": "cpp",
+        "queue": "cpp"
     }
 }
