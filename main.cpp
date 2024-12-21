@@ -86,8 +86,6 @@ int main()
 
     Spotlight * spotlight = new Spotlight(12.5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(5.0f, 4.3f, 0.55f));
 
-    lightsource->setDirection(glm::vec3(-0.2f, -1.0f, -0.3f));
-
     for (int i = 0;i < 7; i++) {
         auto cube = new Object(window, coords[i]);
 

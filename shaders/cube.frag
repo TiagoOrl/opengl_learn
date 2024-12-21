@@ -56,17 +56,20 @@ struct Material {
 uniform Material material;
 
 vec3 calculateDirLight(DirLight light, vec3 normal, vec3 viewDir); 
-vec3 calculatePointLight(Light light, vec3 normal, vec3 FragPos, Material material, vec2 texCoords, vec3 viewPos);
-vec3 calculateSpotlight(Spotlight spotlight, vec3 normal, vec3 fragPos, Material material, vec2 texCoords, vec3 viewPos);
+vec3 calculatePointLight(Light light, vec3 normal, vec3 FragPos, Material material, vec2 texCoords, vec3 viewDir);
+vec3 calculateSpotlight(Spotlight spotlight, vec3 normal, vec3 fragPos, Material material, vec2 texCoords, vec3 viewDir);
 
 
 void main()
 {    
+    vec3 norm = normalize(Normal);
+    vec3 viewDir = normalize(viewPos - FragPos);
+
     //point light
-    vec3 lightVal = calculatePointLight(light, Normal, FragPos, material, TexCoords, viewPos);
+    vec3 lightVal = calculatePointLight(light, norm, FragPos, material, TexCoords, viewDir);
 
     //spotlight
-    vec3 spotlightVal = calculateSpotlight(spotlight, Normal, FragPos, material, TexCoords, viewPos);
+    vec3 spotlightVal = calculateSpotlight(spotlight, norm, FragPos, material, TexCoords, viewDir);
     
             
     vec3 result = lightVal + spotlightVal;
@@ -91,11 +94,8 @@ vec3 calculateDirLight(DirLight light, vec3 normal, vec3 viewDir)
 }
 
 
-vec3 calculatePointLight(Light light, vec3 normal, vec3 fragPos, Material material, vec2 texCoords, vec3 viewPos) 
+vec3 calculatePointLight(Light light, vec3 norm, vec3 fragPos, Material material, vec2 texCoords, vec3 viewDir) 
 {
-    vec3 norm = normalize(normal);
-    vec3 viewDir = normalize(viewPos - fragPos);
-
     //attenuation
     float distance = length(light.position - fragPos);
     float attenuation = 1.0f / (light.constant + light.linear * distance + 
@@ -120,10 +120,8 @@ vec3 calculatePointLight(Light light, vec3 normal, vec3 fragPos, Material materi
 }
 
 
-vec3 calculateSpotlight(Spotlight spotlight, vec3 normal, vec3 fragPos, Material material, vec2 texCoords, vec3 viewPos)
+vec3 calculateSpotlight(Spotlight spotlight, vec3 norm, vec3 fragPos, Material material, vec2 texCoords, vec3 viewDir)
 {
-    vec3 norm = normalize(normal);
-    vec3 viewDir = normalize(viewPos - fragPos);
     vec3 cameraDir = normalize(spotlight.position - fragPos);
     float theta = dot(cameraDir, normalize(-spotlight.direction));
 
