@@ -99,7 +99,6 @@ int main()
 
         cube->setLight({
             lightsource->getPosition(),
-            lightsource->getDirection(),
             glm::vec3(0.2f, 0.2f, 0.2f),
             glm::vec3(1.5f, 1.5f, 1.5f),
             glm::vec3(5.0f, 5.0f, 5.0f),
