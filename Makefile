@@ -4,8 +4,8 @@ FLAGS= -pthread
 INCLUDE_TAG= -I include
 OBJECTS = ./build/stb.o ./build/glad.o ./build/Shader.o ./build/VBO.o ./build/VAO.o ./build/EBO.o ./build/Texture.o ./build/Transform.o ./build/Camera.o ./build/Object.o
 
-render: ${OBJECTS}
-	${CC} main.cpp ${OBJECTS} $(FLAGS) -o render $(INCLUDE_TAG) $(LIBS) -g
+main: ${OBJECTS}
+	${CC} main.cpp ${OBJECTS} $(FLAGS) -o main $(INCLUDE_TAG) $(LIBS) -g
 
 ./build/Shader.o: ./src/object/shader/Shader.cpp
 	${CC} ./src/object/shader/Shader.cpp -c -o ./build/Shader.o ${INCLUDE_TAG} -g
@@ -39,4 +39,4 @@ render: ${OBJECTS}
 
 
 cl: 
-	rm render build/*.o
+	rm render main build/*.o
