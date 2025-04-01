@@ -71,7 +71,6 @@ void Object::draw(Camera camera, Object *lightsource) {
     
     
     shader->setVec3("light.position", lightsource->transform->position);
-    shader->setVec3("light.ambient",  light->ambient);
     shader->setVec3("light.diffuse",  light->diffuse); 
     shader->setVec3("light.specular", light->specular); 
 

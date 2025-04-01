@@ -8,6 +8,7 @@
 #include "src/object/Object.hpp"
 #include "src/object/Light.hpp"
 #include "src/object/Spotlight.hpp"
+#include "src/object/DirectLight.hpp"
 #include "src/camera/Camera.hpp"
 
 #include "src/time/Time.hpp"
@@ -78,17 +79,40 @@ int main()
         glm::vec3(-1.0f, 0.55f, 0.2f)
     };
 
+    glm::vec3 lightPositions[] = {
+        glm::vec3( 0.7f,  0.2f,  2.0f),
+        glm::vec3( 2.3f, -3.3f, -4.0f),
+        glm::vec3(-4.0f,  2.0f, -12.0f),
+        glm::vec3( 0.0f,  0.0f, -3.0f)
+};
+
     std::vector<Object *> objects{};
+    std::vector<Light *> pointLights{};
 
     auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
+    auto directLight = new DirectLight(
+        glm::vec3(-0.2f, -1.0f, -0.3f), 
+        glm::vec3(0.05f, 0.05f, 0.05f), 
+        glm::vec3(0.4f, 0.4f, 0.4f),
+        glm::vec3(1.5f, 1.5f, 1.5f)
+    );
+
     auto boxShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
     auto lightShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
 
     Spotlight * spotlight = new Spotlight(12.5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(5.0f, 4.3f, 0.55f));
 
-    lightsource->setDirection(glm::vec3(-0.2f, -1.0f, -0.3f));
 
-    for (int i = 0;i < 7; i++) {
+    for (int i = 0; i < sizeof(lightPositions) / sizeof(glm::vec3); i++)
+    {
+        auto light = new Light(window, lightPositions[i]);
+        light->setShader(lightShader);
+        light->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+
+        pointLights.push_back(light);
+    }
+
+    for (int i = 0;i < sizeof(coords) / sizeof(glm::vec3); i++) {
         auto cube = new Object(window, coords[i]);
 
         cube->setShader(boxShader);
@@ -99,7 +123,6 @@ int main()
 
         cube->setLight({
             lightsource->getPosition(),
-            glm::vec3(0.2f, 0.2f, 0.2f),
             glm::vec3(1.5f, 1.5f, 1.5f),
             glm::vec3(5.0f, 5.0f, 5.0f),
             1.0f,
@@ -113,7 +136,7 @@ int main()
     }
 
     
-    
+    directLight->setShader(boxShader);
     lightsource->setShader(lightShader);
     lightsource->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
 
@@ -141,16 +164,18 @@ int main()
 
         camera.lookAt();
 
-        spotlight->draw(camera, boxShader);
-
         //draw box cube
         for (auto cube : objects) {
             cube->draw(camera, lightsource);
         }
-        
 
-        //draw lamp object
+        for (auto light: pointLights) {
+            light->draw(camera);
+        }
+        
         lightsource->draw(camera);
+        spotlight->draw(camera, boxShader);
+        directLight->draw();
         
 
         glfwSwapBuffers(window);
