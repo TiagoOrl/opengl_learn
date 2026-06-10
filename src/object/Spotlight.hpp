@@ -25,13 +25,13 @@ class Spotlight {
 
         void draw(Camera camera, Shader *shader) {
             shader->use();
-            shader->setVec3("spotlight.position",  camera.position);
-            shader->setVec3("spotlight.direction", camera.front);
+            shader->setVec3("spotlight.position",  &camera.position[0]);
+            shader->setVec3("spotlight.direction", &camera.front[0]);
             shader->setFloat("spotlight.cutoff",   cutoff);
             shader->setFloat("spotlight.outerCutoff", outerCutoff);
 
-            shader->setVec3("spotlight.diffuse", diffuse);
-            shader->setVec3("spotlight.specular", specular);
+            shader->setVec3("spotlight.diffuse", &diffuse[0]);
+            shader->setVec3("spotlight.specular", &specular[0]);
         }
 
         

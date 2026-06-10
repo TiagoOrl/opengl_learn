@@ -41,10 +41,10 @@ void DirectLight::draw() {
 
     shader->use();
 
-    shader->setVec3("dirLight.direction", direction);
-    shader->setVec3("dirLight.ambient", ambient);
-    shader->setVec3("dirLight.diffuse", diffuse);
-    shader->setVec3("dirLight.specular", specular);
+    shader->setVec3("dirLight.direction", &direction[0]);
+    shader->setVec3("dirLight.ambient", &ambient[0]);
+    shader->setVec3("dirLight.diffuse", &diffuse[0]);
+    shader->setVec3("dirLight.specular", &specular[0]);
 }
 
 #endif

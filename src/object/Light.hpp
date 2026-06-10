@@ -27,7 +27,7 @@ Light::Light(GLFWwindow *window, const glm::vec3 &pos)
 void Light::draw(Camera camera) {
     shader->use();
     
-    shader->setVec3("diffuse", glm::vec3(1.0f));
+    shader->setVec3("diffuse", &glm::vec3(1.0f)[0]);
 
     shader->setProjection(camera.projection, std::string("projection"));
     shader->setView(camera.view, std::string("view"));

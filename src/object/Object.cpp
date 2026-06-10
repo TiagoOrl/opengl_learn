@@ -22,7 +22,7 @@ void Object::setVerticesData(VBO *vbo, float vertices[], GLuint arraySize, int d
 }
 
 
-void Object::setTexture(const std::string &imgPath, const std::string &specularPath, GLint position) {
+void Object::setTexture(const std::string imgPath, const std::string &specularPath, GLint position) {
     texture = new Texture(imgPath, position);
     specTexture = new Texture(specularPath, position + 1);
 }
@@ -70,9 +70,9 @@ void Object::draw(Camera camera, Object *lightsource) {
         throw std::runtime_error("object error(60): light has no value");
     
     
-    shader->setVec3("light.position", lightsource->transform->position);
-    shader->setVec3("light.diffuse",  light->diffuse); 
-    shader->setVec3("light.specular", light->specular); 
+    shader->setVec3("light.position", &lightsource->transform->position[0]);
+    shader->setVec3("light.diffuse",  &light->diffuse[0]); 
+    shader->setVec3("light.specular", &light->specular[0]); 
 
     shader->setFloat("light.constant", light->constant);
     shader->setFloat("light.linear", light->linear);
@@ -80,7 +80,7 @@ void Object::draw(Camera camera, Object *lightsource) {
     
     shader->setFloat("material.shininess", 64.0f);
 
-    shader->setVec3("viewPos", camera.position);
+    shader->setVec3("viewPos", &camera.position[0]);
 
 
     shader->setProjection(camera.projection, std::string("projection"));

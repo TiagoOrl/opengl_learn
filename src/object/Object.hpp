@@ -23,7 +23,7 @@ class Object {
         Object(GLFWwindow *window, float x, float y, float z);
         Object(GLFWwindow *window, const glm::vec3 &coord);
         void setVerticesData(VBO *vbo, float vertices[], GLuint arraySize, int drawType);
-        void setTexture(const std::string &imgPath, const std::string &specularPath, GLint position);
+        void setTexture(const std::string imgPath, const std::string &specularPath, GLint position);
         void setShader(Shader * _shader);
         void setShaderUniforms();
         void draw(Camera camera, Object *lightsource);

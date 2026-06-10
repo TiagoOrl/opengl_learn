@@ -141,7 +141,7 @@ vec3 calculateSpotlight(Spotlight spotlight, vec3 norm, vec3 fragPos, Material m
     spotSpecular *= spotIntensity;
 
     spotDiffuse *= spotAttenuation;
-    spotSpecular *= spotAttenuation;   
+    spotSpecular *= spotAttenuation;
         
     return spotDiffuse + spotSpecular;
 }

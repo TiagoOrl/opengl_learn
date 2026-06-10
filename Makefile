@@ -37,8 +37,8 @@ main: ${OBJECTS}
 ./build/glad.o: glad.c	
 	${CC} glad.c -c -o ./build/glad.o $(INCLUDE_TAG) -g
 
-./build/stb.o : stb.cpp
-	${CC} stb.cpp -c -o ./build/stb.o ${INCLUDE_TAG} -g
+./build/stb.o : ./src/stb/stb.cpp
+	${CC} ./src/stb/stb.cpp -c -o ./build/stb.o ${INCLUDE_TAG} -g
 
 
 cl: 
