@@ -5,18 +5,18 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <math.h>
 
-#include "src/object/Object.hpp"
-#include "src/object/Light.hpp"
-#include "src/object/Spotlight.hpp"
-#include "src/object/DirectLight.hpp"
-#include "src/camera/Camera.hpp"
+#include "./object/Object.hpp"
+#include "./object/Light.hpp"
+#include "./object/Spotlight.hpp"
+#include "./object/DirectLight.hpp"
+#include "./camera/Camera.hpp"
 
-#include "src/time/Time.hpp"
+#include "./time/Time.hpp"
 
-#include "src/controller/Controller.hpp"
+#include "./controller/Controller.hpp"
 
-#include "src/_vertices.hpp"
-#include "src/config.hpp"
+#include "./_vertices.hpp"
+#include "./config.hpp"
 
 #include <iostream>
 #include <string>
