@@ -5,7 +5,7 @@ INCLUDE_TAG= -I include
 OBJECTS = ./build/stb.o ./build/glad.o ./build/Mesh.o ./build/Shader.o ./build/VBO.o ./build/VAO.o ./build/EBO.o ./build/Texture.o ./build/Transform.o ./build/Camera.o ./build/Object.o
 
 main: ${OBJECTS}
-	${CC} main.cpp ${OBJECTS} $(FLAGS) -o main $(INCLUDE_TAG) $(LIBS) -g
+	${CC} ./src/main.cpp ${OBJECTS} $(FLAGS) -o main $(INCLUDE_TAG) $(LIBS) -g
 
 ./build/Mesh.o: ./src/object_assimp/Mesh.cpp
 	${CC} ./src/object_assimp/Mesh.cpp -c -o ./build/Mesh.o ${INCLUDE_TAG} -g
@@ -34,8 +34,8 @@ main: ${OBJECTS}
 ./build/Shader.o: ./src/object/shader/Shader.cpp
 	${CC} ./src/object/shader/Shader.cpp -c -o ./build/Shader.o ${INCLUDE_TAG} -g
 
-./build/glad.o: glad.c	
-	${CC} glad.c -c -o ./build/glad.o $(INCLUDE_TAG) -g
+./build/glad.o: ./src/glad/glad.c	
+	${CC} ./src/glad/glad.c -c -o ./build/glad.o $(INCLUDE_TAG) -g
 
 ./build/stb.o : ./src/stb/stb.cpp
 	${CC} ./src/stb/stb.cpp -c -o ./build/stb.o ${INCLUDE_TAG} -g
