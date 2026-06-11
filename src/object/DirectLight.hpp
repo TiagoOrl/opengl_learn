@@ -8,8 +8,7 @@
 
 class DirectLight {
     public:
-        DirectLight(glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
-        void setShader(Shader * shader);
+        DirectLight( Shader *shader, glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
         void draw();
         
 
@@ -22,12 +21,8 @@ class DirectLight {
 };
 
 
-void DirectLight::setShader(Shader * shader){
-    this->shader = shader;
-}
-
-DirectLight::DirectLight(glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
-{
+DirectLight::DirectLight(Shader *shader, glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
+ : shader(shader) {
     this->direction = direction;
     this->ambient = ambient;
     this->diffuse = diffuse;

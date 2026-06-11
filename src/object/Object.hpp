@@ -20,11 +20,10 @@
 class Object {
     public:
         Transform *transform = NULL;
-        Object(GLFWwindow *window, float x, float y, float z);
-        Object(GLFWwindow *window, const glm::vec3 &coord);
+        Object(GLFWwindow *window, Shader *shader, float x, float y, float z);
+        Object(GLFWwindow *window, Shader *shader, const glm::vec3 &coord);
         void setVerticesData(VBO *vbo, float vertices[], GLuint arraySize, int drawType);
         void setTexture(const std::string imgPath, const std::string &specularPath, GLint position);
-        void setShader(Shader * _shader);
         void setShaderUniforms();
         void draw(Camera camera, Object *lightsource);
 
@@ -42,7 +41,7 @@ class Object {
         Texture *texture = NULL;
         Texture *specTexture = NULL;
 
-        Shader *shader = NULL;
+        Shader *shader;
         std::optional<LightMaterial>  light;
 };
 

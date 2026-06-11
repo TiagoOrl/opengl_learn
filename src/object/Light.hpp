@@ -5,20 +5,20 @@
 
 class Light : public Object {
     public:
-        Light(GLFWwindow *window, float x, float y, float z);
-        Light(GLFWwindow *window, const glm::vec3 &pos);
+        Light(GLFWwindow *window, Shader *shader, float x, float y, float z);
+        Light(GLFWwindow *window, Shader *shader, const glm::vec3 &pos);
         void draw(Camera camera);
 };
 
 
-Light::Light(GLFWwindow *window, float x, float y, float z) 
-    :Object(window, x, y, z) {
+Light::Light(GLFWwindow *window, Shader *shader, float x, float y, float z) 
+    :Object(window, shader, x, y, z) {
         
     }
 
 
-Light::Light(GLFWwindow *window, const glm::vec3 &pos) 
-    :Object(window, pos)
+Light::Light(GLFWwindow *window, Shader *shader, const glm::vec3 &pos) 
+    :Object(window, shader, pos)
 {
 
 }

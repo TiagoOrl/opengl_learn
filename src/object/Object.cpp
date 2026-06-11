@@ -1,13 +1,15 @@
 #include "Object.hpp"
 
 
-Object::Object(GLFWwindow *window, const glm::vec3 &coord) {
+Object::Object(GLFWwindow *window, Shader *shader, const glm::vec3 &coord)
+    : shader(shader) {
     this->window = window;
     transform = new Transform(coord.x, coord.y, coord.z);
 }
 
 
-Object::Object(GLFWwindow *window, float x, float y, float z) {
+Object::Object(GLFWwindow *window, Shader *shader, float x, float y, float z)
+    : shader(shader) {
     this->window = window;
     transform = new Transform(x, y, z);
 }
@@ -28,10 +30,6 @@ void Object::setTexture(const std::string imgPath, const std::string &specularPa
 }
 
 
-void Object::setShader(Shader * _shader) {
-    shader = _shader;
-}
-
 void Object::bindTexture() {
     if (texture == NULL || specTexture == NULL)
         throw std::runtime_error("texture error(32): texture is not created = NULL");
@@ -44,9 +42,6 @@ void Object::bindTexture() {
 
 
 void Object::setShaderUniforms() {
-    if (shader == NULL)
-        throw std::runtime_error("shader error(43): shader is not created = NULL");
-
     shader->use();
     shader->setInt("material.diffuse", 0);
     shader->setInt("material.specular", 1);

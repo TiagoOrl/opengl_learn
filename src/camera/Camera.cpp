@@ -108,9 +108,8 @@ void Camera::rotateCamera(GLFWwindow *window) {
     lastX = xpos;
     lastY = ypos;
 
-    const float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
+    xoffset *= CAM_LOOK_SENSITIVITY;
+    yoffset *= CAM_LOOK_SENSITIVITY;
 
     rotate(xoffset, yoffset);
 }

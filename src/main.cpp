@@ -89,33 +89,44 @@ int main()
     std::vector<Object *> objects{};
     std::vector<Light *> pointLights{};
 
-    auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
+
+    Camera camera(glm::vec3(0.0f, 5.24f, -7.0f));
+    camera.rotate(0.0f, -17.0f);
+
+    
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+    camera.createProjection();
+
+    auto boxShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
+    auto lightShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
+
+    auto lightsource = new Light(window, lightShader, -0.5f, 1.8f, -2.0f);
     auto directLight = new DirectLight(
+        lightShader,
         glm::vec3(-0.2f, -1.0f, -0.3f), 
         glm::vec3(0.05f, 0.05f, 0.05f), 
         glm::vec3(0.4f, 0.4f, 0.4f),
         glm::vec3(1.5f, 1.5f, 1.5f)
     );
 
-    auto boxShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
-    auto lightShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
+    
 
     Spotlight * spotlight = new Spotlight(12.5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(5.0f, 4.3f, 0.55f));
 
 
     for (int i = 0; i < sizeof(lightPositions) / sizeof(glm::vec3); i++)
     {
-        auto light = new Light(window, lightPositions[i]);
-        light->setShader(lightShader);
+        auto light = new Light(window, lightShader, lightPositions[i]);
         light->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
 
         pointLights.push_back(light);
     }
 
     for (int i = 0;i < sizeof(coords) / sizeof(glm::vec3); i++) {
-        auto cube = new Object(window, coords[i]);
+        auto cube = new Object(window, boxShader, coords[i]);
 
-        cube->setShader(boxShader);
         cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
         cube->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
         
@@ -136,19 +147,7 @@ int main()
     }
 
     
-    directLight->setShader(boxShader);
-    lightsource->setShader(lightShader);
     lightsource->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-
-
-    Camera camera(glm::vec3(0.0f, 5.24f, -7.0f));
-    camera.rotate(0.0f, -17.0f);
-
-    
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-    camera.createProjection();
     
 
     
