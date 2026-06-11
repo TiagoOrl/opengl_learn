@@ -22,7 +22,7 @@ class Object {
         Transform *transform = NULL;
         Object(GLFWwindow *window, Shader *shader, float x, float y, float z);
         Object(GLFWwindow *window, Shader *shader, const glm::vec3 &coord);
-        void setVerticesData(VBO *vbo, float vertices[], GLuint arraySize, int drawType);
+        void setVerticesData(float vertices[], GLuint arraySize, int drawType);
         void setTexture(const std::string imgPath, const std::string &specularPath, GLint position);
         void setShaderUniforms();
         void draw(Camera camera, Object *lightsource);

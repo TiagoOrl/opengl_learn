@@ -67,8 +67,6 @@ int main()
 
     Controller controller;
 
-    VBO *vbo = new VBO(GL_ARRAY_BUFFER);
-
     glm::vec3 coords[] = {
         glm::vec3(1.0f, 3.55f, 1.2f),
         glm::vec3(2.0f, 0.0f, 3.2f),
@@ -119,7 +117,7 @@ int main()
     for (int i = 0; i < sizeof(lightPositions) / sizeof(glm::vec3); i++)
     {
         auto light = new Light(window, lightShader, lightPositions[i]);
-        light->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+        light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
 
         pointLights.push_back(light);
     }
@@ -128,7 +126,7 @@ int main()
         auto cube = new Object(window, boxShader, coords[i]);
 
         cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
-        cube->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+        cube->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
         
         cube->transform->changeScale(1.8f);
 
@@ -141,13 +139,13 @@ int main()
             0.032f
         });
 
-        cube->setShaderUniforms();
+        cube->setShaderUniforms(); 
 
         objects.push_back(cube);
     }
 
     
-    lightsource->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+    lightsource->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
     
 
     
@@ -181,12 +179,10 @@ int main()
         glfwPollEvents();
     }
 
-    vbo->unbind();
     boxShader->wipe();
     lightShader->wipe();
 
 
-    delete vbo;
     for (auto i : objects) 
         delete i;
 

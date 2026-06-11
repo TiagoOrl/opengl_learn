@@ -12,15 +12,15 @@ class Light : public Object {
 
 
 Light::Light(GLFWwindow *window, Shader *shader, float x, float y, float z) 
-    :Object(window, shader, x, y, z) {
-        
-    }
+:Object(window, shader, x, y, z) {
+    this->vbo = new VBO(GL_ARRAY_BUFFER);
+}
 
 
 Light::Light(GLFWwindow *window, Shader *shader, const glm::vec3 &pos) 
     :Object(window, shader, pos)
 {
-
+    this->vbo = new VBO(GL_ARRAY_BUFFER);
 }
 
 

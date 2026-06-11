@@ -3,7 +3,10 @@
 
 Object::Object(GLFWwindow *window, Shader *shader, const glm::vec3 &coord)
     : shader(shader) {
+
     this->window = window;
+    this->vbo = new VBO(GL_ARRAY_BUFFER);
+
     transform = new Transform(coord.x, coord.y, coord.z);
 }
 
@@ -11,11 +14,12 @@ Object::Object(GLFWwindow *window, Shader *shader, const glm::vec3 &coord)
 Object::Object(GLFWwindow *window, Shader *shader, float x, float y, float z)
     : shader(shader) {
     this->window = window;
+    this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(x, y, z);
 }
 
 
-void Object::setVerticesData(VBO *vbo, float vertices[], GLuint arraySize, int drawType) {
+void Object::setVerticesData(float vertices[], GLuint arraySize, int drawType) {
     vao = new VAO(vbo, vertices, arraySize, drawType);
 
     vao->setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
@@ -98,8 +102,10 @@ Object::~Object() {
     std::cout << "Object destroyed... \n";
     
     vao->unbind();
+    vbo->unbind();
 
     delete vao;
+    delete vbo;
     delete texture;
     delete specTexture;
     delete transform;
