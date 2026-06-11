@@ -18,7 +18,7 @@ void Camera::lookAt() {
 
 
 void Camera::createProjection() {
-    projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(config::FOV), (float)config::SCREEN_WIDTH / (float)config::SCREEN_HEIGHT, 0.1f, 100.0f);
 }
 
 
