@@ -84,7 +84,7 @@ int main()
         glm::vec3( 2.3f, -3.3f, -4.0f),
         glm::vec3(-4.0f,  2.0f, -12.0f),
         glm::vec3( 0.0f,  0.0f, -3.0f)
-};
+    };
 
     std::vector<Object *> objects{};
     std::vector<Light *> pointLights{};
@@ -113,7 +113,7 @@ int main()
 
     
 
-    Spotlight * spotlight = new Spotlight(12.5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(5.0f, 4.3f, 0.55f));
+    Spotlight * spotlight = new Spotlight(boxShader, .5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(1.0f, 4.3f, 1.55f));
 
 
     for (int i = 0; i < sizeof(lightPositions) / sizeof(glm::vec3); i++)
@@ -173,7 +173,7 @@ int main()
         }
         
         lightsource->draw(camera);
-        spotlight->draw(camera, boxShader);
+        spotlight->draw(camera);
         directLight->draw();
         
 
