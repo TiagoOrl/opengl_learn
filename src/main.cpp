@@ -67,22 +67,24 @@ int main()
 
     Controller controller;
 
-    glm::vec3 coords[] = {
+
+    std::vector<glm::vec3> coords = {
         glm::vec3(1.0f, 3.55f, 1.2f),
         glm::vec3(2.0f, 0.0f, 3.2f),
         glm::vec3(4.0f, 3.55f, -1.2f),
         glm::vec3(-1.0f, 2.0f, -4.2f),
         glm::vec3(-6.0f, -1.55f, 1.2f),
         glm::vec3(12.4f, -7.55f, -7.2f),
-        glm::vec3(-1.0f, 0.55f, 0.2f)
+        glm::vec3(-1.0f, 0.55f, 0.2f)  
     };
 
-    glm::vec3 lightPositions[] = {
+    std::vector<glm::vec3> lightPositions = {
         glm::vec3( 0.7f,  0.2f,  2.0f),
         glm::vec3( 2.3f, -3.3f, -4.0f),
         glm::vec3(-4.0f,  2.0f, -12.0f),
         glm::vec3( 0.0f,  0.0f, -3.0f)
     };
+
 
     std::vector<Object *> objects{};
     std::vector<Light *> pointLights{};
@@ -122,16 +124,16 @@ int main()
     Spotlight * spotlight = new Spotlight(objShader, camera, .5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(1.0f, 4.3f, 1.55f));
 
 
-    for (int i = 0; i < sizeof(lightPositions) / sizeof(glm::vec3); i++)
+    for (auto pos : lightPositions)
     {
-        auto light = new Light(window, camera, lightSrcShader, lightPositions[i]);
+        auto light = new Light(window, camera, lightSrcShader, pos);
         light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
 
         pointLights.push_back(light);
     }
 
-    for (int i = 0;i < sizeof(coords) / sizeof(glm::vec3); i++) {
-        auto cube = new Object(window, camera, objShader, coords[i]);
+    for (auto pos : coords) {
+        auto cube = new Object(window, camera, objShader, pos);
 
         cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
         cube->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
