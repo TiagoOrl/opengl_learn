@@ -97,12 +97,12 @@ int main()
 
     camera.createProjection();
 
-    auto boxShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
-    auto lightShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
+    auto objShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
+    auto lightSrcShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
 
-    auto lightsource = new Light(window, lightShader, -0.5f, 1.8f, -2.0f);
+    auto lightsource = new Light(window, lightSrcShader, -0.5f, 1.8f, -2.0f);
     auto directLight = new DirectLight(
-        lightShader,
+        lightSrcShader,
         glm::vec3(-0.2f, -1.0f, -0.3f), 
         glm::vec3(0.05f, 0.05f, 0.05f), 
         glm::vec3(0.4f, 0.4f, 0.4f),
@@ -111,19 +111,19 @@ int main()
 
     
 
-    Spotlight * spotlight = new Spotlight(boxShader, .5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(1.0f, 4.3f, 1.55f));
+    Spotlight * spotlight = new Spotlight(objShader, .5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(1.0f, 4.3f, 1.55f));
 
 
     for (int i = 0; i < sizeof(lightPositions) / sizeof(glm::vec3); i++)
     {
-        auto light = new Light(window, lightShader, lightPositions[i]);
+        auto light = new Light(window, lightSrcShader, lightPositions[i]);
         light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
 
         pointLights.push_back(light);
     }
 
     for (int i = 0;i < sizeof(coords) / sizeof(glm::vec3); i++) {
-        auto cube = new Object(window, boxShader, coords[i]);
+        auto cube = new Object(window, objShader, coords[i]);
 
         cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
         cube->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
@@ -179,16 +179,16 @@ int main()
         glfwPollEvents();
     }
 
-    boxShader->wipe();
-    lightShader->wipe();
+    objShader->wipe();
+    lightSrcShader->wipe();
 
 
     for (auto i : objects) 
         delete i;
 
     delete lightsource;
-    delete boxShader;
-    delete lightShader;
+    delete objShader;
+    delete lightSrcShader;
 
     glfwTerminate();
     return 0;
