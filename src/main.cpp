@@ -161,11 +161,12 @@ int main()
 
         camera->lookAt();
 
-        //draw box cube
+        //draw the physical objects
         for (auto cube : objects) {
             cube->draw(lightsource);
         }
 
+        // draw the physical representation of light sources
         for (auto light: pointLights) {
             light->draw();
         }

@@ -49,7 +49,7 @@ void Object::setShaderUniforms() {
 
 
 void Object::setMaterial(Material light) {
-    this->light = light;
+    this->material = light;
 }
 
 
@@ -61,17 +61,17 @@ glm::vec3 Object::getPosition() const {
 void Object::draw(Object *lightsource) {
     shader->use();
 
-    if (!light.has_value()) 
-        throw std::runtime_error("object error(60): light has no value");
+    if (!material.has_value()) 
+        throw std::runtime_error("object error(60): material undefined");
     
     
     shader->setVec3("light.position", &lightsource->transform->position[0]);
-    shader->setVec3("light.diffuse",  &light->diffuse[0]); 
-    shader->setVec3("light.specular", &light->specular[0]); 
+    shader->setVec3("light.diffuse",  &material->diffuse[0]); 
+    shader->setVec3("light.specular", &material->specular[0]); 
 
-    shader->setFloat("light.constant", light->constant);
-    shader->setFloat("light.linear", light->linear);
-    shader->setFloat("light.quadratic",light->quadratic);
+    shader->setFloat("light.constant", material->constant);
+    shader->setFloat("light.linear", material->linear);
+    shader->setFloat("light.quadratic",material->quadratic);
     
     shader->setFloat("material.shininess", 64.0f);
 

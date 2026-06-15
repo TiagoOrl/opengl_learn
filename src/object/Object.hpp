@@ -43,7 +43,7 @@ class Object {
         Texture *specTexture = NULL;
 
         Shader *shader;
-        std::optional<Material>  light;
+        std::optional<Material>  material;
 };
 
 #endif
