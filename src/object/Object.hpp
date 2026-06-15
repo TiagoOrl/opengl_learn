@@ -8,7 +8,7 @@
 #include "vao/VAO.hpp"
 #include "vbo/VBO.hpp"
 #include "../camera/Camera.hpp"
-#include "light_material.hpp"
+#include "./material.hpp"
 
 #include <string>
 #include <vector>
@@ -20,16 +20,16 @@
 class Object {
     public:
         Transform *transform = NULL;
-        Object(GLFWwindow *window, Shader *shader, float x, float y, float z);
-        Object(GLFWwindow *window, Shader *shader, const glm::vec3 &coord);
+        Object(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z);
+        Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord);
         void setVerticesData(float vertices[], GLuint arraySize, int drawType);
         void setTexture(const std::string imgPath, const std::string &specularPath, GLint position);
         void setShaderUniforms();
-        void draw(Camera camera, Object *lightsource);
+        void draw(Object *lightsource);
 
         glm::vec3 getPosition() const;
 
-        void setLight(LightMaterial light);
+        void setMaterial(Material light);
 
         virtual ~Object();
 
@@ -38,11 +38,12 @@ class Object {
         void bindTexture();
         VAO *vao = NULL;
         VBO *vbo = NULL;
+        Camera *camera = NULL;
         Texture *texture = NULL;
         Texture *specTexture = NULL;
 
         Shader *shader;
-        std::optional<LightMaterial>  light;
+        std::optional<Material>  light;
 };
 
 #endif

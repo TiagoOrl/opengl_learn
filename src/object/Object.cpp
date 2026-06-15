@@ -1,19 +1,15 @@
 #include "Object.hpp"
 
 
-Object::Object(GLFWwindow *window, Shader *shader, const glm::vec3 &coord)
-    : shader(shader) {
-
-    this->window = window;
+Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord)
+    : shader(shader), camera(camera), window(window) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
-
     transform = new Transform(coord.x, coord.y, coord.z);
 }
 
 
-Object::Object(GLFWwindow *window, Shader *shader, float x, float y, float z)
-    : shader(shader) {
-    this->window = window;
+Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z)
+    : shader(shader), camera(camera), window(window) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(x, y, z);
 }
@@ -52,7 +48,7 @@ void Object::setShaderUniforms() {
 }
 
 
-void Object::setLight(LightMaterial light) {
+void Object::setMaterial(Material light) {
     this->light = light;
 }
 
@@ -62,7 +58,7 @@ glm::vec3 Object::getPosition() const {
 }
 
 
-void Object::draw(Camera camera, Object *lightsource) {
+void Object::draw(Object *lightsource) {
     shader->use();
 
     if (!light.has_value()) 
@@ -79,11 +75,11 @@ void Object::draw(Camera camera, Object *lightsource) {
     
     shader->setFloat("material.shininess", 64.0f);
 
-    shader->setVec3("viewPos", &camera.position[0]);
+    shader->setVec3("viewPos", &camera->position[0]);
 
 
-    shader->setProjection(camera.projection, std::string("projection"));
-    shader->setView(camera.view, std::string("view"));
+    shader->setProjection(camera->projection, std::string("projection"));
+    shader->setView(camera->view, std::string("view"));
 
     // transform->incrementAngle(6.0f);
     transform->update();

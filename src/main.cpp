@@ -87,20 +87,28 @@ int main()
     std::vector<Object *> objects{};
     std::vector<Light *> pointLights{};
 
+    Material material = {
+        glm::vec3(1.5f, 1.5f, 1.5f),
+        glm::vec3(5.0f, 5.0f, 5.0f),
+        1.0f,
+        0.09f,
+        0.032f
+    };
 
-    Camera camera(glm::vec3(0.0f, 5.24f, -7.0f));
-    camera.rotate(0.0f, -17.0f);
+
+    auto camera =  new Camera(glm::vec3(0.0f, 5.24f, -7.0f));
+    camera->rotate(0.0f, -17.0f);
 
     
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-    camera.createProjection();
+    camera->createProjection();
 
     auto objShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
     auto lightSrcShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
 
-    auto lightsource = new Light(window, lightSrcShader, -0.5f, 1.8f, -2.0f);
+    auto lightsource = new Light(window, camera, lightSrcShader, -0.5f, 1.8f, -2.0f);
     auto directLight = new DirectLight(
         lightSrcShader,
         glm::vec3(-0.2f, -1.0f, -0.3f), 
@@ -111,34 +119,26 @@ int main()
 
     
 
-    Spotlight * spotlight = new Spotlight(objShader, .5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(1.0f, 4.3f, 1.55f));
+    Spotlight * spotlight = new Spotlight(objShader, camera, .5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(1.0f, 4.3f, 1.55f));
 
 
     for (int i = 0; i < sizeof(lightPositions) / sizeof(glm::vec3); i++)
     {
-        auto light = new Light(window, lightSrcShader, lightPositions[i]);
+        auto light = new Light(window, camera, lightSrcShader, lightPositions[i]);
         light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
 
         pointLights.push_back(light);
     }
 
     for (int i = 0;i < sizeof(coords) / sizeof(glm::vec3); i++) {
-        auto cube = new Object(window, objShader, coords[i]);
+        auto cube = new Object(window, camera, objShader, coords[i]);
 
         cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
         cube->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
         
         cube->transform->changeScale(1.8f);
 
-        cube->setLight({
-            lightsource->getPosition(),
-            glm::vec3(1.5f, 1.5f, 1.5f),
-            glm::vec3(5.0f, 5.0f, 5.0f),
-            1.0f,
-            0.09f,
-            0.032f
-        });
-
+        cube->setMaterial(material);
         cube->setShaderUniforms(); 
 
         objects.push_back(cube);
@@ -154,24 +154,24 @@ int main()
         time_utils::calcDeltaTime();
         
         controller.listenInputs(window, texVisibility);
-        camera.listenInputs(window);
+        camera->listenInputs(window);
 
         glClearColor(0.03f, 0.08f, 0.09f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        camera.lookAt();
+        camera->lookAt();
 
         //draw box cube
         for (auto cube : objects) {
-            cube->draw(camera, lightsource);
+            cube->draw(lightsource);
         }
 
         for (auto light: pointLights) {
-            light->draw(camera);
+            light->draw();
         }
         
-        lightsource->draw(camera);
-        spotlight->draw(camera);
+        lightsource->draw();
+        spotlight->draw();
         directLight->draw();
         
 

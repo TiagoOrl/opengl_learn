@@ -4,8 +4,7 @@
 #include <glm/glm.hpp>
 
 
-struct _lightmaterial {
-    glm::vec3 position;
+struct _material {
     glm::vec3 diffuse;
     glm::vec3 specular;
     float constant;
@@ -14,7 +13,7 @@ struct _lightmaterial {
 };
 
 
-typedef struct _lightmaterial LightMaterial;
+typedef struct _material Material;
 
 
 #endif
