@@ -1,30 +1,50 @@
 #ifndef H_CLASS_LIGHT
 #define H_CLASS_LIGHT
 
-#include "Object.hpp"
 
-class Light : public Object {
+class Light {
     public:
-        Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z);
-        Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &pos);
-        void draw();
+        Transform *transform = NULL;
+        inline Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z);
+        inline Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &pos);
+        inline void setVerticesData(float vertices[], GLuint arraySize, int drawType);
+        inline void draw();
+        inline glm::vec3 getPosition() const;
+    private:
+        VAO *vao = NULL;
+        VBO *vbo = NULL;
+        Camera *camera = NULL;
+        Texture *texture = NULL;
+        Shader *shader = NULL;
 };
 
 
-Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z) 
-:Object(window, camera, shader, x, y, z) {
+inline glm::vec3 Light::getPosition() const { return transform->position;}
+
+inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z) 
+    : camera(camera), shader(shader) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
+    transform = new Transform(x, y, z);
 }
 
 
-Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &pos) 
-    :Object(window, camera, shader, pos)
-{
+inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord) 
+    : camera(camera), shader(shader) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
+    transform = new Transform(coord.x, coord.y, coord.z);
 }
 
 
-void Light::draw() {
+inline void Light::setVerticesData(float vertices[], GLuint arraySize, int drawType) {
+    vao = new VAO(vbo, vertices, arraySize, drawType);
+
+    vao->setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
+    vao->setVertexAttribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3);
+    vao->setVertexAttribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6);
+}
+
+
+inline void Light::draw() {
     shader->use();
     
     shader->setVec3("diffuse", &glm::vec3(1.0f)[0]);

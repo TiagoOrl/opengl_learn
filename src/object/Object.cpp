@@ -60,7 +60,7 @@ glm::vec3 Object::getPosition() const {
 }
 
 
-void Object::draw(Object *lightsource) {
+void Object::draw(Light *lightsource) {
     shader->use();
 
     if (!material.has_value()) 

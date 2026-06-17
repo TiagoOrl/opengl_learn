@@ -9,7 +9,7 @@
 #include "vbo/VBO.hpp"
 #include "../camera/Camera.hpp"
 #include "./material.hpp"
-
+#include "./Light.hpp"
 #include <GLFW/glfw3.h>
 
 #include <optional>
@@ -23,7 +23,7 @@ class Object {
         void setVerticesData(float vertices[], GLuint arraySize, int drawType);
         void setTexture(const std::string imgPath, const std::string &specularPath, GLint position);
         void setShaderUniforms();
-        void draw(Object *lightsource);
+        void draw(Light* lightsource);
 
         glm::vec3 getPosition() const;
 
