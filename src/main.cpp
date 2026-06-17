@@ -3,8 +3,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "./object/Object.hpp"
 #include "./object/Light.hpp"
+#include "./object/Object.hpp"
 #include "./object/Spotlight.hpp"
 #include "./object/DirectLight.hpp"
 #include "./camera/Camera.hpp"
