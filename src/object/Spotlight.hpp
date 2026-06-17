@@ -10,8 +10,22 @@
 class Spotlight {
 
     public:
-        Spotlight(Shader *shader, Camera *camera, float cutoff, float outerCutoff, glm::vec3 diffuse, glm::vec3 specular)
-            : diffuse(diffuse), specular(specular), shader(shader), camera(camera) {
+        Spotlight(
+            Shader *shader, 
+            Camera *camera, 
+            float cutoff, float outerCutoff, 
+            glm::vec3 diffuse, 
+            glm::vec3 specular, 
+            GLfloat constant, GLfloat linear, GLfloat quadratic)
+            : 
+                diffuse(diffuse), 
+                specular(specular), 
+                shader(shader), 
+                camera(camera), 
+                constant(constant), 
+                linear(linear), 
+                quadratic(quadratic) {
+
             this->cutoff = glm::cos(glm::radians(cutoff));
             this->outerCutoff = glm::cos(glm::radians(outerCutoff));
 
@@ -29,6 +43,10 @@ class Spotlight {
             shader->setVec3("spotlight.direction", &camera->front[0]);
             shader->setFloat("spotlight.cutoff",   cutoff);
             shader->setFloat("spotlight.outerCutoff", outerCutoff);
+            shader->setFloat("spotlight.constant", constant);
+            shader->setFloat("spotlight.linear", linear);
+            shader->setFloat("spotlight.quadratic", quadratic);
+
 
             shader->setVec3("spotlight.diffuse", &diffuse[0]);
             shader->setVec3("spotlight.specular", &specular[0]);
@@ -40,6 +58,9 @@ class Spotlight {
         Camera *camera = NULL;
         float cutoff;
         float outerCutoff;
+        float constant;
+        float linear;
+        float quadratic;
         glm::vec3 diffuse;
         glm::vec3 specular;
 };

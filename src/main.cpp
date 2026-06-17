@@ -121,7 +121,14 @@ int main()
 
     
 
-    Spotlight * spotlight = new Spotlight(objShader, camera, .5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(1.0f, 4.3f, 1.55f));
+    Spotlight * spotlight = new Spotlight(
+        objShader, 
+        camera, 
+        .5f, 17.5f, 
+        glm::vec3(2.5f, 2.5f, 2.5f), 
+        glm::vec3(1.0f, 4.3f, 1.55f),
+        1.0f, 0.09f, 0.032f
+    );
 
 
     for (auto pos : lightPositions)
