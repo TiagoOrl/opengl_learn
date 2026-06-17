@@ -8,14 +8,27 @@
 #include "./vbo/VBO.hpp"
 #include "../camera/Camera.hpp"
 
+
+struct _properties {
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+    float constant;
+    float linear;
+    float quadratic;
+};
+
+typedef struct _properties properties;
+
 class Light {
     public:
         Transform *transform = NULL;
         inline Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z);
         inline Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &pos);
         inline void setVerticesData(float vertices[], GLuint arraySize, int drawType);
+        inline void setProperties(properties prop);
         inline void draw();
         inline glm::vec3 getPosition() const;
+        properties prop;
     private:
         VAO *vao = NULL;
         VBO *vbo = NULL;
@@ -38,6 +51,10 @@ inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, const gl
     : camera(camera), shader(shader) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(coord.x, coord.y, coord.z);
+}
+
+inline void Light::setProperties(properties prop) {
+    this->prop = prop;
 }
 
 

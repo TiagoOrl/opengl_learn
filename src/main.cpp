@@ -87,13 +87,13 @@ int main()
     std::vector<Object *> objects{};
     std::vector<Light *> pointLights{};
 
-    Material material = {
-        glm::vec3(1.5f, 1.5f, 1.5f),
-        glm::vec3(5.0f, 5.0f, 5.0f),
-        1.0f,
-        0.09f,
-        0.032f
-    };
+    // Material material = {
+    //     glm::vec3(1.5f, 1.5f, 1.5f),
+    //     glm::vec3(5.0f, 5.0f, 5.0f),
+    //     1.0f,
+    //     0.09f,
+    //     0.032f
+    // };
 
 
     auto camera =  new Camera(glm::vec3(0.0f, 5.24f, -7.0f));
@@ -108,7 +108,6 @@ int main()
     auto objShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
     auto lightSrcShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
 
-    auto lightsource = new Light(window, camera, lightSrcShader, -0.5f, 1.8f, -2.0f);
     auto directLight = new DirectLight(
         lightSrcShader,
         glm::vec3(-0.2f, -1.0f, -0.3f), 
@@ -133,6 +132,13 @@ int main()
     {
         auto light = new Light(window, camera, lightSrcShader, pos);
         light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+        light->setProperties({
+            glm::vec3(1.5f, 1.5f, 1.5f),
+            glm::vec3(5.0f, 5.0f, 5.0f),
+            1.0f,
+            0.09f,
+            0.032f
+        });
 
         pointLights.push_back(light);
     }
@@ -145,15 +151,18 @@ int main()
         
         cube->transform->changeScale(1.8f);
 
-        cube->setMaterial(material);
         cube->setShaderUniforms(); 
 
         objects.push_back(cube);
     }
 
-    
-    lightsource->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-    
+    for (auto obj : objects)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            obj->addLight(pointLights[i]);
+        }
+    }
 
     
     while (!glfwWindowShouldClose(window))
@@ -170,7 +179,7 @@ int main()
 
         //draw the physical objects
         for (auto cube : objects) {
-            cube->draw(lightsource);
+            cube->draw();
         }
 
         // draw the physical representation of light sources
@@ -178,10 +187,7 @@ int main()
             light->draw();
         }
         
-        lightsource->draw();
         spotlight->draw();
-        directLight->draw();
-        
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -194,7 +200,6 @@ int main()
     for (auto i : objects) 
         delete i;
 
-    delete lightsource;
     delete objShader;
     delete lightSrcShader;
 

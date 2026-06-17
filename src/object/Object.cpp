@@ -1,6 +1,7 @@
 #include "Object.hpp"
 #include <stdexcept>
 #include <string>
+#include <format>
 
 
 Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord)
@@ -50,8 +51,8 @@ void Object::setShaderUniforms() {
 }
 
 
-void Object::setMaterial(Material light) {
-    this->material = light;
+void Object::addLight(Light* light) {
+    lights.push_back(light);
 }
 
 
@@ -60,20 +61,22 @@ glm::vec3 Object::getPosition() const {
 }
 
 
-void Object::draw(Light *lightsource) {
+void Object::draw() {
     shader->use();
+    
 
-    if (!material.has_value()) 
-        throw std::runtime_error("object error(60): material undefined");
+    for (int i = 0; i < 4; i++)
+    {
+        shader->setVec3(std::format("lights[{}].position", i), &lights[i]->transform->position[0]);
+        shader->setVec3(std::format("lights[{}].diffuse", i),  &lights[i]->prop.diffuse[0]); 
+        shader->setVec3(std::format("lights[{}].specular", i), &lights[i]->prop.specular[0]); 
+
+        shader->setFloat(std::format("lights[{}].constant", i), lights[i]->prop.constant);
+        shader->setFloat(std::format("lights[{}].linear", i), lights[i]->prop.linear);
+        shader->setFloat(std::format("lights[{}].quadratic", i), lights[i]->prop.quadratic);
+    }
     
     
-    shader->setVec3("light.position", &lightsource->transform->position[0]);
-    shader->setVec3("light.diffuse",  &material->diffuse[0]); 
-    shader->setVec3("light.specular", &material->specular[0]); 
-
-    shader->setFloat("light.constant", material->constant);
-    shader->setFloat("light.linear", material->linear);
-    shader->setFloat("light.quadratic",material->quadratic);
     
     shader->setFloat("material.shininess", 64.0f);
 

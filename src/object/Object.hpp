@@ -8,9 +8,9 @@
 #include "vao/VAO.hpp"
 #include "vbo/VBO.hpp"
 #include "../camera/Camera.hpp"
-#include "./material.hpp"
 #include "./Light.hpp"
 #include <GLFW/glfw3.h>
+#include <vector>
 
 #include <optional>
 
@@ -23,11 +23,10 @@ class Object {
         void setVerticesData(float vertices[], GLuint arraySize, int drawType);
         void setTexture(const std::string imgPath, const std::string &specularPath, GLint position);
         void setShaderUniforms();
-        void draw(Light* lightsource);
+        void addLight(Light* light);
+        void draw();
 
         glm::vec3 getPosition() const;
-
-        void setMaterial(Material light);
 
         virtual ~Object();
 
@@ -39,9 +38,9 @@ class Object {
         Camera *camera = NULL;
         Texture *texture = NULL;
         Texture *specTexture = NULL;
+        std::vector<Light*> lights;
 
         Shader *shader;
-        std::optional<Material>  material;
 };
 
 #endif
