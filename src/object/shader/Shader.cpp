@@ -1,6 +1,10 @@
 #include "Shader.hpp"
 #include "shader_errors.hpp"
 
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <cerrno>
 
 
 std::string getFileContents(const char* filename) {

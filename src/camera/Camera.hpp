@@ -2,12 +2,9 @@
 #define H_CLASS_CAMERA
 
 
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include "../time/Time.hpp"
+#include <GLFW/glfw3.h>
 #include "../config.hpp"
-#include "./camera_config.hpp"
 
 
 class Camera {

@@ -1,6 +1,9 @@
 
 #include "Camera.hpp"
 #include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
+#include "../time/Time.hpp"
+#include "./camera_config.hpp"
 
 
 Camera::Camera(const glm::vec3 initialPos) {

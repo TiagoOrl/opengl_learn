@@ -10,10 +10,8 @@
 #include "../camera/Camera.hpp"
 #include "./material.hpp"
 
-#include <string>
-#include <vector>
 #include <GLFW/glfw3.h>
-#include <stdexcept>
+
 #include <optional>
 
 

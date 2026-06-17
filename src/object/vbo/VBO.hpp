@@ -1,7 +1,5 @@
 #ifndef H_CLASS_VBO
 #define H_CLASS_VBO
-
-
 #include <glad/glad.h>
 
 class VBO {

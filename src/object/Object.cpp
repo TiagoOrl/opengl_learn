@@ -1,4 +1,6 @@
 #include "Object.hpp"
+#include <stdexcept>
+#include <string>
 
 
 Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord)
