@@ -67,7 +67,7 @@ void main()
     vec3 pointLightResult;
 
     //direct lighting
-    vec3 dirLightResult = calculateDirLight(dirLight, norm, viewDir);
+    // vec3 dirLightResult = calculateDirLight(dirLight, norm, viewDir);
 
     //point light
     vec3 lightVal = calculatePointLight(light, norm, FragPos, material, TexCoords, viewDir);
@@ -82,7 +82,7 @@ void main()
     vec3 spotlightVal = calculateSpotlight(spotlight, norm, FragPos, material, TexCoords, viewDir);
     
             
-    vec3 result = lightVal + spotlightVal + dirLightResult;
+    vec3 result = lightVal + spotlightVal;
     FragColor = vec4(result, 1.0);
 
 }
