@@ -26,6 +26,7 @@ class Light {
         inline Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &pos);
         inline void setVerticesData(float vertices[], GLuint arraySize, int drawType);
         inline void setProperties(properties prop);
+        inline void listenInputs();
         inline void draw();
         inline glm::vec3 getPosition() const;
         properties prop;
@@ -54,8 +55,30 @@ inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, const gl
     transform = new Transform(coord.x, coord.y, coord.z);
 }
 
+
 inline void Light::setProperties(properties prop) {
     this->prop = prop;
+}
+
+
+inline void Light::listenInputs() {
+    if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS) 
+        transform->addX();
+
+    else if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS) 
+        transform->decX();
+
+    if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS) 
+        transform->addZ();
+
+    else if (glfwGetKey(window, GLFW_KEY_KP_5) == GLFW_PRESS) 
+        transform->decZ();
+
+    if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
+        transform->decY();
+
+    else if(glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+        transform->addY();
 }
 
 
@@ -73,11 +96,12 @@ inline void Light::draw() {
     
     shader->setVec3("diffuse", &glm::vec3(1.0f)[0]);
 
+    listenInputs();
+
     shader->setProjection(camera->projection, std::string("projection"));
     shader->setView(camera->view, std::string("view"));
-
-
     shader->setModel(transform->model, std::string("model"));
+
 
 
     vao->bind();
