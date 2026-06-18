@@ -87,14 +87,6 @@ int main()
     std::vector<Object *> objects{};
     std::vector<Light *> pointLights{};
 
-    // Material material = {
-    //     glm::vec3(1.5f, 1.5f, 1.5f),
-    //     glm::vec3(5.0f, 5.0f, 5.0f),
-    //     1.0f,
-    //     0.09f,
-    //     0.032f
-    // };
-
 
     auto camera =  new Camera(glm::vec3(0.0f, 5.24f, -7.0f));
     camera->rotate(0.0f, -17.0f);
