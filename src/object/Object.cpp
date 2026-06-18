@@ -61,6 +61,33 @@ glm::vec3 Object::getPosition() const {
 }
 
 
+void Object::listenInputs() {
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) 
+        transform->addX();
+
+    else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) 
+        transform->decX();
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) 
+        transform->addZ();
+
+    else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) 
+        transform->decZ();
+
+    if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
+        transform->decY();
+
+    else if(glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
+        transform->addY();
+
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+        transform->incrementScale(0.4f);
+
+    else if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+        transform->incrementScale(-0.4f);
+}
+
+
 void Object::draw() {
     shader->use();
     
@@ -87,8 +114,7 @@ void Object::draw() {
     shader->setView(camera->view, std::string("view"));
 
     transform->incrementAngle(6.0f);
-    transform->update();
-    transform->listenInputs(window);
+    listenInputs();
 
     shader->setModel(transform->model, std::string("model"));
 

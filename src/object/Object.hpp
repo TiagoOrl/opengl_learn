@@ -39,8 +39,9 @@ class Object {
         Texture *texture = NULL;
         Texture *specTexture = NULL;
         std::vector<Light*> lights;
-
         Shader *shader;
+
+        void listenInputs();
 };
 
 #endif

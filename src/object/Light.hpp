@@ -76,7 +76,6 @@ inline void Light::draw() {
     shader->setProjection(camera->projection, std::string("projection"));
     shader->setView(camera->view, std::string("view"));
 
-    transform->update();
 
     shader->setModel(transform->model, std::string("model"));
 

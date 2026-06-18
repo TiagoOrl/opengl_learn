@@ -18,64 +18,39 @@ Transform::Transform(GLfloat posX, GLfloat posY, GLfloat posZ) {
 
 void Transform::addX() {
     position.x += speed * time_utils::deltaTime;
+    update();
 }
 
 
 void Transform::decX() {
     position.x -= speed * time_utils::deltaTime;
+    update();
 }
 
 void Transform::addY() {
     position.y += speed * time_utils::deltaTime;
+    update();
 }
 
 void Transform::decY() {
     position.y -= speed * time_utils::deltaTime;
+    update();
 }
 
 void Transform::addZ() {
     position.z += speed * time_utils::deltaTime;
+    update();
 }
 
 void Transform::decZ() {
     position.z -= speed * time_utils::deltaTime;
-}
-
-
-void Transform::listenInputs(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) 
-        position.x += speed * time_utils::deltaTime;
-
-    else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) 
-        position.x -= speed * time_utils::deltaTime;
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) 
-        position.z += speed * time_utils::deltaTime;
-
-    else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) 
-        position.z -= speed * time_utils::deltaTime;
-
-    if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
-        position.y -= speed * time_utils::deltaTime;
-
-    else if(glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
-        position.y += speed * time_utils::deltaTime;
-
-    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-        incrementScale(scaleAmount);
-
-    else if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-        incrementScale(-scaleAmount);
-
-    
-
     update();
 }
 
 
-
 void Transform::incrementAngle(GLfloat angle) {
     this->angle += angle * time_utils::deltaTime * speed;
+    update();
 }
 
 
@@ -83,11 +58,13 @@ void Transform::incrementScale(GLfloat scale) {
     this->scale += scale * time_utils::deltaTime * speed;
     if (this->scale < 0)
         this->scale = 0;
+    update();
 }
 
 
 void Transform::changeAngle(GLfloat angle) {
     this->angle = angle;
+    update();
 }
 
 
@@ -95,6 +72,7 @@ void Transform::changeScale(GLfloat scale) {
     if (scale < 0)
         return;
     this->scale = scale;
+    update();
 }
 
 
