@@ -20,9 +20,14 @@ class Transform {
         void listenInputs(GLFWwindow *window);
         void incrementAngle(GLfloat angle);
         void incrementScale(GLfloat scale);
-
         void changeAngle(GLfloat angle);
         void changeScale(GLfloat scale);
+        void addX();
+        void decX();
+        void addY();
+        void decY();
+        void addZ();
+        void decZ();
 
     private:
         float scale = 1.0f;

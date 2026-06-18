@@ -16,6 +16,31 @@ Transform::Transform(GLfloat posX, GLfloat posY, GLfloat posZ) {
     update();
 }
 
+void Transform::addX() {
+    position.x += speed * time_utils::deltaTime;
+}
+
+
+void Transform::decX() {
+    position.x -= speed * time_utils::deltaTime;
+}
+
+void Transform::addY() {
+    position.y += speed * time_utils::deltaTime;
+}
+
+void Transform::decY() {
+    position.y -= speed * time_utils::deltaTime;
+}
+
+void Transform::addZ() {
+    position.z += speed * time_utils::deltaTime;
+}
+
+void Transform::decZ() {
+    position.z -= speed * time_utils::deltaTime;
+}
+
 
 void Transform::listenInputs(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) 
