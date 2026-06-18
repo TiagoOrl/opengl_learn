@@ -86,7 +86,7 @@ void Object::draw() {
     shader->setProjection(camera->projection, std::string("projection"));
     shader->setView(camera->view, std::string("view"));
 
-    // transform->incrementAngle(6.0f);
+    transform->incrementAngle(6.0f);
     transform->update();
     transform->listenInputs(window);
 

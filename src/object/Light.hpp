@@ -35,20 +35,21 @@ class Light {
         Camera *camera = NULL;
         Texture *texture = NULL;
         Shader *shader = NULL;
+        GLFWwindow *window = NULL;
 };
 
 
 inline glm::vec3 Light::getPosition() const { return transform->position;}
 
 inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z) 
-    : camera(camera), shader(shader) {
+    : camera(camera), shader(shader), window(window) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(x, y, z);
 }
 
 
 inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord) 
-    : camera(camera), shader(shader) {
+    : camera(camera), shader(shader), window(window) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(coord.x, coord.y, coord.z);
 }
