@@ -34,6 +34,9 @@ class Shader {
 
         void wipe();
 
+    private:
+        int shaderCheck(unsigned int shader, const char *filename);
+
 
 };
 

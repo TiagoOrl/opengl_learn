@@ -187,6 +187,9 @@ int main()
 
     for (auto i : objects) 
         delete i;
+    
+    for (auto i : pointLights)
+        delete i;
 
     delete objShader;
     delete lightSrcShader;

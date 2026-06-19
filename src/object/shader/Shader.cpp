@@ -1,5 +1,4 @@
 #include "Shader.hpp"
-#include "shader_errors.hpp"
 
 #include <string>
 #include <fstream>
@@ -54,6 +53,22 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile) {
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+}
+
+
+int Shader::shaderCheck(unsigned int shader, const char *filename) {
+    int success;
+    char infoLog[512];
+
+
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER: " << filename << '\n' << infoLog << std::endl;
+    }
+
+    return success;
 }
 
 
