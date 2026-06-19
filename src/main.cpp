@@ -139,12 +139,8 @@ int main()
         auto cube = new Object(window, camera, objShader, pos);
 
         cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
-        cube->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-        
-        cube->transform->changeScale(1.8f);
-
-        cube->setShaderUniforms(); 
-
+        cube->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);        
+        cube->scale(1.8f);
         objects.push_back(cube);
     }
 

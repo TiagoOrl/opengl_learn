@@ -8,6 +8,7 @@ Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::ve
     : shader(shader), camera(camera), window(window) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(coord.x, coord.y, coord.z);
+    setShaderUniforms();
 }
 
 
@@ -15,6 +16,7 @@ Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, float x, floa
     : shader(shader), camera(camera), window(window) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(x, y, z);
+    setShaderUniforms();
 }
 
 
@@ -85,6 +87,11 @@ void Object::listenInputs() {
 
     else if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
         transform->incrementScale(-0.4f);
+}
+
+
+void Object::scale(GLfloat scale) {
+    transform->changeScale(scale);
 }
 
 
