@@ -1,4 +1,6 @@
 ./render
 render
 *.o
+./main
+./build/*.o
 
