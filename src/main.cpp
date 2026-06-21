@@ -1,12 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <math.h>
 
-#include "./object/Object.hpp"
 #include "./object/Light.hpp"
+#include "./object/Object.hpp"
 #include "./object/Spotlight.hpp"
 #include "./object/DirectLight.hpp"
 #include "./camera/Camera.hpp"
@@ -43,7 +41,7 @@ int main()
 #endif
 
 
-    GLFWwindow* window = glfwCreateWindow(config::SCREEN_WIDTH, config::SCREEN_HEIGHT, "GameEngine XL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(config::SCREEN_WIDTH, config::SCREEN_HEIGHT, "Guava Engine dev", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -67,62 +65,66 @@ int main()
 
     Controller controller;
 
-    VBO *vbo = new VBO(GL_ARRAY_BUFFER);
 
-    glm::vec3 coords[] = {
+    std::vector<glm::vec3> coords = {
         glm::vec3(1.0f, 3.55f, 1.2f),
         glm::vec3(2.0f, 0.0f, 3.2f),
         glm::vec3(4.0f, 3.55f, -1.2f),
         glm::vec3(-1.0f, 2.0f, -4.2f),
         glm::vec3(-6.0f, -1.55f, 1.2f),
         glm::vec3(12.4f, -7.55f, -7.2f),
-        glm::vec3(-1.0f, 0.55f, 0.2f)
+        glm::vec3(-1.0f, 0.55f, 0.2f)  
     };
 
-    glm::vec3 lightPositions[] = {
+    std::vector<glm::vec3> lightPositions = {
         glm::vec3( 0.7f,  0.2f,  2.0f),
         glm::vec3( 2.3f, -3.3f, -4.0f),
         glm::vec3(-4.0f,  2.0f, -12.0f),
         glm::vec3( 0.0f,  0.0f, -3.0f)
-};
+    };
+
 
     std::vector<Object *> objects{};
     std::vector<Light *> pointLights{};
 
-    auto lightsource = new Light(window, -0.5f, 1.8f, -2.0f);
+
+    auto camera =  new Camera(glm::vec3(0.0f, 5.24f, -7.0f));
+    camera->rotate(0.0f, -17.0f);
+
+    
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+    camera->createProjection();
+
+    auto objShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
+    auto lightSrcShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
+
     auto directLight = new DirectLight(
+        lightSrcShader,
         glm::vec3(-0.2f, -1.0f, -0.3f), 
         glm::vec3(0.05f, 0.05f, 0.05f), 
         glm::vec3(0.4f, 0.4f, 0.4f),
         glm::vec3(1.5f, 1.5f, 1.5f)
     );
 
-    auto boxShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
-    auto lightShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
+    
 
-    Spotlight * spotlight = new Spotlight(12.5f, 17.5f, glm::vec3(2.5f, 2.5f, 2.5f), glm::vec3(5.0f, 4.3f, 0.55f));
+    Spotlight * spotlight = new Spotlight(
+        objShader, 
+        camera, 
+        .5f, 17.5f, 
+        glm::vec3(2.5f, 2.5f, 2.5f), 
+        glm::vec3(1.0f, 4.3f, 1.55f),
+        1.0f, 0.09f, 0.032f
+    );
 
 
-    for (int i = 0; i < sizeof(lightPositions) / sizeof(glm::vec3); i++)
+    for (auto pos : lightPositions)
     {
-        auto light = new Light(window, lightPositions[i]);
-        light->setShader(lightShader);
-        light->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-
-        pointLights.push_back(light);
-    }
-
-    for (int i = 0;i < sizeof(coords) / sizeof(glm::vec3); i++) {
-        auto cube = new Object(window, coords[i]);
-
-        cube->setShader(boxShader);
-        cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
-        cube->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-        
-        cube->transform->changeScale(1.8f);
-
-        cube->setLight({
-            lightsource->getPosition(),
+        auto light = new Light(window, camera, lightSrcShader, pos);
+        light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+        light->setProperties({
             glm::vec3(1.5f, 1.5f, 1.5f),
             glm::vec3(5.0f, 5.0f, 5.0f),
             1.0f,
@@ -130,26 +132,25 @@ int main()
             0.032f
         });
 
-        cube->setShaderUniforms();
+        pointLights.push_back(light);
+    }
 
+    for (auto pos : coords) {
+        auto cube = new Object(window, camera, objShader, pos);
+
+        cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
+        cube->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);        
+        cube->scale(1.8f);
         objects.push_back(cube);
     }
 
-    
-    directLight->setShader(boxShader);
-    lightsource->setShader(lightShader);
-    lightsource->setVerticesData(vbo, cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-
-
-    Camera camera(glm::vec3(0.0f, 5.24f, -7.0f));
-    camera.rotate(0.0f, -17.0f);
-
-    
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-    camera.createProjection();
-    
+    for (auto obj : objects)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            obj->addLight(pointLights[i]);
+        }
+    }
 
     
     while (!glfwWindowShouldClose(window))
@@ -157,43 +158,41 @@ int main()
         time_utils::calcDeltaTime();
         
         controller.listenInputs(window, texVisibility);
-        camera.listenInputs(window);
+        camera->listenInputs(window);
 
         glClearColor(0.03f, 0.08f, 0.09f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        camera.lookAt();
+        camera->lookAt();
 
-        //draw box cube
+        //draw the physical objects
         for (auto cube : objects) {
-            cube->draw(camera, lightsource);
+            cube->draw();
         }
 
+        // draw the physical representation of light sources
         for (auto light: pointLights) {
-            light->draw(camera);
+            light->draw();
         }
         
-        lightsource->draw(camera);
-        spotlight->draw(camera, boxShader);
-        directLight->draw();
-        
+        spotlight->draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    vbo->unbind();
-    boxShader->wipe();
-    lightShader->wipe();
+    objShader->wipe();
+    lightSrcShader->wipe();
 
 
-    delete vbo;
     for (auto i : objects) 
         delete i;
+    
+    for (auto i : pointLights)
+        delete i;
 
-    delete lightsource;
-    delete boxShader;
-    delete lightShader;
+    delete objShader;
+    delete lightSrcShader;
 
     glfwTerminate();
     return 0;

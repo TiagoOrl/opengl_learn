@@ -1,40 +1,107 @@
 #ifndef H_CLASS_LIGHT
 #define H_CLASS_LIGHT
 
-#include "Object.hpp"
+#include "./transform/Transform.hpp"
+#include "./texture/Texture.hpp"
+#include "./shader/Shader.hpp"
+#include "./vao/VAO.hpp"
+#include "./vbo/VBO.hpp"
+#include "../camera/Camera.hpp"
 
-class Light : public Object {
+
+struct _properties {
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+    float constant;
+    float linear;
+    float quadratic;
+};
+
+typedef struct _properties properties;
+
+class Light {
     public:
-        Light(GLFWwindow *window, float x, float y, float z);
-        Light(GLFWwindow *window, const glm::vec3 &pos);
-        void draw(Camera camera);
+        Transform *transform = NULL;
+        inline Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z);
+        inline Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &pos);
+        inline void setVerticesData(float vertices[], GLuint arraySize, int drawType);
+        inline void setProperties(properties prop);
+        inline void listenInputs();
+        inline void draw();
+        inline glm::vec3 getPosition() const;
+        properties prop;
+    private:
+        VAO *vao = NULL;
+        VBO *vbo = NULL;
+        Camera *camera = NULL;
+        Texture *texture = NULL;
+        Shader *shader = NULL;
+        GLFWwindow *window = NULL;
 };
 
 
-Light::Light(GLFWwindow *window, float x, float y, float z) 
-    :Object(window, x, y, z) {
-        
-    }
+inline glm::vec3 Light::getPosition() const { return transform->position;}
 
-
-Light::Light(GLFWwindow *window, const glm::vec3 &pos) 
-    :Object(window, pos)
-{
-
+inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z) 
+    : camera(camera), shader(shader), window(window) {
+    this->vbo = new VBO(GL_ARRAY_BUFFER);
+    transform = new Transform(x, y, z);
 }
 
 
-void Light::draw(Camera camera) {
+inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord) 
+    : camera(camera), shader(shader), window(window) {
+    this->vbo = new VBO(GL_ARRAY_BUFFER);
+    transform = new Transform(coord.x, coord.y, coord.z);
+}
+
+
+inline void Light::setProperties(properties prop) {
+    this->prop = prop;
+}
+
+
+inline void Light::listenInputs() {
+    if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS) 
+        transform->addX();
+
+    else if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS) 
+        transform->decX();
+
+    if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS) 
+        transform->addZ();
+
+    else if (glfwGetKey(window, GLFW_KEY_KP_5) == GLFW_PRESS) 
+        transform->decZ();
+
+    if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
+        transform->decY();
+
+    else if(glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+        transform->addY();
+}
+
+
+inline void Light::setVerticesData(float vertices[], GLuint arraySize, int drawType) {
+    vao = new VAO(vbo, vertices, arraySize, drawType);
+
+    vao->setVertexAttribute(0, 3, GL_FLOAT, 8 * sizeof(float), 0);
+    vao->setVertexAttribute(1, 3, GL_FLOAT, 8 * sizeof(float), 3);
+    vao->setVertexAttribute(2, 2, GL_FLOAT, 8 * sizeof(float), 6);
+}
+
+
+inline void Light::draw() {
     shader->use();
     
     shader->setVec3("diffuse", &glm::vec3(1.0f)[0]);
 
-    shader->setProjection(camera.projection, std::string("projection"));
-    shader->setView(camera.view, std::string("view"));
+    listenInputs();
 
-    transform->update();
-
+    shader->setProjection(camera->projection, std::string("projection"));
+    shader->setView(camera->view, std::string("view"));
     shader->setModel(transform->model, std::string("model"));
+
 
 
     vao->bind();

@@ -1,6 +1,9 @@
 
 #include "Camera.hpp"
 #include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
+#include "../time/Time.hpp"
+#include "./camera_config.hpp"
 
 
 Camera::Camera(const glm::vec3 initialPos) {
@@ -18,7 +21,7 @@ void Camera::lookAt() {
 
 
 void Camera::createProjection() {
-    projection = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(config::FOV), (float)config::SCREEN_WIDTH / (float)config::SCREEN_HEIGHT, 0.1f, 100.0f);
 }
 
 
@@ -108,9 +111,8 @@ void Camera::rotateCamera(GLFWwindow *window) {
     lastX = xpos;
     lastY = ypos;
 
-    const float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
+    xoffset *= CAM_LOOK_SENSITIVITY;
+    yoffset *= CAM_LOOK_SENSITIVITY;
 
     rotate(xoffset, yoffset);
 }
