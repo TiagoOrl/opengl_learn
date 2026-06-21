@@ -8,7 +8,6 @@
 #include "vao/VAO.hpp"
 #include "vbo/VBO.hpp"
 #include "../camera/Camera.hpp"
-#include "./Light.hpp"
 #include <GLFW/glfw3.h>
 #include <vector>
 
@@ -21,7 +20,6 @@ class Object {
         Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord);
         void setVerticesData(float vertices[], GLuint arraySize, int drawType);
         void setTexture(const std::string imgPath, const std::string &specularPath, GLint position);
-        void addLight(Light* light);
         void draw();
         void scale(GLfloat scale);
         glm::vec3 getPosition() const;
@@ -36,7 +34,6 @@ class Object {
         Camera *camera = NULL;
         Texture *texture = NULL;
         Texture *specTexture = NULL;
-        std::vector<Light*> lights;
         Shader *shader;
 
         void listenInputs();

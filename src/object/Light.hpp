@@ -7,6 +7,7 @@
 #include "./vao/VAO.hpp"
 #include "./vbo/VBO.hpp"
 #include "../camera/Camera.hpp"
+#include <format>
 
 
 struct _properties {
@@ -22,8 +23,8 @@ typedef struct _properties properties;
 class Light {
     public:
         Transform *transform = NULL;
-        inline Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z);
-        inline Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &pos);
+        inline Light(GLFWwindow *window, Camera *camera, Shader *srcShader, Shader* dstShader, int index,  float x, float y, float z);
+        inline Light(GLFWwindow *window, Camera *camera, Shader *srcShader, Shader* dstShader, int index, const glm::vec3 &coord);
         inline void setVerticesData(float vertices[], GLuint arraySize, int drawType);
         inline void setProperties(properties prop);
         inline void listenInputs();
@@ -31,26 +32,28 @@ class Light {
         inline glm::vec3 getPosition() const;
         properties prop;
     private:
+        int pos;
         VAO *vao = NULL;
         VBO *vbo = NULL;
         Camera *camera = NULL;
         Texture *texture = NULL;
-        Shader *shader = NULL;
+        Shader *srcShader = NULL;
+        Shader *dstShader = NULL;
         GLFWwindow *window = NULL;
 };
 
 
 inline glm::vec3 Light::getPosition() const { return transform->position;}
 
-inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z) 
-    : camera(camera), shader(shader), window(window) {
+inline Light::Light(GLFWwindow *window, Camera *camera, Shader *srcShader, Shader* dstShader, int index, float x, float y, float z) 
+    : camera(camera), srcShader(srcShader), dstShader(dstShader), window(window), pos(index) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(x, y, z);
 }
 
 
-inline Light::Light(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord) 
-    : camera(camera), shader(shader), window(window) {
+inline Light::Light(GLFWwindow *window, Camera *camera, Shader *srcShader, Shader* dstShader, int index, const glm::vec3 &coord) 
+    : camera(camera), srcShader(srcShader), dstShader(dstShader), window(window), pos(index) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(coord.x, coord.y, coord.z);
 }
@@ -92,15 +95,24 @@ inline void Light::setVerticesData(float vertices[], GLuint arraySize, int drawT
 
 
 inline void Light::draw() {
-    shader->use();
-    
-    shader->setVec3("diffuse", &glm::vec3(1.0f)[0]);
+    dstShader->use();
+    dstShader->setVec3(std::format("lights[{}].position", pos), &transform->position[0]);
+    dstShader->setVec3(std::format("lights[{}].diffuse", pos),  &prop.diffuse[0]); 
+    dstShader->setVec3(std::format("lights[{}].specular", pos), &prop.specular[0]); 
+
+    dstShader->setFloat(std::format("lights[{}].constant", pos), prop.constant);
+    dstShader->setFloat(std::format("lights[{}].linear", pos), prop.linear);
+    dstShader->setFloat(std::format("lights[{}].quadratic", pos), prop.quadratic);
+
+
+    srcShader->use();
+    srcShader->setVec3("diffuse", &glm::vec3(1.0f)[0]);
 
     listenInputs();
 
-    shader->setProjection(camera->projection, std::string("projection"));
-    shader->setView(camera->view, std::string("view"));
-    shader->setModel(transform->model, std::string("model"));
+    srcShader->setProjection(camera->projection, std::string("projection"));
+    srcShader->setView(camera->view, std::string("view"));
+    srcShader->setModel(transform->model, std::string("model"));
 
 
 

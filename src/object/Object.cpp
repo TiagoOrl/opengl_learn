@@ -1,7 +1,6 @@
 #include "Object.hpp"
 #include <stdexcept>
 #include <string>
-#include <format>
 
 
 Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord)
@@ -54,11 +53,6 @@ void Object::setStaticShaderUniforms() {
 }
 
 
-void Object::addLight(Light* light) {
-    lights.push_back(light);
-}
-
-
 glm::vec3 Object::getPosition() const {
     return transform->position;
 }
@@ -98,20 +92,6 @@ void Object::scale(GLfloat scale) {
 
 void Object::draw() {
     shader->use();
-    
-
-    for (int i = 0; i < 4; i++)
-    {
-        shader->setVec3(std::format("lights[{}].position", i), &lights[i]->transform->position[0]);
-        shader->setVec3(std::format("lights[{}].diffuse", i),  &lights[i]->prop.diffuse[0]); 
-        shader->setVec3(std::format("lights[{}].specular", i), &lights[i]->prop.specular[0]); 
-
-        shader->setFloat(std::format("lights[{}].constant", i), lights[i]->prop.constant);
-        shader->setFloat(std::format("lights[{}].linear", i), lights[i]->prop.linear);
-        shader->setFloat(std::format("lights[{}].quadratic", i), lights[i]->prop.quadratic);
-    }
-    
-
     shader->setVec3("viewPos", &camera->position[0]);
 
 

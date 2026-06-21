@@ -77,10 +77,10 @@ int main()
     };
 
     std::vector<glm::vec3> lightPositions = {
-        glm::vec3( 0.7f,  0.2f,  2.0f),
-        glm::vec3( 2.3f, -3.3f, -4.0f),
-        glm::vec3(-4.0f,  2.0f, -12.0f),
-        glm::vec3( 0.0f,  0.0f, -3.0f)
+        glm::vec3( 0.7f,  7.2f,  2.0f),
+        glm::vec3( 2.3f, 5.3f, -4.0f),
+        glm::vec3(-4.0f,  -8.0f, -12.0f),
+        glm::vec3( 5.0f,  0.0f, 0.0f)
     };
 
 
@@ -120,9 +120,9 @@ int main()
     );
 
 
-    for (auto pos : lightPositions)
+    for (int i = 0; i < lightPositions.size(); i++)
     {
-        auto light = new Light(window, camera, lightSrcShader, pos);
+        auto light = new Light(window, camera, lightSrcShader, objShader, i, lightPositions[i]);
         light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
         light->setProperties({
             glm::vec3(1.5f, 1.5f, 1.5f),
@@ -143,15 +143,6 @@ int main()
         cube->scale(1.8f);
         objects.push_back(cube);
     }
-
-    for (auto obj : objects)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            obj->addLight(pointLights[i]);
-        }
-    }
-
     
     while (!glfwWindowShouldClose(window))
     {
@@ -170,7 +161,6 @@ int main()
             cube->draw();
         }
 
-        // draw the physical representation of light sources
         for (auto light: pointLights) {
             light->draw();
         }
