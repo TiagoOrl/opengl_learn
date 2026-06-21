@@ -41,7 +41,7 @@ class Object {
 
         void listenInputs();
         void bindTexture();
-        void setShaderUniforms();
+        void setStaticShaderUniforms();
 };
 
 #endif

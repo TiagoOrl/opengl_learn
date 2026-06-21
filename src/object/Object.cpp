@@ -8,7 +8,7 @@ Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::ve
     : shader(shader), camera(camera), window(window) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(coord.x, coord.y, coord.z);
-    setShaderUniforms();
+    setStaticShaderUniforms();
 }
 
 
@@ -16,7 +16,7 @@ Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, float x, floa
     : shader(shader), camera(camera), window(window) {
     this->vbo = new VBO(GL_ARRAY_BUFFER);
     transform = new Transform(x, y, z);
-    setShaderUniforms();
+    setStaticShaderUniforms();
 }
 
 
@@ -46,10 +46,11 @@ void Object::bindTexture() {
 }
 
 
-void Object::setShaderUniforms() {
+void Object::setStaticShaderUniforms() {
     shader->use();
     shader->setInt("material.diffuse", 0);
     shader->setInt("material.specular", 1);
+    shader->setFloat("material.shininess", 64.0f);
 }
 
 
@@ -110,20 +111,15 @@ void Object::draw() {
         shader->setFloat(std::format("lights[{}].quadratic", i), lights[i]->prop.quadratic);
     }
     
-    
-    
-    shader->setFloat("material.shininess", 64.0f);
 
     shader->setVec3("viewPos", &camera->position[0]);
 
 
     shader->setProjection(camera->projection, std::string("projection"));
     shader->setView(camera->view, std::string("view"));
-
+    shader->setModel(transform->model, std::string("model"));
     transform->incrementAngle(6.0f);
     listenInputs();
-
-    shader->setModel(transform->model, std::string("model"));
 
     bindTexture();
 
