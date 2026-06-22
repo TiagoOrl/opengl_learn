@@ -1,5 +1,5 @@
 CC=g++
-LIBS= -lglfw -lGLU -lGL -lXrandr -lX11 -lrt -ldl
+LIBS= -lglfw
 FLAGS= -pthread -std=c++23 -I include
 OBJECTS = ./build/stb.o ./build/glad.o ./build/Mesh.o ./build/Shader.o ./build/VBO.o ./build/VAO.o ./build/EBO.o ./build/Texture.o ./build/Transform.o ./build/Camera.o ./build/Object.o
 
