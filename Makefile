@@ -1,37 +1,41 @@
 CC=g++
 LIBS= -lglfw
-FLAGS= -pthread -std=c++23 -I include
-OBJECTS = ./build/stb.o ./build/glad.o ./build/Mesh.o ./build/Shader.o ./build/VBO.o ./build/VAO.o ./build/EBO.o ./build/Texture.o ./build/Transform.o ./build/Camera.o ./build/Object.o
+FLAGS= -pthread -std=c++23 -I./include -L./lib
+OBJECTS = ./build/stb.o ./build/glad.o ./build/mesh.o ./build/shader.o ./build/vbo.o ./build/vao.o ./build/ebo.o ./build/texture.o ./build/transform.o ./build/camera.o ./build/object.o ./build/model.o
 
 main: ${OBJECTS}
 	${CC} ./src/main.cpp ${OBJECTS} $(FLAGS) -o main $(FLAGS) $(LIBS) -g
 
-./build/Mesh.o: ./src/object_assimp/Mesh.cpp
-	${CC} ./src/object_assimp/Mesh.cpp -c -o ./build/Mesh.o ${FLAGS} -g
 
-./build/VBO.o: ./src/object/vbo/VBO.cpp
-	${CC} ./src/object/vbo/VBO.cpp -c -o ./build/VBO.o ${FLAGS} -g
+./build/vbo.o: ./src/object/vbo/vbo.cpp
+	${CC} ./src/object/vbo/vbo.cpp -c -o ./build/vbo.o ${FLAGS} -g
 
-./build/VAO.o: ./src/object/vao/VAO.cpp
-	${CC} ./src/object/vao/VAO.cpp -c -o ./build/VAO.o ${FLAGS} -g
+./build/vao.o: ./src/object/vao/vao.cpp
+	${CC} ./src/object/vao/vao.cpp -c -o ./build/vao.o ${FLAGS} -g
 
-./build/EBO.o: ./src/object/ebo/EBO.cpp
-	${CC} ./src/object/ebo/EBO.cpp -c -o ./build/EBO.o ${FLAGS} -g
+./build/ebo.o: ./src/object/ebo/ebo.cpp
+	${CC} ./src/object/ebo/ebo.cpp -c -o ./build/ebo.o ${FLAGS} -g
 
-./build/Texture.o: ./src/object/texture/Texture.cpp
-	${CC} ./src/object/texture/Texture.cpp -c -o ./build/Texture.o ${FLAGS} -g
+./build/texture.o: ./src/object/texture/texture.cpp
+	${CC} ./src/object/texture/texture.cpp -c -o ./build/texture.o ${FLAGS} -g
 
-./build/Transform.o: ./src/object/transform/Transform.cpp
-	${CC} ./src/object/transform/Transform.cpp -c -o ./build/Transform.o ${FLAGS} -g
+./build/transform.o: ./src/object/transform/transform.cpp
+	${CC} ./src/object/transform/transform.cpp -c -o ./build/transform.o ${FLAGS} -g
 
-./build/Object.o: ./src/object/Object.cpp
-	${CC} ./src/object/Object.cpp -c -o ./build/Object.o ${FLAGS} -g
+./build/object.o: ./src/object/object.cpp
+	${CC} ./src/object/object.cpp -c -o ./build/object.o ${FLAGS} -g
 
-./build/Camera.o: ./src/camera/Camera.cpp
-	${CC} ./src/camera/Camera.cpp -c -o ./build/Camera.o ${FLAGS} -g
+./build/camera.o: ./src/camera/camera.cpp
+	${CC} ./src/camera/camera.cpp -c -o ./build/camera.o ${FLAGS} -g
 
-./build/Shader.o: ./src/object/shader/Shader.cpp
-	${CC} ./src/object/shader/Shader.cpp -c -o ./build/Shader.o ${FLAGS} -g
+./build/shader.o: ./src/object/shader/shader.cpp
+	${CC} ./src/object/shader/shader.cpp -c -o ./build/shader.o ${FLAGS} -g
+
+./build/mesh.o: ./src/model/mesh.cpp
+	${CC} ./src/model/mesh.cpp -c -o ./build/mesh.o ${FLAGS} -g
+
+./build/model.o: ./src/model/model.cpp
+	${CC} ./src/model/model.cpp -c -o ./build/model.o ${FLAGS} -g
 
 ./build/glad.o: ./src/glad/glad.c	
 	${CC} ./src/glad/glad.c -c -o ./build/glad.o $(FLAGS) -g

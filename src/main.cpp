@@ -3,15 +3,15 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "./object/light/Light.hpp"
-#include "./object/Object.hpp"
-#include "./object/light/Spotlight.hpp"
-#include "./object/light/DirectLight.hpp"
-#include "./camera/Camera.hpp"
+#include "./object/light/light.hpp"
+#include "./object/object.hpp"
+#include "./object/light/spotlight.hpp"
+#include "./object/light/directlight.hpp"
+#include "./camera/camera.hpp"
 
-#include "./time/Time.hpp"
+#include "./time/time.hpp"
 
-#include "./controller/Controller.hpp"
+#include "./controller/controller.hpp"
 
 #include "./_vertices.hpp"
 #include "./config.hpp"
