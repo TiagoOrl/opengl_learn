@@ -1,7 +1,7 @@
 #ifndef H_DIRECT_LIGHT
 #define H_DIRECT_LIGHT
 
-#include "shader/Shader.hpp"
+#include "../shader/Shader.hpp"
 
 #include <glm/glm.hpp>
 #include <stdexcept>

@@ -3,10 +3,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "./object/Light.hpp"
+#include "./object/light/Light.hpp"
 #include "./object/Object.hpp"
-#include "./object/Spotlight.hpp"
-#include "./object/DirectLight.hpp"
+#include "./object/light/Spotlight.hpp"
+#include "./object/light/DirectLight.hpp"
 #include "./camera/Camera.hpp"
 
 #include "./time/Time.hpp"

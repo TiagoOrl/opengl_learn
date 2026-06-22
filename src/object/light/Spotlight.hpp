@@ -2,8 +2,8 @@
 #define H_CLASS_SPOTLIGHT
 
 
-#include "shader/Shader.hpp"
-#include "../camera/Camera.hpp"
+#include "../shader/Shader.hpp"
+#include "../../camera/Camera.hpp"
 
 #include <glm/glm.hpp>
 

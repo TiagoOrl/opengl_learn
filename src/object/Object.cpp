@@ -98,7 +98,7 @@ void Object::draw() {
     shader->setProjection(camera->projection, std::string("projection"));
     shader->setView(camera->view, std::string("view"));
     shader->setModel(transform->model, std::string("model"));
-    transform->incrementAngle(6.0f);
+    transform->incrementAngle(0.44f);
     listenInputs();
 
     bindTexture();

@@ -1,12 +1,12 @@
 #ifndef H_CLASS_LIGHT
 #define H_CLASS_LIGHT
 
-#include "./transform/Transform.hpp"
-#include "./texture/Texture.hpp"
-#include "./shader/Shader.hpp"
-#include "./vao/VAO.hpp"
-#include "./vbo/VBO.hpp"
-#include "../camera/Camera.hpp"
+#include "../transform/Transform.hpp"
+#include "../texture/Texture.hpp"
+#include "../shader/Shader.hpp"
+#include "../vao/VAO.hpp"
+#include "../vbo/VBO.hpp"
+#include "../../camera/Camera.hpp"
 #include <format>
 
 
