@@ -1,5 +1,5 @@
 CC=g++
-LIBS= -lglfw
+LIBS= -lglfw -lassimp
 FLAGS= -pthread -std=c++23 -I./include -L./lib
 OBJECTS = ./build/stb.o ./build/glad.o ./build/mesh.o ./build/shader.o ./build/vbo.o ./build/vao.o ./build/ebo.o ./build/texture.o ./build/transform.o ./build/camera.o ./build/object.o ./build/model.o
 

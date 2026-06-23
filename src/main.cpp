@@ -66,16 +66,6 @@ int main()
     Controller controller;
 
 
-    std::vector<glm::vec3> coords = {
-        glm::vec3(1.0f, 3.55f, 1.2f),
-        glm::vec3(2.0f, 0.0f, 3.2f),
-        glm::vec3(4.0f, 3.55f, -1.2f),
-        glm::vec3(-1.0f, 2.0f, -4.2f),
-        glm::vec3(-6.0f, -1.55f, 1.2f),
-        glm::vec3(12.4f, -7.55f, -7.2f),
-        glm::vec3(-1.0f, 0.55f, 0.2f)  
-    };
-
     std::vector<glm::vec3> lightPositions = {
         glm::vec3( 0.7f,  7.2f,  2.0f),
         glm::vec3( 2.3f, 5.3f, -4.0f),
@@ -83,8 +73,6 @@ int main()
         glm::vec3( 5.0f,  0.0f, 0.0f)
     };
 
-
-    std::vector<Object *> objects{};
     std::vector<Light *> pointLights{};
 
 
@@ -135,15 +123,6 @@ int main()
         pointLights.push_back(light);
     }
 
-    for (auto pos : coords) {
-        auto cube = new Object(window, camera, objShader, pos);
-
-        cube->setTexture("./images/container2.png", "./images/container2_specular.png", GL_TEXTURE0);
-        cube->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);        
-        cube->scale(1.8f);
-        objects.push_back(cube);
-    }
-    
     while (!glfwWindowShouldClose(window))
     {
         time_utils::calcDeltaTime();
@@ -155,11 +134,6 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         camera->lookAt();
-
-        //draw the physical objects
-        for (auto cube : objects) {
-            cube->draw();
-        }
 
         for (auto light: pointLights) {
             light->draw();
@@ -173,10 +147,6 @@ int main()
 
     objShader->wipe();
     lightSrcShader->wipe();
-
-
-    for (auto i : objects) 
-        delete i;
     
     for (auto i : pointLights)
         delete i;
