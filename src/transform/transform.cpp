@@ -1,6 +1,6 @@
 #include "./transform.hpp"
 #include <glm/gtc/matrix_transform.hpp>
-#include "../../time/time.hpp"
+#include "../time/time.hpp"
 
 
 Transform::Transform() {

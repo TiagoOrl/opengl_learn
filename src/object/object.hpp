@@ -16,7 +16,6 @@
 
 class Object {
     public:
-        Object(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z);
         Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::vec3 &coord);
         void setVerticesData(float vertices[], GLuint arraySize, int drawType);
         void setTexture(const std::string imgPath, const std::string &specularPath, GLint position);

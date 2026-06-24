@@ -7,15 +7,40 @@
 
 unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
-void Model::draw(Shader &shader)
+
+Model::Model(GLFWwindow *window, Camera *camera, Shader *shader, const char *path, const glm::vec3 &pos)
+: shader(shader), camera(camera), window(window) {
+    transform = new Transform(pos.x, pos.y, pos.z);
+    loadModel(path);
+}
+
+void Model::draw()
 {
+    shader->use();
+    // shader->setVec3("viewPos", &camera->position[0]);
+    shader->setProjection(camera->projection, std::string("projection"));
+    shader->setView(camera->view, std::string("view"));
+    shader->setModel(transform->model, std::string("model"));
+    listenInputs();
+
     for(unsigned int i = 0; i < meshes.size(); i++)
-        meshes[i].draw(shader);
-} 
+        meshes[i].draw(*shader);
+    
+}
+
+
+
+void Model::scale(GLfloat scale) {
+    transform->changeScale(scale);
+}
+
+
+glm::vec3 Model::getPosition() const { return transform->position; }
 
 
 void Model::loadModel(std::string path)
 {
+    stbi_set_flip_vertically_on_load(true);
     Assimp::Importer import;
     const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);	
 	
@@ -163,6 +188,34 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
         // return a mesh object created from the extracted mesh data
         return Mesh(vertices, indices, textures);
 } 
+
+
+
+void Model::listenInputs() {
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) 
+        transform->addX();
+
+    else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) 
+        transform->decX();
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) 
+        transform->addZ();
+
+    else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) 
+        transform->decZ();
+
+    if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
+        transform->decY();
+
+    else if(glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
+        transform->addY();
+
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+        transform->incrementScale(0.4f);
+
+    else if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+        transform->incrementScale(-0.4f);
+}
 
 
 unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma)

@@ -2,11 +2,10 @@
 #define H_CLASS_LIGHT
 
 #include "../transform/transform.hpp"
-#include "../texture/texture.hpp"
 #include "../shader/shader.hpp"
 #include "../vao/vao.hpp"
 #include "../vbo/vbo.hpp"
-#include "../../camera/camera.hpp"
+#include "../camera/camera.hpp"
 #include <format>
 
 
@@ -36,7 +35,6 @@ class Light {
         VAO *vao = NULL;
         VBO *vbo = NULL;
         Camera *camera = NULL;
-        Texture *texture = NULL;
         Shader *srcShader = NULL;
         Shader *dstShader = NULL;
         GLFWwindow *window = NULL;

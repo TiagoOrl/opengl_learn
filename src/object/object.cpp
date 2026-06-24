@@ -10,15 +10,6 @@ Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, const glm::ve
     setStaticShaderUniforms();
 }
 
-
-Object::Object(GLFWwindow *window, Camera *camera, Shader *shader, float x, float y, float z)
-    : shader(shader), camera(camera), window(window) {
-    this->vbo = new VBO(GL_ARRAY_BUFFER);
-    transform = new Transform(x, y, z);
-    setStaticShaderUniforms();
-}
-
-
 void Object::setVerticesData(float vertices[], GLuint arraySize, int drawType) {
     vao = new VAO(vbo, vertices, arraySize, drawType);
 

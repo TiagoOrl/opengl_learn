@@ -3,10 +3,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "./object/light/light.hpp"
-#include "./object/object.hpp"
-#include "./object/light/spotlight.hpp"
-#include "./object/light/directlight.hpp"
+#include "./light/light.hpp"
+#include "./light/spotlight.hpp"
+#include "./light/directlight.hpp"
 #include "./camera/camera.hpp"
 
 #include "./time/time.hpp"
@@ -15,6 +14,7 @@
 
 #include "./_vertices.hpp"
 #include "./config.hpp"
+#include "model/model.hpp"
 
 #include <iostream>
 #include <string>
@@ -61,7 +61,7 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_CURSOR, 0);
 
     Controller controller;
 
@@ -73,7 +73,7 @@ int main()
         glm::vec3( 5.0f,  0.0f, 0.0f)
     };
 
-    std::vector<Light *> pointLights{};
+    // std::vector<Light *> pointLights{};
 
 
     auto camera =  new Camera(glm::vec3(0.0f, 5.24f, -7.0f));
@@ -85,43 +85,45 @@ int main()
 
     camera->createProjection();
 
-    auto objShader = new Shader("./shaders/cube.vert", "./shaders/cube.frag");
-    auto lightSrcShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
+    auto objShader = new Shader("./shaders/model.vert", "./shaders/model.frag");
+    // auto lightSrcShader = new Shader("shaders/light_source.vert", "shaders/light_source.frag");
 
-    auto directLight = new DirectLight(
-        lightSrcShader,
-        glm::vec3(-0.2f, -1.0f, -0.3f), 
-        glm::vec3(0.05f, 0.05f, 0.05f), 
-        glm::vec3(0.4f, 0.4f, 0.4f),
-        glm::vec3(1.5f, 1.5f, 1.5f)
-    );
+    Model model(window, camera, objShader, "./res/models/backpack/backpack.obj", glm::vec3(0.0f, 0.0f, 0.0f));
+
+    // auto directLight = new DirectLight(
+    //     lightSrcShader,
+    //     glm::vec3(-0.2f, -1.0f, -0.3f), 
+    //     glm::vec3(0.05f, 0.05f, 0.05f), 
+    //     glm::vec3(0.4f, 0.4f, 0.4f),
+    //     glm::vec3(1.5f, 1.5f, 1.5f)
+    // );
 
     
 
-    Spotlight * spotlight = new Spotlight(
-        objShader, 
-        camera, 
-        .5f, 17.5f, 
-        glm::vec3(2.5f, 2.5f, 2.5f), 
-        glm::vec3(1.0f, 4.3f, 1.55f),
-        1.0f, 0.09f, 0.032f
-    );
+    // Spotlight * spotlight = new Spotlight(
+    //     objShader, 
+    //     camera, 
+    //     .5f, 17.5f, 
+    //     glm::vec3(2.5f, 2.5f, 2.5f), 
+    //     glm::vec3(1.0f, 4.3f, 1.55f),
+    //     1.0f, 0.09f, 0.032f
+    // );
 
 
-    for (int i = 0; i < lightPositions.size(); i++)
-    {
-        auto light = new Light(window, camera, lightSrcShader, objShader, i, lightPositions[i]);
-        light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
-        light->setProperties({
-            glm::vec3(1.5f, 1.5f, 1.5f),
-            glm::vec3(5.0f, 5.0f, 5.0f),
-            1.0f,
-            0.09f,
-            0.032f
-        });
+    // for (int i = 0; i < lightPositions.size(); i++)
+    // {
+    //     auto light = new Light(window, camera, lightSrcShader, objShader, i, lightPositions[i]);
+    //     light->setVerticesData(cubeVertices, sizeof(cubeVertices), GL_STATIC_DRAW);
+    //     light->setProperties({
+    //         glm::vec3(1.5f, 1.5f, 1.5f),
+    //         glm::vec3(5.0f, 5.0f, 5.0f),
+    //         1.0f,
+    //         0.09f,
+    //         0.032f
+    //     });
 
-        pointLights.push_back(light);
-    }
+    //     pointLights.push_back(light);
+    // }
 
     while (!glfwWindowShouldClose(window))
     {
@@ -130,29 +132,30 @@ int main()
         controller.listenInputs(window, texVisibility);
         camera->listenInputs(window);
 
-        glClearColor(0.03f, 0.08f, 0.09f, 1.0f);
+        glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         camera->lookAt();
 
-        for (auto light: pointLights) {
-            light->draw();
-        }
+        model.draw();
+        // for (auto light: pointLights) {
+        //     light->draw();
+        // }
         
-        spotlight->draw();
+        // spotlight->draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     objShader->wipe();
-    lightSrcShader->wipe();
+    // lightSrcShader->wipe();
     
-    for (auto i : pointLights)
-        delete i;
+    // for (auto i : pointLights)
+    //     delete i;
 
     delete objShader;
-    delete lightSrcShader;
+    // delete lightSrcShader;
 
     glfwTerminate();
     return 0;

@@ -4,7 +4,7 @@
 #include <vector>
 #include "./vertex.hpp"
 #include "./texture_model.hpp"
-#include "../object/shader/shader.hpp"
+#include "../shader/shader.hpp"
 
 
 class Mesh {

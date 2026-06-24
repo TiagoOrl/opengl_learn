@@ -3,7 +3,7 @@
 
 
 #include "../shader/shader.hpp"
-#include "../../camera/camera.hpp"
+#include "../camera/camera.hpp"
 
 #include <glm/glm.hpp>
 
